@@ -46,7 +46,13 @@ namespace rajadas
         }
 
         private void Form1_Load(object sender, EventArgs e)
-        {      
+        {
+            tmRajadaTijolo.Enabled = true;
+            tmRajadaDigital.Enabled = true;
+            tmRajadaInvertida.Enabled = true;
+
+            Agendamento agendamento = new Agendamento();
+
             ParametrosSistema parametrosRajada = new ParametrosSistema();
             
             // ---------------------------------- Carrega parâmetros da Rajada Tijolo -------------------------------------------------------//
@@ -135,6 +141,17 @@ namespace rajadas
             }
             // ---------------------------------- Carrega parâmetros da Rajada Invertida ----------------------------------------------------//
 
+            // ---------------------------------- ** Seta os agendamentos das leituras no timer da Rajada Tijolo ** --------------------------------//
+            tmRajadaTijolo.Interval = agendamento.retornaAgendamentoExecucao(parametroIntervaloRajadaTijolo, parametroFrequenciaRajadaTijolo);
+            // ---------------------------------- ** Seta os agendamentos das leituras no timer da Rajada Tijolo ** --------------------------------//
+
+            // ---------------------------------- ** Seta os agendamentos das leituras no timer da Rajada Digital ** --------------------------------//
+            tmRajadaDigital.Interval = agendamento.retornaAgendamentoExecucao(parametroIntervaloRajadaDigital, parametroFrequenciaRajadaDigital);
+            // ---------------------------------- ** Seta os agendamentos das leituras no timer Digital ** --------------------------------//
+
+            // ---------------------------------- ** Seta os agendamentos das leituras no timerda Rajada Invertida ** --------------------------------//
+            tmRajadaInvertida.Interval = agendamento.retornaAgendamentoExecucao(parametroIntervaloRajadaInvertida, parametroFrequenciaRajadaInvertida);
+            // ---------------------------------- ** Seta os agendamentos das leituras no timer da Rajada Invertida ** --------------------------------//
         }
 
 
@@ -286,8 +303,9 @@ namespace rajadas
             parametrosSistema.salvarConfiguracoes(listaDeParametrosParaSalvar, this.caminhoArquivoDeConfiguracao, "Digital", 6, 11);
             parametrosSistema.salvarConfiguracoes(listaDeParametrosParaSalvar, this.caminhoArquivoDeConfiguracao, "Invertida", 12, 17);
 
-            MessageBox.Show("Configurações Salvas !!!", "Mensagem do sistema");
+            MessageBox.Show("As configurações foram salvas, o aplicativo será reiniciado automaticamente !!!", "Mensagem do sistema");
 
+            Application.Restart();
         }
 
         private void btApontaArquivoExcelRajadaTijolo_Click(object sender, EventArgs e)
@@ -366,6 +384,54 @@ namespace rajadas
                 caminhoRajadaProcessadaInvertida = abrirDiretorioRajadaProcessada.SelectedPath;
                 tbCaminhoRajadaProcessadaInvertida.Text = caminhoRajadaProcessadaInvertida;
             }
+        }
+
+        private void tmRajadaTijolo_Tick(object sender, EventArgs e)
+        {
+            Rajada rajada = new Rajada();
+
+            List<Rajada> listaDeObjetosRajada = new List<Rajada>();
+
+            Excel arquivoExcel = new Excel();
+
+            // ------------------------** Lê Rajada Tijolo e Insere no Excel ** -----------------------------//
+            listaDeObjetosRajada = rajada.lerArquivoTxtRajadaTijolo(caminhoArquivoTxtRajadaTijolo, caminhoRajadaProcessadaTijolo, parametroCopiarOuMoverRajadaTijolo);
+            arquivoExcel.inserirObjetoNaPlanilhaExcel(listaDeObjetosRajada, caminhoArquivoExcelRajadaTijolo);
+            // ------------------------** Lê Rajada Tijolo e Insere no Excel ** -----------------------------//
+
+            MessageBox.Show("Teste Rajada Tijolo");
+        }
+
+        private void tmRajadaDigital_Tick(object sender, EventArgs e)
+        {
+            Rajada rajada = new Rajada();
+
+            List<Rajada> listaDeObjetosRajada = new List<Rajada>();
+
+            Excel arquivoExcel = new Excel();
+
+            // ------------------------** Lê Rajada Digital Mundo Velho e Insere no Excel ** -----------------------------//
+            listaDeObjetosRajada = rajada.lerArquivoTxtRajadaDigital(caminhoArquivoTxtRajadaDigital, caminhoRajadaProcessadaDigital, parametroCopiarOuMoverRajadaDigital);
+            arquivoExcel.inserirObjetoNaPlanilhaExcel(listaDeObjetosRajada, caminhoArquivoExcelRajadaDigital);
+            // ------------------------** Lê Rajada Digital Mundo Velho e Insere no Excel ** -----------------------------//
+            
+            MessageBox.Show("Teste Rajada Digital");
+        }
+
+        private void tmRajadaInvertida_Tick(object sender, EventArgs e)
+        {
+            Rajada rajada = new Rajada();
+
+            List<Rajada> listaDeObjetosRajada = new List<Rajada>();
+
+            Excel arquivoExcel = new Excel();
+
+            // ------------------------** Lê Rajada Invertida e Insere no Excel ** -----------------------------//
+            listaDeObjetosRajada = rajada.lerArquivoTxtRajadaInvertida(caminhoArquivoTxtRajadaInvertida, caminhoRajadaProcessadaInvertida, parametroCopiarOuMoverRajadaInvertida);
+            arquivoExcel.inserirObjetoNaPlanilhaExcel(listaDeObjetosRajada, caminhoArquivoExcelRajadaInvertida);
+            // ------------------------** Lê Rajada Invertida e Insere no Excel ** -----------------------------//
+
+            MessageBox.Show("Teste Rajada Invertida");
         }
     }
 }

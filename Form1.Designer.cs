@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form1));
             this.button1 = new System.Windows.Forms.Button();
             this.apontaCaminhoPasta = new System.Windows.Forms.FolderBrowserDialog();
@@ -88,6 +89,9 @@
             this.label10 = new System.Windows.Forms.Label();
             this.groupBox5 = new System.Windows.Forms.GroupBox();
             this.btSalvarConfiguracoes = new System.Windows.Forms.Button();
+            this.tmRajadaTijolo = new System.Windows.Forms.Timer(this.components);
+            this.tmRajadaDigital = new System.Windows.Forms.Timer(this.components);
+            this.tmRajadaInvertida = new System.Windows.Forms.Timer(this.components);
             this.groupBox1.SuspendLayout();
             this.groupBox8.SuspendLayout();
             this.groupBox2.SuspendLayout();
@@ -679,11 +683,26 @@
             // 
             this.btSalvarConfiguracoes.Location = new System.Drawing.Point(112, 482);
             this.btSalvarConfiguracoes.Name = "btSalvarConfiguracoes";
-            this.btSalvarConfiguracoes.Size = new System.Drawing.Size(161, 21);
+            this.btSalvarConfiguracoes.Size = new System.Drawing.Size(124, 21);
             this.btSalvarConfiguracoes.TabIndex = 15;
             this.btSalvarConfiguracoes.Text = "Salvar Configurações";
             this.btSalvarConfiguracoes.UseVisualStyleBackColor = true;
             this.btSalvarConfiguracoes.Click += new System.EventHandler(this.btSalvarConfiguracoes_Click);
+            // 
+            // tmRajadaTijolo
+            // 
+            this.tmRajadaTijolo.Interval = 1000;
+            this.tmRajadaTijolo.Tick += new System.EventHandler(this.tmRajadaTijolo_Tick);
+            // 
+            // tmRajadaDigital
+            // 
+            this.tmRajadaDigital.Interval = 1000;
+            this.tmRajadaDigital.Tick += new System.EventHandler(this.tmRajadaDigital_Tick);
+            // 
+            // tmRajadaInvertida
+            // 
+            this.tmRajadaInvertida.Interval = 1000;
+            this.tmRajadaInvertida.Tick += new System.EventHandler(this.tmRajadaInvertida_Tick);
             // 
             // Form1
             // 
@@ -788,6 +807,9 @@
         private System.Windows.Forms.TextBox tbIntervaloRajadaInvertida;
         private System.Windows.Forms.Label label15;
         private System.Windows.Forms.Button btSalvarConfiguracoes;
+        private System.Windows.Forms.Timer tmRajadaTijolo;
+        private System.Windows.Forms.Timer tmRajadaDigital;
+        private System.Windows.Forms.Timer tmRajadaInvertida;
     }
 }
 
