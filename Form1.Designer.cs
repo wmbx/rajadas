@@ -679,7 +679,7 @@
             // 
             this.btSalvarConfiguracoes.Location = new System.Drawing.Point(112, 482);
             this.btSalvarConfiguracoes.Name = "btSalvarConfiguracoes";
-            this.btSalvarConfiguracoes.Size = new System.Drawing.Size(124, 21);
+            this.btSalvarConfiguracoes.Size = new System.Drawing.Size(161, 21);
             this.btSalvarConfiguracoes.TabIndex = 15;
             this.btSalvarConfiguracoes.Text = "Salvar Configurações";
             this.btSalvarConfiguracoes.UseVisualStyleBackColor = true;
