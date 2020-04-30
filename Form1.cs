@@ -398,8 +398,6 @@ namespace rajadas
             listaDeObjetosRajada = rajada.lerArquivoTxtRajadaTijolo(caminhoArquivoTxtRajadaTijolo, caminhoRajadaProcessadaTijolo, parametroCopiarOuMoverRajadaTijolo);
             arquivoExcel.inserirObjetoNaPlanilhaExcel(listaDeObjetosRajada, caminhoArquivoExcelRajadaTijolo);
             // ------------------------** Lê Rajada Tijolo e Insere no Excel ** -----------------------------//
-
-            MessageBox.Show("Teste Rajada Tijolo");
         }
 
         private void tmRajadaDigital_Tick(object sender, EventArgs e)
@@ -414,8 +412,6 @@ namespace rajadas
             listaDeObjetosRajada = rajada.lerArquivoTxtRajadaDigital(caminhoArquivoTxtRajadaDigital, caminhoRajadaProcessadaDigital, parametroCopiarOuMoverRajadaDigital);
             arquivoExcel.inserirObjetoNaPlanilhaExcel(listaDeObjetosRajada, caminhoArquivoExcelRajadaDigital);
             // ------------------------** Lê Rajada Digital Mundo Velho e Insere no Excel ** -----------------------------//
-            
-            MessageBox.Show("Teste Rajada Digital");
         }
 
         private void tmRajadaInvertida_Tick(object sender, EventArgs e)
@@ -430,8 +426,24 @@ namespace rajadas
             listaDeObjetosRajada = rajada.lerArquivoTxtRajadaInvertida(caminhoArquivoTxtRajadaInvertida, caminhoRajadaProcessadaInvertida, parametroCopiarOuMoverRajadaInvertida);
             arquivoExcel.inserirObjetoNaPlanilhaExcel(listaDeObjetosRajada, caminhoArquivoExcelRajadaInvertida);
             // ------------------------** Lê Rajada Invertida e Insere no Excel ** -----------------------------//
+        }
 
-            MessageBox.Show("Teste Rajada Invertida");
+        private void Form1_Resize(object sender, EventArgs e)
+        {
+            if (WindowState == FormWindowState.Minimized)
+            {
+                this.Hide();
+
+                niBandeja.Visible = true;
+            }
+        }
+
+        private void niBandeja_MouseDoubleClick(object sender, MouseEventArgs e)
+        {
+            this.Show();
+            this.WindowState = FormWindowState.Normal;
+
+            niBandeja.Visible = false;
         }
     }
 }

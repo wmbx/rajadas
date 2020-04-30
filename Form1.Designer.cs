@@ -92,6 +92,7 @@
             this.tmRajadaTijolo = new System.Windows.Forms.Timer(this.components);
             this.tmRajadaDigital = new System.Windows.Forms.Timer(this.components);
             this.tmRajadaInvertida = new System.Windows.Forms.Timer(this.components);
+            this.niBandeja = new System.Windows.Forms.NotifyIcon(this.components);
             this.groupBox1.SuspendLayout();
             this.groupBox8.SuspendLayout();
             this.groupBox2.SuspendLayout();
@@ -681,7 +682,7 @@
             // 
             // btSalvarConfiguracoes
             // 
-            this.btSalvarConfiguracoes.Location = new System.Drawing.Point(112, 482);
+            this.btSalvarConfiguracoes.Location = new System.Drawing.Point(125, 482);
             this.btSalvarConfiguracoes.Name = "btSalvarConfiguracoes";
             this.btSalvarConfiguracoes.Size = new System.Drawing.Size(124, 21);
             this.btSalvarConfiguracoes.TabIndex = 15;
@@ -704,6 +705,12 @@
             this.tmRajadaInvertida.Interval = 1000;
             this.tmRajadaInvertida.Tick += new System.EventHandler(this.tmRajadaInvertida_Tick);
             // 
+            // niBandeja
+            // 
+            this.niBandeja.Icon = ((System.Drawing.Icon)(resources.GetObject("niBandeja.Icon")));
+            this.niBandeja.Text = "BotFlow Rajadas";
+            this.niBandeja.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.niBandeja_MouseDoubleClick);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -723,6 +730,7 @@
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "BotFlow Rajadas v.1.0";
             this.Load += new System.EventHandler(this.Form1_Load);
+            this.Resize += new System.EventHandler(this.Form1_Resize);
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
             this.groupBox8.ResumeLayout(false);
@@ -810,6 +818,7 @@
         private System.Windows.Forms.Timer tmRajadaTijolo;
         private System.Windows.Forms.Timer tmRajadaDigital;
         private System.Windows.Forms.Timer tmRajadaInvertida;
+        private System.Windows.Forms.NotifyIcon niBandeja;
     }
 }
 
