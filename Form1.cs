@@ -180,7 +180,7 @@ namespace rajadas
             arquivoExcel.inserirObjetoNaPlanilhaExcel(listaDeObjetosRajada, caminhoArquivoExcelRajadaInvertida);
             // ------------------------** Lê Rajada Invertida e Insere no Excel ** -----------------------------//
 
-
+            // -------------------------** Mensagem ao fim da leitura manual -----------------------------------//
             MessageBox.Show("Processamento Concluído !!!", "Mensagem do sistema");
         }
 
