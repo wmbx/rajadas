@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Forms;
 
 namespace rajadas
 {
@@ -149,182 +150,193 @@ namespace rajadas
 
             var listaDeArquivosEmCadaDiretorio = new List<String>();
 
-            listaDeDiretorios = Directory.GetDirectories(caminhoArquivoTXT).ToList();
-            listaDeDiretorios.Add(caminhoArquivoTXT);
-
-            foreach (var diretorio in listaDeDiretorios)
+            try
             {
-                listaDeArquivosEmCadaDiretorio = Directory.GetFiles(diretorio).ToList();
-                foreach (var arquivoEncontrado in listaDeArquivosEmCadaDiretorio)
+                listaDeDiretorios = Directory.GetDirectories(caminhoArquivoTXT).ToList();
+                listaDeDiretorios.Add(caminhoArquivoTXT);
+
+                foreach (var diretorio in listaDeDiretorios)
                 {
-                    listaDeArquivosTxtRajadas.Add(arquivoEncontrado);
-                }
-            }
-            
-
-            foreach (var arquivoTxtRajada in listaDeArquivosTxtRajadas)
-            {
-                FileInfo informacaoDoArquivo = new FileInfo(arquivoTxtRajada);
-                String nomeArquivoRajadaTxt = informacaoDoArquivo.Name;
-
-                String parteDoNomeDoArquivo = nomeArquivoRajadaTxt.Substring(0, 11);
-
-                if (parteDoNomeDoArquivo == "ARQBRSAGORD")
-                {
-                    String diretorioRajadaProcessada = "";
-                    diretorioRajadaProcessada = caminhoRajadasProcessadas + "\\" + nomeArquivoRajadaTxt;
-
-                    if (File.Exists(diretorioRajadaProcessada))
+                    listaDeArquivosEmCadaDiretorio = Directory.GetFiles(diretorio).ToList();
+                    foreach (var arquivoEncontrado in listaDeArquivosEmCadaDiretorio)
                     {
-
+                        listaDeArquivosTxtRajadas.Add(arquivoEncontrado);
                     }
-                    else
-                    {
-                        string[] arquivoTXT = File.ReadAllLines(arquivoTxtRajada);
-                        foreach (var linha in arquivoTXT)
-                        {
-                            if (linha.Substring(0, 1).Equals("1"))
-                            {
-                                Rajada rajada = new Rajada();
-                                rajada.tipoRegistro = linha.Substring(0, 1);
-                                rajada.agencia = linha.Substring(1, 4);
-                                rajada.zeros = linha.Substring(5, 2);
-                                rajada.conta = linha.Substring(7, 5);
-                                rajada.dac = linha.Substring(12, 1);
-                                rajada.segmento = linha.Substring(13, 2);
-                                rajada.sequencia = linha.Substring(15, 4);
-                                rajada.codigoEmpresa = linha.Substring(19, 3);
-                                rajada.indicadorSequenciaParticipante = linha.Substring(22, 4);
-                                rajada.indicadorRepresentanteLegal = linha.Substring(26, 3);
-                                rajada.codigoParticipante = linha.Substring(29, 4);
-                                rajada.titularOuRepresentante = linha.Substring(33, 1);
-                                rajada.sequenciaDoTitular = linha.Substring(34, 2);
-                                rajada.tipoConta = linha.Substring(36, 1);
-                                rajada.titularidadeConta = linha.Substring(37, 1);
-                                rajada.pacoteServicos = linha.Substring(38, 2);
-                                rajada.descricaoTarifaBancaria = linha.Substring(40, 15);
-                                rajada.terminoCurso = linha.Substring(55, 6);
-                                rajada.nomeTitular = linha.Substring(61, 50);
-                                rajada.cpfTitular = linha.Substring(111, 9);
-                                rajada.dacCpfTitular = linha.Substring(120, 2);
-                                rajada.tipoDocIdentificacao = linha.Substring(122, 5);
-                                rajada.numeroDocIdentificacao = linha.Substring(127, 13);
-                                rajada.dataEmissaoDocIdentificacao = linha.Substring(140, 8);
-                                rajada.orgaoEmissorDocIdentificacao = linha.Substring(148, 7);
-                                rajada.estadoEmissorDocIdentificacao = linha.Substring(155, 2);
-                                rajada.paisEmissorDocIdentificacao = linha.Substring(157, 2);
-                                rajada.sexo = linha.Substring(159, 1);
-                                rajada.escolaridade = linha.Substring(160, 1);
-                                rajada.statusUniversitario = linha.Substring(161, 1);
-                                rajada.mesAnoConclusao = linha.Substring(162, 6);
-                                rajada.estadoCivil = linha.Substring(168, 1);
-                                rajada.qtdDependentes = linha.Substring(169, 2);
-                                rajada.dataNascimentoTitular = linha.Substring(171, 8);
-                                rajada.cidadeNascimento = linha.Substring(179, 20);
-                                rajada.estadoNascimento = linha.Substring(199, 2);
-                                rajada.paisNascimento = linha.Substring(201, 2);
-                                rajada.nacionalidade = linha.Substring(203, 2);
-                                rajada.nomePai = linha.Substring(205, 30);
-                                rajada.nomeMae = linha.Substring(235, 30);
-                                rajada.nomeConjuge = linha.Substring(265, 30);
-                                rajada.cpfConjuge = linha.Substring(295, 9);
-                                rajada.dacCpfConjuge = linha.Substring(304, 2);
-                                rajada.tipoResidencia = linha.Substring(306, 1);
-                                rajada.tempoResidencia = linha.Substring(307, 1);
-                                rajada.cepGrupoUm = linha.Substring(308, 5);
-                                rajada.cepGrupoDois = linha.Substring(313, 3);
-                                rajada.logradouroResidencia = linha.Substring(316, 30);
-                                rajada.numeroResidencia = linha.Substring(346, 5);
-                                rajada.complementoResidencia = linha.Substring(351, 15);
-                                rajada.bairroResidencia = linha.Substring(366, 15);
-                                rajada.cidadeResidencia = linha.Substring(381, 20);
-                                rajada.estadoResidencia = linha.Substring(401, 2);
-                                rajada.beneficiarioInss = linha.Substring(403, 1);
-                                rajada.vincularBeneficioConta = linha.Substring(404, 1);
-                                rajada.numeroBeneficio = linha.Substring(405, 15);
-                                rajada.indicadorTelefone = linha.Substring(420, 1);
-                                rajada.dddTelefone = linha.Substring(421, 2);
-                                rajada.numeroTelefone = linha.Substring(423, 9);
-                                rajada.origemRenda = linha.Substring(432, 1);
-                                rajada.profissao = linha.Substring(433, 3);
-                                rajada.descricaoProfissao = linha.Substring(436, 15);
-                                rajada.rendaMensal = linha.Substring(451, 11);
-                                rajada.motivoSemRenda = linha.Substring(462, 1);
-                                rajada.motivoSemRendaOutros = linha.Substring(463, 20);
-                                rajada.rendaComprovada = linha.Substring(483, 1);
-                                rajada.nomeEmpresarial = linha.Substring(484, 30);
-                                rajada.qualificacaoCliente = linha.Substring(514, 40);
-                                rajada.patrimonio = linha.Substring(554, 11);
-                                rajada.tipoPatrimonio = linha.Substring(565, 1);
-                                rajada.motivoSemPatrimonio = linha.Substring(566, 1);
-                                rajada.motivoSemPatrimonioOutros = linha.Substring(567, 20);
-                                rajada.dataAdmissao = linha.Substring(587, 6);
-                                rajada.tipoDadoProfissional = linha.Substring(593, 6);
-                                rajada.identificadorEndereco = linha.Substring(594, 1);
-                                rajada.cepComercial = linha.Substring(595, 8);
-                                rajada.logradouroComercial = linha.Substring(603, 30);
-                                rajada.numeroComercial = linha.Substring(633, 5);
-                                rajada.complementoComercial = linha.Substring(638, 15);
-                                rajada.bairroComercial = linha.Substring(653, 15);
-                                rajada.cidadeComercial = linha.Substring(668, 20);
-                                rajada.estadoComercial = linha.Substring(688, 2);
-                                rajada.propositoConta = linha.Substring(690, 1);
-                                rajada.execeCargoPublico = linha.Substring(691, 1);
-                                rajada.lec = linha.Substring(692, 1);
-                                rajada.envioCorrespondencia = linha.Substring(693, 1);
-                                rajada.transferenciaRecursosContaSalario = linha.Substring(694, 1);
-                                rajada.cnpjEmpregador = linha.Substring(695, 14);
-                                rajada.situacaoEspecial = linha.Substring(709, 1);
-                                rajada.funcionalGerente = linha.Substring(710, 9);
-                                rajada.codigoGerente = linha.Substring(719, 2);
-                                rajada.funcionalResponsavelDocumentos = linha.Substring(721, 9);
-                                rajada.funcionalResponsavelProdutos = linha.Substring(730, 9);
-                                rajada.localData1 = linha.Substring(739, 20);
-                                rajada.localData2 = linha.Substring(759, 8);
-                                rajada.produtoLisCep = linha.Substring(767, 1);
-                                rajada.produtoCartaoMultiplo = linha.Substring(768, 1);
-                                rajada.produtoCartaoCredito = linha.Substring(769, 1);
-                                rajada.produtoDebitoAutomatico = linha.Substring(770, 1);
-                                rajada.produtoEntregaChequesDomicilio = linha.Substring(771, 1);
-                                rajada.produtoCartaoProvisorio = linha.Substring(772, 1);
-                                rajada.produtoAplicaut = linha.Substring(773, 1);
-                                rajada.produtoCollectePersonnalite = linha.Substring(774, 1);
-                                rajada.produtoSeguroCartaoDebito = linha.Substring(775, 1);
-                                rajada.produtoAplicautCciPersonnalite = linha.Substring(776, 1);
-                                rajada.produtoSeguroLis = linha.Substring(777, 1);
-                                rajada.produtoSeguroMultiprotecao = linha.Substring(778, 1);
-                                rajada.produtoAdiatamentoDepositante = linha.Substring(779, 1);
-                                rajada.produtoCartaoDebito = linha.Substring(780, 1);
-                                rajada.produtoServicoAvaliacaoEmergencialCredito = linha.Substring(781, 1);
-                                rajada.tipoEmpresa = linha.Substring(782, 3);
-                                rajada.codigoBanco = linha.Substring(785, 3);
-                                rajada.codigoSistema = linha.Substring(788, 2);
-                                rajada.codigoProduto = linha.Substring(790, 3);
-                                rajada.faseConta = linha.Substring(793, 3);
-                                rajada.qtdDocumentos = linha.Substring(796, 3);
-                                rajada.numeroLote = linha.Substring(799, 16);
-                                rajada.nomeReceitaFederal = linha.Substring(815, 50);
-                                rajada.dataLiberacaoDocumento = linha.Substring(865, 10);
-                                rajada.horaLiberacaoDocumento = linha.Substring(875, 8);
-                                rajada.codigoBeneficio = linha.Substring(883, 2);
-                                rajada.nomeBeneficio = linha.Substring(885, 30);
-                                rajada.indicadorContaOnline = linha.Substring(915, 1);
-                                rajada.indicadorDispensaValidacaoComprovanteResidencia = linha.Substring(916, 1);
+                }
 
-                                listaDeObjetosRajadas.Add(rajada);
-                            }
-                        }
-                        if (parametroCopiarOuMover == "Mover Arquivo Processado")
+
+                foreach (var arquivoTxtRajada in listaDeArquivosTxtRajadas)
+                {
+                    FileInfo informacaoDoArquivo = new FileInfo(arquivoTxtRajada);
+                    String nomeArquivoRajadaTxt = informacaoDoArquivo.Name;
+
+                    String parteDoNomeDoArquivo = nomeArquivoRajadaTxt.Substring(0, 11);
+
+                    if (parteDoNomeDoArquivo == "ARQBRSAGORD")
+                    {
+                        String diretorioRajadaProcessada = "";
+                        diretorioRajadaProcessada = caminhoRajadasProcessadas + "\\" + nomeArquivoRajadaTxt;
+
+                        if (File.Exists(diretorioRajadaProcessada))
                         {
-                            Directory.Move(arquivoTxtRajada, diretorioRajadaProcessada);
+
                         }
                         else
                         {
-                            File.Copy(arquivoTxtRajada, diretorioRajadaProcessada);
+                            string[] arquivoTXT = File.ReadAllLines(arquivoTxtRajada);
+                            foreach (var linha in arquivoTXT)
+                            {
+                                if (linha.Substring(0, 1).Equals("1"))
+                                {
+                                    Rajada rajada = new Rajada();
+                                    rajada.tipoRegistro = linha.Substring(0, 1);
+                                    rajada.agencia = linha.Substring(1, 4);
+                                    rajada.zeros = linha.Substring(5, 2);
+                                    rajada.conta = linha.Substring(7, 5);
+                                    rajada.dac = linha.Substring(12, 1);
+                                    rajada.segmento = linha.Substring(13, 2);
+                                    rajada.sequencia = linha.Substring(15, 4);
+                                    rajada.codigoEmpresa = linha.Substring(19, 3);
+                                    rajada.indicadorSequenciaParticipante = linha.Substring(22, 4);
+                                    rajada.indicadorRepresentanteLegal = linha.Substring(26, 3);
+                                    rajada.codigoParticipante = linha.Substring(29, 4);
+                                    rajada.titularOuRepresentante = linha.Substring(33, 1);
+                                    rajada.sequenciaDoTitular = linha.Substring(34, 2);
+                                    rajada.tipoConta = linha.Substring(36, 1);
+                                    rajada.titularidadeConta = linha.Substring(37, 1);
+                                    rajada.pacoteServicos = linha.Substring(38, 2);
+                                    rajada.descricaoTarifaBancaria = linha.Substring(40, 15);
+                                    rajada.terminoCurso = linha.Substring(55, 6);
+                                    rajada.nomeTitular = linha.Substring(61, 50);
+                                    rajada.cpfTitular = linha.Substring(111, 9);
+                                    rajada.dacCpfTitular = linha.Substring(120, 2);
+                                    rajada.tipoDocIdentificacao = linha.Substring(122, 5);
+                                    rajada.numeroDocIdentificacao = linha.Substring(127, 13);
+                                    rajada.dataEmissaoDocIdentificacao = linha.Substring(140, 8);
+                                    rajada.orgaoEmissorDocIdentificacao = linha.Substring(148, 7);
+                                    rajada.estadoEmissorDocIdentificacao = linha.Substring(155, 2);
+                                    rajada.paisEmissorDocIdentificacao = linha.Substring(157, 2);
+                                    rajada.sexo = linha.Substring(159, 1);
+                                    rajada.escolaridade = linha.Substring(160, 1);
+                                    rajada.statusUniversitario = linha.Substring(161, 1);
+                                    rajada.mesAnoConclusao = linha.Substring(162, 6);
+                                    rajada.estadoCivil = linha.Substring(168, 1);
+                                    rajada.qtdDependentes = linha.Substring(169, 2);
+                                    rajada.dataNascimentoTitular = linha.Substring(171, 8);
+                                    rajada.cidadeNascimento = linha.Substring(179, 20);
+                                    rajada.estadoNascimento = linha.Substring(199, 2);
+                                    rajada.paisNascimento = linha.Substring(201, 2);
+                                    rajada.nacionalidade = linha.Substring(203, 2);
+                                    rajada.nomePai = linha.Substring(205, 30);
+                                    rajada.nomeMae = linha.Substring(235, 30);
+                                    rajada.nomeConjuge = linha.Substring(265, 30);
+                                    rajada.cpfConjuge = linha.Substring(295, 9);
+                                    rajada.dacCpfConjuge = linha.Substring(304, 2);
+                                    rajada.tipoResidencia = linha.Substring(306, 1);
+                                    rajada.tempoResidencia = linha.Substring(307, 1);
+                                    rajada.cepGrupoUm = linha.Substring(308, 5);
+                                    rajada.cepGrupoDois = linha.Substring(313, 3);
+                                    rajada.logradouroResidencia = linha.Substring(316, 30);
+                                    rajada.numeroResidencia = linha.Substring(346, 5);
+                                    rajada.complementoResidencia = linha.Substring(351, 15);
+                                    rajada.bairroResidencia = linha.Substring(366, 15);
+                                    rajada.cidadeResidencia = linha.Substring(381, 20);
+                                    rajada.estadoResidencia = linha.Substring(401, 2);
+                                    rajada.beneficiarioInss = linha.Substring(403, 1);
+                                    rajada.vincularBeneficioConta = linha.Substring(404, 1);
+                                    rajada.numeroBeneficio = linha.Substring(405, 15);
+                                    rajada.indicadorTelefone = linha.Substring(420, 1);
+                                    rajada.dddTelefone = linha.Substring(421, 2);
+                                    rajada.numeroTelefone = linha.Substring(423, 9);
+                                    rajada.origemRenda = linha.Substring(432, 1);
+                                    rajada.profissao = linha.Substring(433, 3);
+                                    rajada.descricaoProfissao = linha.Substring(436, 15);
+                                    rajada.rendaMensal = linha.Substring(451, 11);
+                                    rajada.motivoSemRenda = linha.Substring(462, 1);
+                                    rajada.motivoSemRendaOutros = linha.Substring(463, 20);
+                                    rajada.rendaComprovada = linha.Substring(483, 1);
+                                    rajada.nomeEmpresarial = linha.Substring(484, 30);
+                                    rajada.qualificacaoCliente = linha.Substring(514, 40);
+                                    rajada.patrimonio = linha.Substring(554, 11);
+                                    rajada.tipoPatrimonio = linha.Substring(565, 1);
+                                    rajada.motivoSemPatrimonio = linha.Substring(566, 1);
+                                    rajada.motivoSemPatrimonioOutros = linha.Substring(567, 20);
+                                    rajada.dataAdmissao = linha.Substring(587, 6);
+                                    rajada.tipoDadoProfissional = linha.Substring(593, 6);
+                                    rajada.identificadorEndereco = linha.Substring(594, 1);
+                                    rajada.cepComercial = linha.Substring(595, 8);
+                                    rajada.logradouroComercial = linha.Substring(603, 30);
+                                    rajada.numeroComercial = linha.Substring(633, 5);
+                                    rajada.complementoComercial = linha.Substring(638, 15);
+                                    rajada.bairroComercial = linha.Substring(653, 15);
+                                    rajada.cidadeComercial = linha.Substring(668, 20);
+                                    rajada.estadoComercial = linha.Substring(688, 2);
+                                    rajada.propositoConta = linha.Substring(690, 1);
+                                    rajada.execeCargoPublico = linha.Substring(691, 1);
+                                    rajada.lec = linha.Substring(692, 1);
+                                    rajada.envioCorrespondencia = linha.Substring(693, 1);
+                                    rajada.transferenciaRecursosContaSalario = linha.Substring(694, 1);
+                                    rajada.cnpjEmpregador = linha.Substring(695, 14);
+                                    rajada.situacaoEspecial = linha.Substring(709, 1);
+                                    rajada.funcionalGerente = linha.Substring(710, 9);
+                                    rajada.codigoGerente = linha.Substring(719, 2);
+                                    rajada.funcionalResponsavelDocumentos = linha.Substring(721, 9);
+                                    rajada.funcionalResponsavelProdutos = linha.Substring(730, 9);
+                                    rajada.localData1 = linha.Substring(739, 20);
+                                    rajada.localData2 = linha.Substring(759, 8);
+                                    rajada.produtoLisCep = linha.Substring(767, 1);
+                                    rajada.produtoCartaoMultiplo = linha.Substring(768, 1);
+                                    rajada.produtoCartaoCredito = linha.Substring(769, 1);
+                                    rajada.produtoDebitoAutomatico = linha.Substring(770, 1);
+                                    rajada.produtoEntregaChequesDomicilio = linha.Substring(771, 1);
+                                    rajada.produtoCartaoProvisorio = linha.Substring(772, 1);
+                                    rajada.produtoAplicaut = linha.Substring(773, 1);
+                                    rajada.produtoCollectePersonnalite = linha.Substring(774, 1);
+                                    rajada.produtoSeguroCartaoDebito = linha.Substring(775, 1);
+                                    rajada.produtoAplicautCciPersonnalite = linha.Substring(776, 1);
+                                    rajada.produtoSeguroLis = linha.Substring(777, 1);
+                                    rajada.produtoSeguroMultiprotecao = linha.Substring(778, 1);
+                                    rajada.produtoAdiatamentoDepositante = linha.Substring(779, 1);
+                                    rajada.produtoCartaoDebito = linha.Substring(780, 1);
+                                    rajada.produtoServicoAvaliacaoEmergencialCredito = linha.Substring(781, 1);
+                                    rajada.tipoEmpresa = linha.Substring(782, 3);
+                                    rajada.codigoBanco = linha.Substring(785, 3);
+                                    rajada.codigoSistema = linha.Substring(788, 2);
+                                    rajada.codigoProduto = linha.Substring(790, 3);
+                                    rajada.faseConta = linha.Substring(793, 3);
+                                    rajada.qtdDocumentos = linha.Substring(796, 3);
+                                    rajada.numeroLote = linha.Substring(799, 16);
+                                    rajada.nomeReceitaFederal = linha.Substring(815, 50);
+                                    rajada.dataLiberacaoDocumento = linha.Substring(865, 10);
+                                    rajada.horaLiberacaoDocumento = linha.Substring(875, 8);
+                                    rajada.codigoBeneficio = linha.Substring(883, 2);
+                                    rajada.nomeBeneficio = linha.Substring(885, 30);
+                                    rajada.indicadorContaOnline = linha.Substring(915, 1);
+                                    rajada.indicadorDispensaValidacaoComprovanteResidencia = linha.Substring(916, 1);
+
+                                    listaDeObjetosRajadas.Add(rajada);
+                                }
+                            }
+                            if (parametroCopiarOuMover == "Mover Arquivo Processado")
+                            {
+                                Directory.Move(arquivoTxtRajada, diretorioRajadaProcessada);
+                            }
+                            else
+                            {
+                                File.Copy(arquivoTxtRajada, diretorioRajadaProcessada);
+                            }
                         }
                     }
                 }
+
             }
+
+            catch (Exception e)
+            {
+                MessageBox.Show("Erro: " + e.Message);
+                Application.Exit();
+            }
+
             return listaDeObjetosRajadas;
         }
 
@@ -337,6 +349,9 @@ namespace rajadas
             var listaDeDiretorios = new List<String>();
 
             var listaDeArquivosEmCadaDiretorio = new List<String>();
+
+            try
+            {
 
             listaDeDiretorios = Directory.GetDirectories(caminhoArquivoTXT).ToList();
             listaDeDiretorios.Add(caminhoArquivoTXT);
@@ -519,6 +534,12 @@ namespace rajadas
                     }
                 }
             }
+            }
+
+            catch (Exception e)
+            {
+                MessageBox.Show("Erro: " + e.Message);
+            }
             return listaDeObjetosRajadas;
         }
 
@@ -532,8 +553,10 @@ namespace rajadas
 
             var listaDeArquivosEmCadaDiretorio = new List<String>();
 
-            listaDeDiretorios = Directory.GetDirectories(caminhoArquivoTXT).ToList();
-            listaDeDiretorios.Add(caminhoArquivoTXT);
+            try
+            {
+                listaDeDiretorios = Directory.GetDirectories(caminhoArquivoTXT).ToList();
+                listaDeDiretorios.Add(caminhoArquivoTXT);
 
             foreach (var diretorio in listaDeDiretorios)
             {
@@ -711,6 +734,13 @@ namespace rajadas
                         }
                     }
                 }
+            }
+
+            }
+
+            catch (Exception e)
+            {
+                MessageBox.Show("Erro: " + e.Message);
             }
 
             return listaDeObjetosRajadas;
