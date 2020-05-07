@@ -315,6 +315,7 @@ namespace rajadas
                                     rajada.indicadorDispensaValidacaoComprovanteResidencia = linha.Substring(916, 1);
 
                                     listaDeObjetosRajadas.Add(rajada);
+
                                 }
                             }
                             if (parametroCopiarOuMover == "Mover Arquivo Processado")
@@ -744,6 +745,71 @@ namespace rajadas
             }
 
             return listaDeObjetosRajadas;
+        }
+
+        public int retornaQuantidadeRegistrosProcessados(String caminhoArquivoTXT, String caminhoRajadasProcessadas, String nomeDoArquivo)
+        {
+            int quantidadeDeRegistros = 0;
+
+            var listaDeArquivosTxtRajadas = new List<String>();
+
+            var listaDeDiretorios = new List<String>();
+
+            var listaDeArquivosEmCadaDiretorio = new List<String>();
+
+            try
+            {
+                listaDeDiretorios = Directory.GetDirectories(caminhoArquivoTXT).ToList();
+                listaDeDiretorios.Add(caminhoArquivoTXT);
+
+                foreach (var diretorio in listaDeDiretorios)
+                {
+                    listaDeArquivosEmCadaDiretorio = Directory.GetFiles(diretorio).ToList();
+                    foreach (var arquivoEncontrado in listaDeArquivosEmCadaDiretorio)
+                    {
+                        listaDeArquivosTxtRajadas.Add(arquivoEncontrado);
+                    }
+                }
+
+                foreach (var arquivoTxtRajada in listaDeArquivosTxtRajadas)
+                {
+                    FileInfo informacaoDoArquivo = new FileInfo(arquivoTxtRajada);
+                    String nomeArquivoRajadaTxt = informacaoDoArquivo.Name;
+
+                    String parteDoNomeDoArquivo = nomeArquivoRajadaTxt.Substring(0, 11);
+
+                    if (parteDoNomeDoArquivo == nomeDoArquivo)
+                    {
+                        String diretorioRajadaProcessada = "";
+                        diretorioRajadaProcessada = caminhoRajadasProcessadas + "\\" + nomeArquivoRajadaTxt;
+
+
+                        if (File.Exists(diretorioRajadaProcessada))
+                        {
+
+                        }
+                        else
+                        {
+                            string[] arquivoTXT = File.ReadAllLines(arquivoTxtRajada);
+                            foreach (var linha in arquivoTXT)
+                            {
+                                if (linha.Substring(0, 1).Equals("1"))
+                                {
+                                    quantidadeDeRegistros = quantidadeDeRegistros + 1;
+                                }
+                            }
+                        }
+                    }
+                }
+
+            }
+
+            catch (Exception e)
+            {
+                MessageBox.Show("Erro: " + e.Message);
+            }
+
+            return quantidadeDeRegistros;
         }
     }
 }

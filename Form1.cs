@@ -11,13 +11,14 @@ using System.IO;
 using ClosedXML.Excel;
 using System.Xml;
 using System.Xml.Linq;
+using System.Threading;
 
 namespace rajadas
 {
     public partial class Form1 : Form
     {
         private String caminhoArquivoDeConfiguracao = "Parametros.xml";
-               
+
         private String caminhoArquivoTxtRajadaTijolo;
         private String caminhoArquivoExcelRajadaTijolo;
         private String caminhoRajadaProcessadaTijolo;
@@ -93,9 +94,9 @@ namespace rajadas
 
 
             // ---------------------------------- ** Seta os agendamentos das leituras no timer da Rajada Tijolo ** --------------------------------//
-           
+
             tmRajadaTijolo.Interval = agendamento.retornaAgendamentoExecucao(parametroIntervaloRajadaTijolo, parametroFrequenciaRajadaTijolo);
-          
+
             // ---------------------------------- ** Seta os agendamentos das leituras no timer da Rajada Tijolo ** --------------------------------//
 
 
@@ -110,6 +111,20 @@ namespace rajadas
             }
             // ------------------ ** Ativa ou Desativa os Timers das leituras automáticas de acordo com o parâmetro ** --------------------//
 
+            
+            // ------------------ ** Ativa ou Desativa os Parâmetros das Leituras Automáticas de acordo com o parâmetro ** -----------------------------//
+            if(this.statusLeituraRajadaTijolo == "Ativada")
+            {
+                tbIntervaloRajadaTijolo.Enabled = true;
+                cbFrequenciaRajadaTijolo.Enabled = true;
+            }
+            else
+            {
+                tbIntervaloRajadaTijolo.Enabled = false;
+                cbFrequenciaRajadaTijolo.Enabled = false;
+            }
+            // ------------------ ** Ativa ou Desativa os Parâmetros das Leituras Automáticas de acordo com o parâmetro ** -----------------------------//
+
         }
         // ---------------------------------- Carrega parâmetros da Rajada Tijolo ---------------------------------------------------------//
 
@@ -120,7 +135,7 @@ namespace rajadas
             Agendamento agendamento = new Agendamento();
 
             ParametrosSistema parametrosRajada = new ParametrosSistema();
-         
+
             List<String> listaDeParametrosRajadaDigital = new List<String>();
 
             listaDeParametrosRajadaDigital = parametrosRajada.carregarParametrosRajada(this.caminhoArquivoDeConfiguracao, "Digital");
@@ -165,6 +180,20 @@ namespace rajadas
             }
             // ------------------ ** Ativa ou Desativa os Timers das leituras automáticas de acordo com o parâmetro ** --------------------//
 
+
+            // ------------------ ** Ativa ou Desativa os Parâmetros das Leituras Automáticas de acordo com o parâmetro ** -----------------------------//
+            if (this.statusLeituraRajadaDigital == "Ativada")
+            {
+                tbIntervaloRajadaDigital.Enabled = true;
+                cbFrequenciaRajadaDigital.Enabled = true;
+            }
+            else
+            {
+                tbIntervaloRajadaDigital.Enabled = false;
+                cbFrequenciaRajadaDigital.Enabled = false;
+            }
+            // ------------------ ** Ativa ou Desativa os Parâmetros das Leituras Automáticas de acordo com o parâmetro ** -----------------------------//
+
         }
         // ---------------------------------- Carrega parâmetros da Rajada Digital --------------------------------------------------------//
 
@@ -175,7 +204,7 @@ namespace rajadas
             Agendamento agendamento = new Agendamento();
 
             ParametrosSistema parametrosRajada = new ParametrosSistema();
-                        
+
             List<String> listaDeParametrosRajadaInvertida = new List<String>();
 
             listaDeParametrosRajadaInvertida = parametrosRajada.carregarParametrosRajada(this.caminhoArquivoDeConfiguracao, "Invertida");
@@ -203,7 +232,7 @@ namespace rajadas
             {
                 rbMoverArquivoProcessadoRajadaInvertida.Checked = true;
             }
-    
+
             // ---------------------------------- ** Seta os agendamentos das leituras no timerda Rajada Invertida ** --------------------------------//
             tmRajadaInvertida.Interval = agendamento.retornaAgendamentoExecucao(parametroIntervaloRajadaInvertida, parametroFrequenciaRajadaInvertida);
             // ---------------------------------- ** Seta os agendamentos das leituras no timer da Rajada Invertida ** --------------------------------//
@@ -220,12 +249,27 @@ namespace rajadas
             }
             // ------------------ ** Ativa ou Desativa os Timers das leituras automáticas de acordo com o parâmetro ** --------------------//
 
+
+
+            // ------------------ ** Ativa ou Desativa os Parâmetros das Leituras Automáticas de acordo com o parâmetro ** -----------------------------//
+            if (this.statusLeituraRajadaInvertida == "Ativada")
+            {
+                tbIntervaloRajadaInvertida.Enabled = true;
+                cbFrequenciaRajadaInvertida.Enabled = true;
+            }
+            else
+            {
+                tbIntervaloRajadaInvertida.Enabled = false;
+                cbFrequenciaRajadaInvertida.Enabled = false;
+            }
+            // ------------------ ** Ativa ou Desativa os Parâmetros das Leituras Automáticas de acordo com o parâmetro ** -----------------------------//
+
         }
         // ---------------------------------- Carrega parâmetros da Rajada Invertida ----------------------------------------------------//
 
         private void button1_Click(object sender, EventArgs e)
         {
-           
+
         }
 
         private void folderBrowserDialog1_HelpRequest(object sender, EventArgs e)
@@ -233,7 +277,7 @@ namespace rajadas
 
         }
 
-        
+
         private void botaoApontaCaminhoRajada_Click(object sender, EventArgs e)
         {
             FolderBrowserDialog abrirArquivoRajada = new FolderBrowserDialog();
@@ -249,7 +293,7 @@ namespace rajadas
             OpenFileDialog abrirArquivoExcel = new OpenFileDialog();
             abrirArquivoExcel.Title = "Abrir Arquivo Excel";
             abrirArquivoExcel.Filter = "Arquivos Excel | *.xls;*.xlsx;";
-            if(abrirArquivoExcel.ShowDialog() == DialogResult.OK)
+            if (abrirArquivoExcel.ShowDialog() == DialogResult.OK)
             {
                 caminhoArquivoExcelRajadaTijolo = abrirArquivoExcel.FileName;
                 tbCaminhoArquivoExcelTijolo.Text = caminhoArquivoExcelRajadaTijolo;
@@ -283,7 +327,7 @@ namespace rajadas
 
         private void btSalvarConfiguracoes_Click(object sender, EventArgs e)
         {
-           
+
         }
 
         private void btApontaArquivoExcelRajadaTijolo_Click(object sender, EventArgs e)
@@ -292,12 +336,12 @@ namespace rajadas
 
         private void rbCopiarArquivoProcessadoRajadaTijolo_CheckedChanged(object sender, EventArgs e)
         {
-            
+
         }
 
         private void rbMoverArquivoProcessadoRajadaTijolo_CheckedChanged(object sender, EventArgs e)
         {
-           
+
         }
 
         private void btCaminhoRajadaDigital_Click(object sender, EventArgs e)
@@ -534,7 +578,7 @@ namespace rajadas
             else
             {
                 List<String> listaDeParametrosParaSalvar = new List<String>();
-                
+
                 this.parametroIntervaloRajadaDigital = tbIntervaloRajadaDigital.Text;
                 this.parametroFrequenciaRajadaDigital = cbFrequenciaRajadaDigital.SelectedItem.ToString();
                 this.statusLeituraRajadaDigital = cbStatusLeituraDigital.SelectedItem.ToString();
@@ -608,53 +652,115 @@ namespace rajadas
 
         private void btLerArquivoTijolo_Click(object sender, EventArgs e)
         {
+            btLerArquivoTijolo.Visible = false;
+
+            pbLeituraTijolo.Visible = true;
+
             Rajada rajada = new Rajada();
 
             List<Rajada> listaDeObjetosRajada = new List<Rajada>();
 
             Excel arquivoExcel = new Excel();
 
+            int quantidadeDeRegistrosProcessados = rajada.retornaQuantidadeRegistrosProcessados(caminhoArquivoTxtRajadaTijolo, caminhoRajadaProcessadaTijolo, "ARQBRSAGORD");
+
+            pbLeituraTijolo.Maximum = quantidadeDeRegistrosProcessados;
+
+            for (int i = 0; i < quantidadeDeRegistrosProcessados; i++)
+            {
+                pbLeituraTijolo.Value = i;
+                Thread.Sleep(5);
+            }
+            
             // ------------------------** Lê Rajada Tijolo e Insere no Excel ** -----------------------------//
             listaDeObjetosRajada = rajada.lerArquivoTxtRajadaTijolo(caminhoArquivoTxtRajadaTijolo, caminhoRajadaProcessadaTijolo, parametroCopiarOuMoverRajadaTijolo);
             arquivoExcel.inserirObjetoNaPlanilhaExcel(listaDeObjetosRajada, caminhoArquivoExcelRajadaTijolo);
             // ------------------------** Lê Rajada Tijolo e Insere no Excel ** -----------------------------//
-            
+
+            pbLeituraTijolo.Visible = false;
+            btLerArquivoTijolo.Visible = true;
+
             // -------------------------** Mensagem ao fim da leitura manual -----------------------------------//
-            MessageBox.Show("Processamento Concluído !!!", "Mensagem do sistema");
+            MessageBox.Show("Processamento Concluído !!!" + "\n" + "Total de Contas Processadas: " + quantidadeDeRegistrosProcessados, "Mensagem do sistema");
+
         }
 
         private void btLerArquivoDigital_Click(object sender, EventArgs e)
         {
+            btLerArquivoDigital.Visible = false;
+
+            pbLeituraDigital.Visible = true;
+
             Rajada rajada = new Rajada();
 
             List<Rajada> listaDeObjetosRajada = new List<Rajada>();
 
             Excel arquivoExcel = new Excel();
+
+            int quantidadeDeRegistrosProcessados = rajada.retornaQuantidadeRegistrosProcessados(caminhoArquivoTxtRajadaDigital, caminhoRajadaProcessadaDigital, "BRSCANDIGIT");
+
+            pbLeituraDigital.Maximum = quantidadeDeRegistrosProcessados;
+
+            for (int i = 0; i < quantidadeDeRegistrosProcessados; i++)
+            {
+                pbLeituraDigital.Value = i;
+                Thread.Sleep(5);
+            }
 
             // ------------------------** Lê Rajada Digital Mundo Velho e Insere no Excel ** -----------------------------//
             listaDeObjetosRajada = rajada.lerArquivoTxtRajadaDigital(caminhoArquivoTxtRajadaDigital, caminhoRajadaProcessadaDigital, parametroCopiarOuMoverRajadaDigital);
             arquivoExcel.inserirObjetoNaPlanilhaExcel(listaDeObjetosRajada, caminhoArquivoExcelRajadaDigital);
             // ------------------------** Lê Rajada Digital Mundo Velho e Insere no Excel ** -----------------------------//
 
+            pbLeituraDigital.Visible = false;
+            btLerArquivoDigital.Visible = true;
+
             // -------------------------** Mensagem ao fim da leitura manual -----------------------------------//
-            MessageBox.Show("Processamento Concluído !!!", "Mensagem do sistema");
+            MessageBox.Show("Processamento Concluído !!!" + "\n" + "Total de Contas Processadas: " + quantidadeDeRegistrosProcessados, "Mensagem do sistema");
         }
 
         private void btLerArquivoInvertida_Click(object sender, EventArgs e)
         {
+            btLerArquivoInvertida.Visible = false;
+
+            pbLeituraInvertida.Visible = true;
+
             Rajada rajada = new Rajada();
 
             List<Rajada> listaDeObjetosRajada = new List<Rajada>();
 
             Excel arquivoExcel = new Excel();
 
+            int quantidadeDeRegistrosProcessados = rajada.retornaQuantidadeRegistrosProcessados(caminhoArquivoTxtRajadaInvertida, caminhoRajadaProcessadaInvertida, "ARQBRSINVER");
+
+            pbLeituraInvertida.Maximum = quantidadeDeRegistrosProcessados;
+
+            for (int i = 0; i < quantidadeDeRegistrosProcessados; i++)
+            {
+                pbLeituraInvertida.Value = i;
+                Thread.Sleep(5);
+            }
+
             // ------------------------** Lê Rajada Invertida e Insere no Excel ** -----------------------------//
             listaDeObjetosRajada = rajada.lerArquivoTxtRajadaInvertida(caminhoArquivoTxtRajadaInvertida, caminhoRajadaProcessadaInvertida, parametroCopiarOuMoverRajadaInvertida);
             arquivoExcel.inserirObjetoNaPlanilhaExcel(listaDeObjetosRajada, caminhoArquivoExcelRajadaInvertida);
             // ------------------------** Lê Rajada Invertida e Insere no Excel ** -----------------------------//
 
+            pbLeituraInvertida.Visible = false;
+            btLerArquivoInvertida.Visible = true;
+
             // -------------------------** Mensagem ao fim da leitura manual -----------------------------------//
-            MessageBox.Show("Processamento Concluído !!!", "Mensagem do sistema");
+            MessageBox.Show("Processamento Concluído !!!" + "\n" + "Total de Contas Processadas: " + quantidadeDeRegistrosProcessados, "Mensagem do sistema");
         }
-    }
+
+        private void bwLerArquivoTijolo_DoWork(object sender, DoWorkEventArgs e)
+        {
+           
+        }
+
+        private void tmBarraProgressoTijolo_Tick(object sender, EventArgs e)
+        {
+
+        }
+    } 
 }

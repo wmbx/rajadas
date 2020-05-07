@@ -42,7 +42,11 @@
             this.tbCaminhoRajadaProcessadaTijolo = new System.Windows.Forms.TextBox();
             this.btCaminhoRajadaProcessadaTijolo = new System.Windows.Forms.Button();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.pbLeituraTijolo = new System.Windows.Forms.ProgressBar();
+            this.btLerArquivoTijolo = new System.Windows.Forms.Button();
             this.groupBox8 = new System.Windows.Forms.GroupBox();
+            this.cbStatusLeituraTijolo = new System.Windows.Forms.ComboBox();
+            this.lbStatusLeituraTijolo = new System.Windows.Forms.Label();
             this.cbFrequenciaRajadaTijolo = new System.Windows.Forms.ComboBox();
             this.label11 = new System.Windows.Forms.Label();
             this.tbIntervaloRajadaTijolo = new System.Windows.Forms.TextBox();
@@ -51,7 +55,11 @@
             this.rbCopiarArquivoProcessadoRajadaTijolo = new System.Windows.Forms.RadioButton();
             this.rbMoverArquivoProcessadoRajadaTijolo = new System.Windows.Forms.RadioButton();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
+            this.btLerArquivoDigital = new System.Windows.Forms.Button();
+            this.btSalvarArquivoDigital = new System.Windows.Forms.Button();
             this.groupBox9 = new System.Windows.Forms.GroupBox();
+            this.cbStatusLeituraDigital = new System.Windows.Forms.ComboBox();
+            this.lbStatusLeituraDigital = new System.Windows.Forms.Label();
             this.cbFrequenciaRajadaDigital = new System.Windows.Forms.ComboBox();
             this.label12 = new System.Windows.Forms.Label();
             this.tbIntervaloRajadaDigital = new System.Windows.Forms.TextBox();
@@ -69,7 +77,11 @@
             this.label5 = new System.Windows.Forms.Label();
             this.label7 = new System.Windows.Forms.Label();
             this.groupBox4 = new System.Windows.Forms.GroupBox();
+            this.btLerArquivoInvertida = new System.Windows.Forms.Button();
+            this.btSalvarArquivoInvertida = new System.Windows.Forms.Button();
             this.groupBox10 = new System.Windows.Forms.GroupBox();
+            this.cbStatusLeituraInvertida = new System.Windows.Forms.ComboBox();
+            this.label16 = new System.Windows.Forms.Label();
             this.cbFrequenciaRajadaInvertida = new System.Windows.Forms.ComboBox();
             this.label14 = new System.Windows.Forms.Label();
             this.tbIntervaloRajadaInvertida = new System.Windows.Forms.TextBox();
@@ -91,18 +103,9 @@
             this.tmRajadaDigital = new System.Windows.Forms.Timer(this.components);
             this.tmRajadaInvertida = new System.Windows.Forms.Timer(this.components);
             this.niBandeja = new System.Windows.Forms.NotifyIcon(this.components);
-            this.cbStatusLeituraTijolo = new System.Windows.Forms.ComboBox();
-            this.lbStatusLeituraTijolo = new System.Windows.Forms.Label();
             this.btSalvarArquivoTijolo = new System.Windows.Forms.Button();
-            this.btLerArquivoTijolo = new System.Windows.Forms.Button();
-            this.cbStatusLeituraDigital = new System.Windows.Forms.ComboBox();
-            this.lbStatusLeituraDigital = new System.Windows.Forms.Label();
-            this.btLerArquivoDigital = new System.Windows.Forms.Button();
-            this.btSalvarArquivoDigital = new System.Windows.Forms.Button();
-            this.cbStatusLeituraInvertida = new System.Windows.Forms.ComboBox();
-            this.label16 = new System.Windows.Forms.Label();
-            this.btLerArquivoInvertida = new System.Windows.Forms.Button();
-            this.btSalvarArquivoInvertida = new System.Windows.Forms.Button();
+            this.pbLeituraDigital = new System.Windows.Forms.ProgressBar();
+            this.pbLeituraInvertida = new System.Windows.Forms.ProgressBar();
             this.groupBox1.SuspendLayout();
             this.groupBox8.SuspendLayout();
             this.groupBox2.SuspendLayout();
@@ -203,6 +206,7 @@
             // 
             // groupBox1
             // 
+            this.groupBox1.Controls.Add(this.pbLeituraTijolo);
             this.groupBox1.Controls.Add(this.btLerArquivoTijolo);
             this.groupBox1.Controls.Add(this.groupBox8);
             this.groupBox1.Controls.Add(this.groupBox2);
@@ -222,6 +226,24 @@
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Rajada Tijolo";
             // 
+            // pbLeituraTijolo
+            // 
+            this.pbLeituraTijolo.Location = new System.Drawing.Point(539, 83);
+            this.pbLeituraTijolo.Name = "pbLeituraTijolo";
+            this.pbLeituraTijolo.Size = new System.Drawing.Size(159, 21);
+            this.pbLeituraTijolo.TabIndex = 15;
+            this.pbLeituraTijolo.Visible = false;
+            // 
+            // btLerArquivoTijolo
+            // 
+            this.btLerArquivoTijolo.Location = new System.Drawing.Point(539, 84);
+            this.btLerArquivoTijolo.Name = "btLerArquivoTijolo";
+            this.btLerArquivoTijolo.Size = new System.Drawing.Size(159, 21);
+            this.btLerArquivoTijolo.TabIndex = 1;
+            this.btLerArquivoTijolo.Text = "Ler Arquivo";
+            this.btLerArquivoTijolo.UseVisualStyleBackColor = true;
+            this.btLerArquivoTijolo.Click += new System.EventHandler(this.btLerArquivoTijolo_Click);
+            // 
             // groupBox8
             // 
             this.groupBox8.Controls.Add(this.cbStatusLeituraTijolo);
@@ -236,6 +258,28 @@
             this.groupBox8.TabIndex = 14;
             this.groupBox8.TabStop = false;
             this.groupBox8.Text = "Configuração da Leitura";
+            // 
+            // cbStatusLeituraTijolo
+            // 
+            this.cbStatusLeituraTijolo.DisplayMember = "Segundo";
+            this.cbStatusLeituraTijolo.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cbStatusLeituraTijolo.FormattingEnabled = true;
+            this.cbStatusLeituraTijolo.Items.AddRange(new object[] {
+            "Ativada",
+            "Desativada"});
+            this.cbStatusLeituraTijolo.Location = new System.Drawing.Point(9, 35);
+            this.cbStatusLeituraTijolo.Name = "cbStatusLeituraTijolo";
+            this.cbStatusLeituraTijolo.Size = new System.Drawing.Size(125, 21);
+            this.cbStatusLeituraTijolo.TabIndex = 8;
+            // 
+            // lbStatusLeituraTijolo
+            // 
+            this.lbStatusLeituraTijolo.AutoSize = true;
+            this.lbStatusLeituraTijolo.Location = new System.Drawing.Point(6, 20);
+            this.lbStatusLeituraTijolo.Name = "lbStatusLeituraTijolo";
+            this.lbStatusLeituraTijolo.Size = new System.Drawing.Size(94, 13);
+            this.lbStatusLeituraTijolo.TabIndex = 7;
+            this.lbStatusLeituraTijolo.Text = "Leitura automática";
             // 
             // cbFrequenciaRajadaTijolo
             // 
@@ -312,6 +356,7 @@
             // 
             // groupBox3
             // 
+            this.groupBox3.Controls.Add(this.pbLeituraDigital);
             this.groupBox3.Controls.Add(this.btLerArquivoDigital);
             this.groupBox3.Controls.Add(this.btSalvarArquivoDigital);
             this.groupBox3.Controls.Add(this.groupBox9);
@@ -332,6 +377,26 @@
             this.groupBox3.TabStop = false;
             this.groupBox3.Text = "Rajada Digital";
             // 
+            // btLerArquivoDigital
+            // 
+            this.btLerArquivoDigital.Location = new System.Drawing.Point(539, 82);
+            this.btLerArquivoDigital.Name = "btLerArquivoDigital";
+            this.btLerArquivoDigital.Size = new System.Drawing.Size(159, 21);
+            this.btLerArquivoDigital.TabIndex = 19;
+            this.btLerArquivoDigital.Text = "Ler Arquivo";
+            this.btLerArquivoDigital.UseVisualStyleBackColor = true;
+            this.btLerArquivoDigital.Click += new System.EventHandler(this.btLerArquivoDigital_Click);
+            // 
+            // btSalvarArquivoDigital
+            // 
+            this.btSalvarArquivoDigital.Location = new System.Drawing.Point(539, 108);
+            this.btSalvarArquivoDigital.Name = "btSalvarArquivoDigital";
+            this.btSalvarArquivoDigital.Size = new System.Drawing.Size(159, 21);
+            this.btSalvarArquivoDigital.TabIndex = 18;
+            this.btSalvarArquivoDigital.Text = "Salvar Configurações";
+            this.btSalvarArquivoDigital.UseVisualStyleBackColor = true;
+            this.btSalvarArquivoDigital.Click += new System.EventHandler(this.btSalvarArquivoDigital_Click);
+            // 
             // groupBox9
             // 
             this.groupBox9.Controls.Add(this.cbStatusLeituraDigital);
@@ -346,6 +411,28 @@
             this.groupBox9.TabIndex = 15;
             this.groupBox9.TabStop = false;
             this.groupBox9.Text = "Configuração da Leitura";
+            // 
+            // cbStatusLeituraDigital
+            // 
+            this.cbStatusLeituraDigital.DisplayMember = "Segundo";
+            this.cbStatusLeituraDigital.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cbStatusLeituraDigital.FormattingEnabled = true;
+            this.cbStatusLeituraDigital.Items.AddRange(new object[] {
+            "Ativada",
+            "Desativada"});
+            this.cbStatusLeituraDigital.Location = new System.Drawing.Point(9, 35);
+            this.cbStatusLeituraDigital.Name = "cbStatusLeituraDigital";
+            this.cbStatusLeituraDigital.Size = new System.Drawing.Size(125, 21);
+            this.cbStatusLeituraDigital.TabIndex = 10;
+            // 
+            // lbStatusLeituraDigital
+            // 
+            this.lbStatusLeituraDigital.AutoSize = true;
+            this.lbStatusLeituraDigital.Location = new System.Drawing.Point(6, 20);
+            this.lbStatusLeituraDigital.Name = "lbStatusLeituraDigital";
+            this.lbStatusLeituraDigital.Size = new System.Drawing.Size(94, 13);
+            this.lbStatusLeituraDigital.TabIndex = 9;
+            this.lbStatusLeituraDigital.Text = "Leitura automática";
             // 
             // cbFrequenciaRajadaDigital
             // 
@@ -497,6 +584,7 @@
             // 
             // groupBox4
             // 
+            this.groupBox4.Controls.Add(this.pbLeituraInvertida);
             this.groupBox4.Controls.Add(this.btLerArquivoInvertida);
             this.groupBox4.Controls.Add(this.btSalvarArquivoInvertida);
             this.groupBox4.Controls.Add(this.groupBox10);
@@ -518,6 +606,26 @@
             this.groupBox4.Text = "Rajada Invertida";
             this.groupBox4.Enter += new System.EventHandler(this.groupBox4_Enter);
             // 
+            // btLerArquivoInvertida
+            // 
+            this.btLerArquivoInvertida.Location = new System.Drawing.Point(539, 81);
+            this.btLerArquivoInvertida.Name = "btLerArquivoInvertida";
+            this.btLerArquivoInvertida.Size = new System.Drawing.Size(159, 21);
+            this.btLerArquivoInvertida.TabIndex = 21;
+            this.btLerArquivoInvertida.Text = "Ler Arquivo";
+            this.btLerArquivoInvertida.UseVisualStyleBackColor = true;
+            this.btLerArquivoInvertida.Click += new System.EventHandler(this.btLerArquivoInvertida_Click);
+            // 
+            // btSalvarArquivoInvertida
+            // 
+            this.btSalvarArquivoInvertida.Location = new System.Drawing.Point(539, 107);
+            this.btSalvarArquivoInvertida.Name = "btSalvarArquivoInvertida";
+            this.btSalvarArquivoInvertida.Size = new System.Drawing.Size(159, 21);
+            this.btSalvarArquivoInvertida.TabIndex = 20;
+            this.btSalvarArquivoInvertida.Text = "Salvar Configurações";
+            this.btSalvarArquivoInvertida.UseVisualStyleBackColor = true;
+            this.btSalvarArquivoInvertida.Click += new System.EventHandler(this.btSalvarArquivoInvertida_Click);
+            // 
             // groupBox10
             // 
             this.groupBox10.Controls.Add(this.cbStatusLeituraInvertida);
@@ -532,6 +640,28 @@
             this.groupBox10.TabIndex = 16;
             this.groupBox10.TabStop = false;
             this.groupBox10.Text = "Configuração da Leitura";
+            // 
+            // cbStatusLeituraInvertida
+            // 
+            this.cbStatusLeituraInvertida.DisplayMember = "Segundo";
+            this.cbStatusLeituraInvertida.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cbStatusLeituraInvertida.FormattingEnabled = true;
+            this.cbStatusLeituraInvertida.Items.AddRange(new object[] {
+            "Ativada",
+            "Desativada"});
+            this.cbStatusLeituraInvertida.Location = new System.Drawing.Point(9, 35);
+            this.cbStatusLeituraInvertida.Name = "cbStatusLeituraInvertida";
+            this.cbStatusLeituraInvertida.Size = new System.Drawing.Size(125, 21);
+            this.cbStatusLeituraInvertida.TabIndex = 12;
+            // 
+            // label16
+            // 
+            this.label16.AutoSize = true;
+            this.label16.Location = new System.Drawing.Point(6, 20);
+            this.label16.Name = "label16";
+            this.label16.Size = new System.Drawing.Size(94, 13);
+            this.label16.TabIndex = 11;
+            this.label16.Text = "Leitura automática";
             // 
             // cbFrequenciaRajadaInvertida
             // 
@@ -716,28 +846,6 @@
             this.niBandeja.Text = "BotFlow Rajadas";
             this.niBandeja.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.niBandeja_MouseDoubleClick);
             // 
-            // cbStatusLeituraTijolo
-            // 
-            this.cbStatusLeituraTijolo.DisplayMember = "Segundo";
-            this.cbStatusLeituraTijolo.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cbStatusLeituraTijolo.FormattingEnabled = true;
-            this.cbStatusLeituraTijolo.Items.AddRange(new object[] {
-            "Ativada",
-            "Desativada"});
-            this.cbStatusLeituraTijolo.Location = new System.Drawing.Point(9, 35);
-            this.cbStatusLeituraTijolo.Name = "cbStatusLeituraTijolo";
-            this.cbStatusLeituraTijolo.Size = new System.Drawing.Size(125, 21);
-            this.cbStatusLeituraTijolo.TabIndex = 8;
-            // 
-            // lbStatusLeituraTijolo
-            // 
-            this.lbStatusLeituraTijolo.AutoSize = true;
-            this.lbStatusLeituraTijolo.Location = new System.Drawing.Point(6, 20);
-            this.lbStatusLeituraTijolo.Name = "lbStatusLeituraTijolo";
-            this.lbStatusLeituraTijolo.Size = new System.Drawing.Size(83, 13);
-            this.lbStatusLeituraTijolo.TabIndex = 7;
-            this.lbStatusLeituraTijolo.Text = "Status da leitura";
-            // 
             // btSalvarArquivoTijolo
             // 
             this.btSalvarArquivoTijolo.Location = new System.Drawing.Point(549, 134);
@@ -748,99 +856,21 @@
             this.btSalvarArquivoTijolo.UseVisualStyleBackColor = true;
             this.btSalvarArquivoTijolo.Click += new System.EventHandler(this.btSalvarArquivoTijolo_Click);
             // 
-            // btLerArquivoTijolo
+            // pbLeituraDigital
             // 
-            this.btLerArquivoTijolo.Location = new System.Drawing.Point(539, 84);
-            this.btLerArquivoTijolo.Name = "btLerArquivoTijolo";
-            this.btLerArquivoTijolo.Size = new System.Drawing.Size(159, 21);
-            this.btLerArquivoTijolo.TabIndex = 1;
-            this.btLerArquivoTijolo.Text = "Ler Arquivo";
-            this.btLerArquivoTijolo.UseVisualStyleBackColor = true;
-            this.btLerArquivoTijolo.Click += new System.EventHandler(this.btLerArquivoTijolo_Click);
+            this.pbLeituraDigital.Location = new System.Drawing.Point(539, 82);
+            this.pbLeituraDigital.Name = "pbLeituraDigital";
+            this.pbLeituraDigital.Size = new System.Drawing.Size(159, 21);
+            this.pbLeituraDigital.TabIndex = 20;
+            this.pbLeituraDigital.Visible = false;
             // 
-            // cbStatusLeituraDigital
+            // pbLeituraInvertida
             // 
-            this.cbStatusLeituraDigital.DisplayMember = "Segundo";
-            this.cbStatusLeituraDigital.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cbStatusLeituraDigital.FormattingEnabled = true;
-            this.cbStatusLeituraDigital.Items.AddRange(new object[] {
-            "Ativada",
-            "Desativada"});
-            this.cbStatusLeituraDigital.Location = new System.Drawing.Point(9, 35);
-            this.cbStatusLeituraDigital.Name = "cbStatusLeituraDigital";
-            this.cbStatusLeituraDigital.Size = new System.Drawing.Size(125, 21);
-            this.cbStatusLeituraDigital.TabIndex = 10;
-            // 
-            // lbStatusLeituraDigital
-            // 
-            this.lbStatusLeituraDigital.AutoSize = true;
-            this.lbStatusLeituraDigital.Location = new System.Drawing.Point(6, 20);
-            this.lbStatusLeituraDigital.Name = "lbStatusLeituraDigital";
-            this.lbStatusLeituraDigital.Size = new System.Drawing.Size(83, 13);
-            this.lbStatusLeituraDigital.TabIndex = 9;
-            this.lbStatusLeituraDigital.Text = "Status da leitura";
-            // 
-            // btLerArquivoDigital
-            // 
-            this.btLerArquivoDigital.Location = new System.Drawing.Point(539, 82);
-            this.btLerArquivoDigital.Name = "btLerArquivoDigital";
-            this.btLerArquivoDigital.Size = new System.Drawing.Size(159, 21);
-            this.btLerArquivoDigital.TabIndex = 19;
-            this.btLerArquivoDigital.Text = "Ler Arquivo";
-            this.btLerArquivoDigital.UseVisualStyleBackColor = true;
-            this.btLerArquivoDigital.Click += new System.EventHandler(this.btLerArquivoDigital_Click);
-            // 
-            // btSalvarArquivoDigital
-            // 
-            this.btSalvarArquivoDigital.Location = new System.Drawing.Point(539, 108);
-            this.btSalvarArquivoDigital.Name = "btSalvarArquivoDigital";
-            this.btSalvarArquivoDigital.Size = new System.Drawing.Size(159, 21);
-            this.btSalvarArquivoDigital.TabIndex = 18;
-            this.btSalvarArquivoDigital.Text = "Salvar Configurações";
-            this.btSalvarArquivoDigital.UseVisualStyleBackColor = true;
-            this.btSalvarArquivoDigital.Click += new System.EventHandler(this.btSalvarArquivoDigital_Click);
-            // 
-            // cbStatusLeituraInvertida
-            // 
-            this.cbStatusLeituraInvertida.DisplayMember = "Segundo";
-            this.cbStatusLeituraInvertida.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cbStatusLeituraInvertida.FormattingEnabled = true;
-            this.cbStatusLeituraInvertida.Items.AddRange(new object[] {
-            "Ativada",
-            "Desativada"});
-            this.cbStatusLeituraInvertida.Location = new System.Drawing.Point(9, 35);
-            this.cbStatusLeituraInvertida.Name = "cbStatusLeituraInvertida";
-            this.cbStatusLeituraInvertida.Size = new System.Drawing.Size(125, 21);
-            this.cbStatusLeituraInvertida.TabIndex = 12;
-            // 
-            // label16
-            // 
-            this.label16.AutoSize = true;
-            this.label16.Location = new System.Drawing.Point(6, 20);
-            this.label16.Name = "label16";
-            this.label16.Size = new System.Drawing.Size(83, 13);
-            this.label16.TabIndex = 11;
-            this.label16.Text = "Status da leitura";
-            // 
-            // btLerArquivoInvertida
-            // 
-            this.btLerArquivoInvertida.Location = new System.Drawing.Point(539, 81);
-            this.btLerArquivoInvertida.Name = "btLerArquivoInvertida";
-            this.btLerArquivoInvertida.Size = new System.Drawing.Size(159, 21);
-            this.btLerArquivoInvertida.TabIndex = 21;
-            this.btLerArquivoInvertida.Text = "Ler Arquivo";
-            this.btLerArquivoInvertida.UseVisualStyleBackColor = true;
-            this.btLerArquivoInvertida.Click += new System.EventHandler(this.btLerArquivoInvertida_Click);
-            // 
-            // btSalvarArquivoInvertida
-            // 
-            this.btSalvarArquivoInvertida.Location = new System.Drawing.Point(539, 107);
-            this.btSalvarArquivoInvertida.Name = "btSalvarArquivoInvertida";
-            this.btSalvarArquivoInvertida.Size = new System.Drawing.Size(159, 21);
-            this.btSalvarArquivoInvertida.TabIndex = 20;
-            this.btSalvarArquivoInvertida.Text = "Salvar Configurações";
-            this.btSalvarArquivoInvertida.UseVisualStyleBackColor = true;
-            this.btSalvarArquivoInvertida.Click += new System.EventHandler(this.btSalvarArquivoInvertida_Click);
+            this.pbLeituraInvertida.Location = new System.Drawing.Point(539, 80);
+            this.pbLeituraInvertida.Name = "pbLeituraInvertida";
+            this.pbLeituraInvertida.Size = new System.Drawing.Size(159, 21);
+            this.pbLeituraInvertida.TabIndex = 22;
+            this.pbLeituraInvertida.Visible = false;
             // 
             // Form1
             // 
@@ -958,6 +988,9 @@
         private System.Windows.Forms.Button btSalvarArquivoInvertida;
         private System.Windows.Forms.ComboBox cbStatusLeituraInvertida;
         private System.Windows.Forms.Label label16;
+        private System.Windows.Forms.ProgressBar pbLeituraTijolo;
+        private System.Windows.Forms.ProgressBar pbLeituraDigital;
+        private System.Windows.Forms.ProgressBar pbLeituraInvertida;
     }
 }
 
