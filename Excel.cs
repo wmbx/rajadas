@@ -10,7 +10,7 @@ namespace rajadas
 {
     class Excel
     {        
-        public Boolean inserirObjetoNaPlanilhaExcel(List<Rajada> listaDeObjetosRajadas, String caminhoArquivoExcel)
+        public Boolean inserirObjetoNaPlanilhaExcel(Rajada objetoRajada, String caminhoArquivoExcel)
         {
             try
             {
@@ -19,16 +19,11 @@ namespace rajadas
 
                 int contadorDeLinhas = planilhaExcel.RowsUsed().Count() + 1;
 
-                foreach (var objetoRajada in listaDeObjetosRajadas)
-                {
-                    planilhaExcel.Cell("A" + contadorDeLinhas).SetValue(objetoRajada.nomeTitular);
-                    planilhaExcel.Cell("B" + contadorDeLinhas).SetValue(objetoRajada.cpfTitular);
-                    planilhaExcel.Cell("C" + contadorDeLinhas).SetValue(objetoRajada.conta);
-                    planilhaExcel.Cell("D" + contadorDeLinhas).SetValue(objetoRajada.dataLiberacaoDocumento);
-                    planilhaExcel.Cell("E" + contadorDeLinhas).SetValue(objetoRajada.horaLiberacaoDocumento);
-
-                    contadorDeLinhas++;
-                }
+                planilhaExcel.Cell("A" + contadorDeLinhas).SetValue(objetoRajada.nomeTitular);
+                planilhaExcel.Cell("B" + contadorDeLinhas).SetValue(objetoRajada.cpfTitular);
+                planilhaExcel.Cell("C" + contadorDeLinhas).SetValue(objetoRajada.conta);
+                planilhaExcel.Cell("D" + contadorDeLinhas).SetValue(objetoRajada.dataLiberacaoDocumento);
+                planilhaExcel.Cell("E" + contadorDeLinhas).SetValue(objetoRajada.horaLiberacaoDocumento);
 
                 arquivoExcel.Save();
                 arquivoExcel.Dispose();
@@ -41,5 +36,20 @@ namespace rajadas
             return true;
         }
 
+        public Boolean validarSePlanilhaAberta(String caminhoArquivoExcel)
+        {
+            Boolean retorno;
+            try
+            {
+                var arquivoExcel = new XLWorkbook(caminhoArquivoExcel);
+                retorno = true;
+            }
+
+            catch (Exception e)
+            {
+                retorno = false;
+            }
+            return retorno;
+        }
     }
 }

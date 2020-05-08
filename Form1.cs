@@ -412,16 +412,33 @@ namespace rajadas
         {
             try
             {
-                Rajada rajada = new Rajada();
-
-                List<Rajada> listaDeObjetosRajada = new List<Rajada>();
-
                 Excel arquivoExcel = new Excel();
 
-                // ------------------------** Lê Rajada Tijolo e Insere no Excel ** -----------------------------//
-                listaDeObjetosRajada = rajada.lerArquivoTxtRajadaTijolo(caminhoArquivoTxtRajadaTijolo, caminhoRajadaProcessadaTijolo, parametroCopiarOuMoverRajadaTijolo);
-                arquivoExcel.inserirObjetoNaPlanilhaExcel(listaDeObjetosRajada, caminhoArquivoExcelRajadaTijolo);
-                // ------------------------** Lê Rajada Tijolo e Insere no Excel ** -----------------------------//
+                if (arquivoExcel.validarSePlanilhaAberta(caminhoArquivoExcelRajadaTijolo).Equals(true))
+                {
+                    btLerArquivoTijolo.Visible = false;
+
+                    pbLeituraTijolo.Visible = true;
+
+                    Rajada rajada = new Rajada();
+
+                    List<Rajada> listaDeObjetosRajada = new List<Rajada>();
+
+                    // ------------------------** Lê Rajada Tijolo e Insere no Excel ** -----------------------------//
+                    listaDeObjetosRajada = rajada.lerArquivoTxtRajadaTijolo(caminhoArquivoTxtRajadaTijolo, caminhoRajadaProcessadaTijolo, parametroCopiarOuMoverRajadaTijolo);
+
+                    pbLeituraTijolo.Maximum = listaDeObjetosRajada.Count();
+
+                    for (int i = 0; i < listaDeObjetosRajada.Count(); i++)
+                    {
+                        arquivoExcel.inserirObjetoNaPlanilhaExcel(listaDeObjetosRajada[i], caminhoArquivoExcelRajadaTijolo);
+                        pbLeituraTijolo.Value = i;
+                    }
+                    // ------------------------** Lê Rajada Tijolo e Insere no Excel ** -----------------------------//
+
+                    pbLeituraTijolo.Visible = false;
+                    btLerArquivoTijolo.Visible = true;
+                }
             }
 
             catch (Exception)
@@ -435,18 +452,36 @@ namespace rajadas
         {
             try
             {
-                Rajada rajada = new Rajada();
-
-                List<Rajada> listaDeObjetosRajada = new List<Rajada>();
-
                 Excel arquivoExcel = new Excel();
 
-                // ------------------------** Lê Rajada Digital Mundo Velho e Insere no Excel ** -----------------------------//
-                listaDeObjetosRajada = rajada.lerArquivoTxtRajadaDigital(caminhoArquivoTxtRajadaDigital, caminhoRajadaProcessadaDigital, parametroCopiarOuMoverRajadaDigital);
-                arquivoExcel.inserirObjetoNaPlanilhaExcel(listaDeObjetosRajada, caminhoArquivoExcelRajadaDigital);
+                // -- ** Verifica se a planilha está fechada antes de iniciar o processamento dos arquivos ** ---- //
+                if (arquivoExcel.validarSePlanilhaAberta(caminhoArquivoExcelRajadaDigital).Equals(true))
+                {
+                    btLerArquivoDigital.Visible = false;
+
+                    pbLeituraDigital.Visible = true;
+
+                    Rajada rajada = new Rajada();
+
+                    List<Rajada> listaDeObjetosRajada = new List<Rajada>();
+
+                    // ------------------------** Lê Rajada Digital Mundo Velho e Insere no Excel ** -----------------------------//
+                    listaDeObjetosRajada = rajada.lerArquivoTxtRajadaDigital(caminhoArquivoTxtRajadaDigital, caminhoRajadaProcessadaDigital, parametroCopiarOuMoverRajadaDigital);
+
+                    pbLeituraDigital.Maximum = listaDeObjetosRajada.Count();
+
+                    for (int i = 0; i < listaDeObjetosRajada.Count(); i++)
+                    {
+                        arquivoExcel.inserirObjetoNaPlanilhaExcel(listaDeObjetosRajada[i], caminhoArquivoExcelRajadaDigital);
+                        pbLeituraDigital.Value = i;
+                    }
+                    // ------------------------** Lê Rajada Digital Mundo Velho e Insere no Excel ** -----------------------------//
+
+                    pbLeituraDigital.Visible = false;
+                    btLerArquivoDigital.Visible = true;
+                }
                 // ------------------------** Lê Rajada Digital Mundo Velho e Insere no Excel ** -----------------------------//
             }
-
             catch (Exception)
             {
                 MessageBox.Show("O Arquivo 'Parametros.xml' não foi localizado na pasta do sistema, o sistema será encerrado !");
@@ -458,15 +493,34 @@ namespace rajadas
         {
             try
             {
-                Rajada rajada = new Rajada();
-
-                List<Rajada> listaDeObjetosRajada = new List<Rajada>();
-
                 Excel arquivoExcel = new Excel();
 
-                // ------------------------** Lê Rajada Invertida e Insere no Excel ** -----------------------------//
-                listaDeObjetosRajada = rajada.lerArquivoTxtRajadaInvertida(caminhoArquivoTxtRajadaInvertida, caminhoRajadaProcessadaInvertida, parametroCopiarOuMoverRajadaInvertida);
-                arquivoExcel.inserirObjetoNaPlanilhaExcel(listaDeObjetosRajada, caminhoArquivoExcelRajadaInvertida);
+                // -- ** Verifica se a planilha está fechada antes de iniciar o processamento dos arquivos ** ---- //
+                if (arquivoExcel.validarSePlanilhaAberta(caminhoArquivoExcelRajadaInvertida).Equals(true))
+                {
+                    btLerArquivoInvertida.Visible = false;
+
+                    pbLeituraInvertida.Visible = true;
+
+                    Rajada rajada = new Rajada();
+
+                    List<Rajada> listaDeObjetosRajada = new List<Rajada>();
+
+                    // ------------------------** Lê Rajada Invertida e Insere no Excel ** -----------------------------//
+                    listaDeObjetosRajada = rajada.lerArquivoTxtRajadaInvertida(caminhoArquivoTxtRajadaInvertida, caminhoRajadaProcessadaInvertida, parametroCopiarOuMoverRajadaInvertida);
+
+                    pbLeituraInvertida.Maximum = listaDeObjetosRajada.Count();
+
+                    for (int i = 0; i < listaDeObjetosRajada.Count(); i++)
+                    {
+                        arquivoExcel.inserirObjetoNaPlanilhaExcel(listaDeObjetosRajada[i], caminhoArquivoExcelRajadaInvertida);
+                        pbLeituraInvertida.Value = i;
+                    }
+                    // ------------------------** Lê Rajada Invertida e Insere no Excel ** -----------------------------//
+
+                    pbLeituraInvertida.Visible = false;
+                    btLerArquivoInvertida.Visible = true;
+                }
                 // ------------------------** Lê Rajada Invertida e Insere no Excel ** -----------------------------//
             }
 
@@ -652,105 +706,122 @@ namespace rajadas
 
         private void btLerArquivoTijolo_Click(object sender, EventArgs e)
         {
-            btLerArquivoTijolo.Visible = false;
-
-            pbLeituraTijolo.Visible = true;
-
-            Rajada rajada = new Rajada();
-
-            List<Rajada> listaDeObjetosRajada = new List<Rajada>();
-
             Excel arquivoExcel = new Excel();
 
-            int quantidadeDeRegistrosProcessados = rajada.retornaQuantidadeRegistrosProcessados(caminhoArquivoTxtRajadaTijolo, caminhoRajadaProcessadaTijolo, "ARQBRSAGORD");
-
-            pbLeituraTijolo.Maximum = quantidadeDeRegistrosProcessados;
-
-            for (int i = 0; i < quantidadeDeRegistrosProcessados; i++)
+            if (arquivoExcel.validarSePlanilhaAberta(caminhoArquivoExcelRajadaTijolo).Equals(true))
             {
-                pbLeituraTijolo.Value = i;
-                Thread.Sleep(5);
+                btLerArquivoTijolo.Visible = false;
+
+                pbLeituraTijolo.Visible = true;
+
+                Rajada rajada = new Rajada();
+
+                List<Rajada> listaDeObjetosRajada = new List<Rajada>();
+
+                // ------------------------** Lê Rajada Tijolo e Insere no Excel ** -----------------------------//
+                listaDeObjetosRajada = rajada.lerArquivoTxtRajadaTijolo(caminhoArquivoTxtRajadaTijolo, caminhoRajadaProcessadaTijolo, parametroCopiarOuMoverRajadaTijolo);
+
+                pbLeituraTijolo.Maximum = listaDeObjetosRajada.Count();
+
+                for (int i = 0; i < listaDeObjetosRajada.Count(); i++)
+                {
+                    arquivoExcel.inserirObjetoNaPlanilhaExcel(listaDeObjetosRajada[i], caminhoArquivoExcelRajadaTijolo);
+                    pbLeituraTijolo.Value = i;
+                }
+                // ------------------------** Lê Rajada Tijolo e Insere no Excel ** -----------------------------//
+
+                pbLeituraTijolo.Visible = false;
+                btLerArquivoTijolo.Visible = true;
+
+                // -------------------------** Mensagem ao fim da leitura manual -----------------------------------//
+                MessageBox.Show("Processamento Concluído !!!" + "\n" + "Total de Contas Processadas: " + listaDeObjetosRajada.Count(), "Mensagem do sistema");
+
             }
+            else 
+            {
+                MessageBox.Show("Erro: Não foi possível acessar a planilha " + caminhoArquivoExcelRajadaTijolo + "\n Verifique se ela está sendo utilizada por outro programa !");
+            }
+
             
-            // ------------------------** Lê Rajada Tijolo e Insere no Excel ** -----------------------------//
-            listaDeObjetosRajada = rajada.lerArquivoTxtRajadaTijolo(caminhoArquivoTxtRajadaTijolo, caminhoRajadaProcessadaTijolo, parametroCopiarOuMoverRajadaTijolo);
-            arquivoExcel.inserirObjetoNaPlanilhaExcel(listaDeObjetosRajada, caminhoArquivoExcelRajadaTijolo);
-            // ------------------------** Lê Rajada Tijolo e Insere no Excel ** -----------------------------//
-
-            pbLeituraTijolo.Visible = false;
-            btLerArquivoTijolo.Visible = true;
-
-            // -------------------------** Mensagem ao fim da leitura manual -----------------------------------//
-            MessageBox.Show("Processamento Concluído !!!" + "\n" + "Total de Contas Processadas: " + quantidadeDeRegistrosProcessados, "Mensagem do sistema");
-
         }
 
         private void btLerArquivoDigital_Click(object sender, EventArgs e)
         {
-            btLerArquivoDigital.Visible = false;
-
-            pbLeituraDigital.Visible = true;
-
-            Rajada rajada = new Rajada();
-
-            List<Rajada> listaDeObjetosRajada = new List<Rajada>();
-
             Excel arquivoExcel = new Excel();
 
-            int quantidadeDeRegistrosProcessados = rajada.retornaQuantidadeRegistrosProcessados(caminhoArquivoTxtRajadaDigital, caminhoRajadaProcessadaDigital, "BRSCANDIGIT");
-
-            pbLeituraDigital.Maximum = quantidadeDeRegistrosProcessados;
-
-            for (int i = 0; i < quantidadeDeRegistrosProcessados; i++)
+            // -- ** Verifica se a planilha está fechada antes de iniciar o processamento dos arquivos ** ---- //
+            if (arquivoExcel.validarSePlanilhaAberta(caminhoArquivoExcelRajadaDigital).Equals(true))
             {
-                pbLeituraDigital.Value = i;
-                Thread.Sleep(5);
+                btLerArquivoDigital.Visible = false;
+
+                pbLeituraDigital.Visible = true;
+
+                Rajada rajada = new Rajada();
+
+                List<Rajada> listaDeObjetosRajada = new List<Rajada>();
+
+                // ------------------------** Lê Rajada Digital Mundo Velho e Insere no Excel ** -----------------------------//
+                listaDeObjetosRajada = rajada.lerArquivoTxtRajadaDigital(caminhoArquivoTxtRajadaDigital, caminhoRajadaProcessadaDigital, parametroCopiarOuMoverRajadaDigital);
+
+                pbLeituraDigital.Maximum = listaDeObjetosRajada.Count();
+
+                for (int i = 0; i < listaDeObjetosRajada.Count(); i++)
+                {
+                    arquivoExcel.inserirObjetoNaPlanilhaExcel(listaDeObjetosRajada[i], caminhoArquivoExcelRajadaDigital);
+                    pbLeituraDigital.Value = i;
+                }
+                // ------------------------** Lê Rajada Digital Mundo Velho e Insere no Excel ** -----------------------------//
+
+                pbLeituraDigital.Visible = false;
+                btLerArquivoDigital.Visible = true;
+
+                // -------------------------** Mensagem ao fim da leitura manual -----------------------------------//
+                MessageBox.Show("Processamento Concluído !!!" + "\n" + "Total de Contas Processadas: " + listaDeObjetosRajada.Count(), "Mensagem do sistema");
             }
-
-            // ------------------------** Lê Rajada Digital Mundo Velho e Insere no Excel ** -----------------------------//
-            listaDeObjetosRajada = rajada.lerArquivoTxtRajadaDigital(caminhoArquivoTxtRajadaDigital, caminhoRajadaProcessadaDigital, parametroCopiarOuMoverRajadaDigital);
-            arquivoExcel.inserirObjetoNaPlanilhaExcel(listaDeObjetosRajada, caminhoArquivoExcelRajadaDigital);
-            // ------------------------** Lê Rajada Digital Mundo Velho e Insere no Excel ** -----------------------------//
-
-            pbLeituraDigital.Visible = false;
-            btLerArquivoDigital.Visible = true;
-
-            // -------------------------** Mensagem ao fim da leitura manual -----------------------------------//
-            MessageBox.Show("Processamento Concluído !!!" + "\n" + "Total de Contas Processadas: " + quantidadeDeRegistrosProcessados, "Mensagem do sistema");
+            else
+            {
+                MessageBox.Show("Erro: Não foi possível acessar a planilha " + caminhoArquivoExcelRajadaDigital + "\n Verifique se ela está sendo utilizada por outro programa !");
+            }
         }
 
         private void btLerArquivoInvertida_Click(object sender, EventArgs e)
         {
-            btLerArquivoInvertida.Visible = false;
-
-            pbLeituraInvertida.Visible = true;
-
-            Rajada rajada = new Rajada();
-
-            List<Rajada> listaDeObjetosRajada = new List<Rajada>();
-
             Excel arquivoExcel = new Excel();
 
-            int quantidadeDeRegistrosProcessados = rajada.retornaQuantidadeRegistrosProcessados(caminhoArquivoTxtRajadaInvertida, caminhoRajadaProcessadaInvertida, "ARQBRSINVER");
-
-            pbLeituraInvertida.Maximum = quantidadeDeRegistrosProcessados;
-
-            for (int i = 0; i < quantidadeDeRegistrosProcessados; i++)
+            // -- ** Verifica se a planilha está fechada antes de iniciar o processamento dos arquivos ** ---- //
+            if (arquivoExcel.validarSePlanilhaAberta(caminhoArquivoExcelRajadaInvertida).Equals(true))
             {
-                pbLeituraInvertida.Value = i;
-                Thread.Sleep(5);
+                btLerArquivoInvertida.Visible = false;
+
+                pbLeituraInvertida.Visible = true;
+
+                Rajada rajada = new Rajada();
+
+                List<Rajada> listaDeObjetosRajada = new List<Rajada>();              
+
+                // ------------------------** Lê Rajada Invertida e Insere no Excel ** -----------------------------//
+                listaDeObjetosRajada = rajada.lerArquivoTxtRajadaInvertida(caminhoArquivoTxtRajadaInvertida, caminhoRajadaProcessadaInvertida, parametroCopiarOuMoverRajadaInvertida);
+
+                pbLeituraInvertida.Maximum = listaDeObjetosRajada.Count();
+
+                for (int i = 0; i < listaDeObjetosRajada.Count(); i++)
+                {
+                    arquivoExcel.inserirObjetoNaPlanilhaExcel(listaDeObjetosRajada[i], caminhoArquivoExcelRajadaInvertida);
+                    pbLeituraInvertida.Value = i;
+                }
+                // ------------------------** Lê Rajada Invertida e Insere no Excel ** -----------------------------//
+
+                pbLeituraInvertida.Visible = false;
+                btLerArquivoInvertida.Visible = true;
+
+                // -------------------------** Mensagem ao fim da leitura manual -----------------------------------//
+                MessageBox.Show("Processamento Concluído !!!" + "\n" + "Total de Contas Processadas: " + listaDeObjetosRajada.Count(), "Mensagem do sistema");
+
             }
-
-            // ------------------------** Lê Rajada Invertida e Insere no Excel ** -----------------------------//
-            listaDeObjetosRajada = rajada.lerArquivoTxtRajadaInvertida(caminhoArquivoTxtRajadaInvertida, caminhoRajadaProcessadaInvertida, parametroCopiarOuMoverRajadaInvertida);
-            arquivoExcel.inserirObjetoNaPlanilhaExcel(listaDeObjetosRajada, caminhoArquivoExcelRajadaInvertida);
-            // ------------------------** Lê Rajada Invertida e Insere no Excel ** -----------------------------//
-
-            pbLeituraInvertida.Visible = false;
-            btLerArquivoInvertida.Visible = true;
-
-            // -------------------------** Mensagem ao fim da leitura manual -----------------------------------//
-            MessageBox.Show("Processamento Concluído !!!" + "\n" + "Total de Contas Processadas: " + quantidadeDeRegistrosProcessados, "Mensagem do sistema");
+            else
+            {
+                MessageBox.Show("Erro: Não foi possível acessar a planilha " + caminhoArquivoExcelRajadaInvertida + "\n Verifique se ela está sendo utilizada por outro programa !");
+            }
         }
 
         private void bwLerArquivoTijolo_DoWork(object sender, DoWorkEventArgs e)

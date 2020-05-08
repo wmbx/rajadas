@@ -183,6 +183,10 @@ namespace rajadas
                         }
                         else
                         {
+                            // ----------- ** Copia o arquivo para o diretório de rajada processada antes de iniciar a leitura ** -----------//
+                            File.Copy(arquivoTxtRajada, diretorioRajadaProcessada);
+                            // ----------- ** Copia o arquivo para o diretório de rajada processada antes de iniciar a leitura ** -----------//
+
                             string[] arquivoTXT = File.ReadAllLines(arquivoTxtRajada);
                             foreach (var linha in arquivoTXT)
                             {
@@ -318,14 +322,12 @@ namespace rajadas
 
                                 }
                             }
+                            // -- ** Exclui o arquivo do diretório de orgigem caso o sistema esteja parametrizado para isso -- ** //
                             if (parametroCopiarOuMover == "Mover Arquivo Processado")
                             {
-                                Directory.Move(arquivoTxtRajada, diretorioRajadaProcessada);
+                                File.Delete(arquivoTxtRajada);
                             }
-                            else
-                            {
-                                File.Copy(arquivoTxtRajada, diretorioRajadaProcessada);
-                            }
+                            // -- ** Exclui o arquivo do diretório de orgigem caso o sistema esteja parametrizado para isso -- ** //
                         }
                     }
                 }
@@ -386,6 +388,10 @@ namespace rajadas
                     }
                     else
                     {
+                        // ----------- ** Copia o arquivo para o diretório de rajada processada antes de iniciar a leitura ** -----------//
+                        File.Copy(arquivoTxtRajada, diretorioRajadaProcessada);
+                        // ----------- ** Copia o arquivo para o diretório de rajada processada antes de iniciar a leitura ** -----------//
+
                         string[] arquivoTXT = File.ReadAllLines(arquivoTxtRajada);
                         foreach (var linha in arquivoTXT)
                         {
@@ -524,17 +530,15 @@ namespace rajadas
                                 listaDeObjetosRajadas.Add(rajada);
                             }
                         }
+                        // -- ** Exclui o arquivo do diretório de orgigem caso o sistema esteja parametrizado para isso -- ** //
                         if (parametroCopiarOuMover == "Mover Arquivo Processado")
                         {
-                            Directory.Move(arquivoTxtRajada, diretorioRajadaProcessada);
+                            File.Delete(arquivoTxtRajada);
                         }
-                        else
-                        {
-                            File.Copy(arquivoTxtRajada, diretorioRajadaProcessada);
+                        // -- ** Exclui o arquivo do diretório de orgigem caso o sistema esteja parametrizado para isso -- ** //
                         }
                     }
                 }
-            }
             }
 
             catch (Exception e)
@@ -587,6 +591,10 @@ namespace rajadas
                     }
                     else
                     {
+                        // ----------- ** Copia o arquivo para o diretório de rajada processada antes de iniciar a leitura ** -----------//
+                        File.Copy(arquivoTxtRajada, diretorioRajadaProcessada);
+                        // ----------- ** Copia o arquivo para o diretório de rajada processada antes de iniciar a leitura ** -----------//
+
                         string[] arquivoTXT = File.ReadAllLines(arquivoTxtRajada);
                         foreach (var linha in arquivoTXT)
                         {
@@ -725,14 +733,12 @@ namespace rajadas
                                 listaDeObjetosRajadas.Add(rajada);
                             }
                         }
+                        // -- ** Exclui o arquivo do diretório de orgigem caso o sistema esteja parametrizado para isso -- ** //
                         if (parametroCopiarOuMover == "Mover Arquivo Processado")
                         {
-                            Directory.Move(arquivoTxtRajada, diretorioRajadaProcessada);
+                            File.Delete(arquivoTxtRajada);
                         }
-                        else
-                        {
-                            File.Copy(arquivoTxtRajada, diretorioRajadaProcessada);
-                        }
+                        // -- ** Exclui o arquivo do diretório de orgigem caso o sistema esteja parametrizado para isso -- ** //
                     }
                 }
             }
@@ -810,6 +816,52 @@ namespace rajadas
             }
 
             return quantidadeDeRegistros;
+        }
+
+        public List<String> retornaQuantidadeArquivosEncontrados(String caminhoArquivoTXT, String nomeDoArquivo)
+        {
+            List<String> listaDeArquivosEncontrados = new List<String>();
+
+            var listaDeArquivosTxtRajadas = new List<String>();
+
+            var listaDeDiretorios = new List<String>();
+
+            var listaDeArquivosEmCadaDiretorio = new List<String>();
+
+            try
+            {
+                listaDeDiretorios = Directory.GetDirectories(caminhoArquivoTXT).ToList();
+                listaDeDiretorios.Add(caminhoArquivoTXT);
+
+                foreach (var diretorio in listaDeDiretorios)
+                {
+                    listaDeArquivosEmCadaDiretorio = Directory.GetFiles(diretorio).ToList();
+                    foreach (var arquivoEncontrado in listaDeArquivosEmCadaDiretorio)
+                    {
+                        listaDeArquivosTxtRajadas.Add(arquivoEncontrado);
+                    }
+                }
+
+                foreach (var arquivoTxtRajada in listaDeArquivosTxtRajadas)
+                {
+                    FileInfo informacaoDoArquivo = new FileInfo(arquivoTxtRajada);
+                    String nomeArquivoRajadaTxt = informacaoDoArquivo.Name;
+
+                    String parteDoNomeDoArquivo = nomeArquivoRajadaTxt.Substring(0, 11);
+
+                    if (parteDoNomeDoArquivo == nomeDoArquivo)
+                    {
+                        listaDeArquivosEncontrados.Add(arquivoTxtRajada);
+                    }
+                }
+            }
+
+            catch (Exception e)
+            {
+                MessageBox.Show("Erro: " + e.Message);
+            }
+
+            return listaDeArquivosEncontrados;
         }
     }
 }

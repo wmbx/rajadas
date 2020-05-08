@@ -55,6 +55,7 @@
             this.rbCopiarArquivoProcessadoRajadaTijolo = new System.Windows.Forms.RadioButton();
             this.rbMoverArquivoProcessadoRajadaTijolo = new System.Windows.Forms.RadioButton();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
+            this.pbLeituraDigital = new System.Windows.Forms.ProgressBar();
             this.btLerArquivoDigital = new System.Windows.Forms.Button();
             this.btSalvarArquivoDigital = new System.Windows.Forms.Button();
             this.groupBox9 = new System.Windows.Forms.GroupBox();
@@ -77,6 +78,7 @@
             this.label5 = new System.Windows.Forms.Label();
             this.label7 = new System.Windows.Forms.Label();
             this.groupBox4 = new System.Windows.Forms.GroupBox();
+            this.pbLeituraInvertida = new System.Windows.Forms.ProgressBar();
             this.btLerArquivoInvertida = new System.Windows.Forms.Button();
             this.btSalvarArquivoInvertida = new System.Windows.Forms.Button();
             this.groupBox10 = new System.Windows.Forms.GroupBox();
@@ -104,8 +106,6 @@
             this.tmRajadaInvertida = new System.Windows.Forms.Timer(this.components);
             this.niBandeja = new System.Windows.Forms.NotifyIcon(this.components);
             this.btSalvarArquivoTijolo = new System.Windows.Forms.Button();
-            this.pbLeituraDigital = new System.Windows.Forms.ProgressBar();
-            this.pbLeituraInvertida = new System.Windows.Forms.ProgressBar();
             this.groupBox1.SuspendLayout();
             this.groupBox8.SuspendLayout();
             this.groupBox2.SuspendLayout();
@@ -129,7 +129,7 @@
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(13, 19);
+            this.label1.Location = new System.Drawing.Point(13, 18);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(105, 13);
             this.label1.TabIndex = 1;
@@ -138,7 +138,7 @@
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(13, 57);
+            this.label2.Location = new System.Drawing.Point(13, 58);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(126, 13);
             this.label2.TabIndex = 2;
@@ -146,21 +146,21 @@
             // 
             // tbCaminhoRajadaTijolo
             // 
-            this.tbCaminhoRajadaTijolo.Location = new System.Drawing.Point(16, 34);
+            this.tbCaminhoRajadaTijolo.Location = new System.Drawing.Point(16, 33);
             this.tbCaminhoRajadaTijolo.Name = "tbCaminhoRajadaTijolo";
             this.tbCaminhoRajadaTijolo.Size = new System.Drawing.Size(329, 20);
             this.tbCaminhoRajadaTijolo.TabIndex = 3;
             // 
             // tbCaminhoArquivoExcelTijolo
             // 
-            this.tbCaminhoArquivoExcelTijolo.Location = new System.Drawing.Point(16, 74);
+            this.tbCaminhoArquivoExcelTijolo.Location = new System.Drawing.Point(16, 73);
             this.tbCaminhoArquivoExcelTijolo.Name = "tbCaminhoArquivoExcelTijolo";
             this.tbCaminhoArquivoExcelTijolo.Size = new System.Drawing.Size(329, 20);
             this.tbCaminhoArquivoExcelTijolo.TabIndex = 4;
             // 
             // btCaminhoRajadaTijolo
             // 
-            this.btCaminhoRajadaTijolo.Location = new System.Drawing.Point(345, 33);
+            this.btCaminhoRajadaTijolo.Location = new System.Drawing.Point(345, 32);
             this.btCaminhoRajadaTijolo.Name = "btCaminhoRajadaTijolo";
             this.btCaminhoRajadaTijolo.Size = new System.Drawing.Size(26, 22);
             this.btCaminhoRajadaTijolo.TabIndex = 5;
@@ -170,7 +170,7 @@
             // 
             // btApontaArquivoExcel
             // 
-            this.btApontaArquivoExcel.Location = new System.Drawing.Point(345, 73);
+            this.btApontaArquivoExcel.Location = new System.Drawing.Point(345, 72);
             this.btApontaArquivoExcel.Name = "btApontaArquivoExcel";
             this.btApontaArquivoExcel.Size = new System.Drawing.Size(26, 22);
             this.btApontaArquivoExcel.TabIndex = 6;
@@ -181,7 +181,7 @@
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(15, 96);
+            this.label3.Location = new System.Drawing.Point(15, 95);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(168, 13);
             this.label3.TabIndex = 7;
@@ -189,14 +189,14 @@
             // 
             // tbCaminhoRajadaProcessadaTijolo
             // 
-            this.tbCaminhoRajadaProcessadaTijolo.Location = new System.Drawing.Point(17, 111);
+            this.tbCaminhoRajadaProcessadaTijolo.Location = new System.Drawing.Point(17, 110);
             this.tbCaminhoRajadaProcessadaTijolo.Name = "tbCaminhoRajadaProcessadaTijolo";
             this.tbCaminhoRajadaProcessadaTijolo.Size = new System.Drawing.Size(329, 20);
             this.tbCaminhoRajadaProcessadaTijolo.TabIndex = 8;
             // 
             // btCaminhoRajadaProcessadaTijolo
             // 
-            this.btCaminhoRajadaProcessadaTijolo.Location = new System.Drawing.Point(346, 110);
+            this.btCaminhoRajadaProcessadaTijolo.Location = new System.Drawing.Point(346, 109);
             this.btCaminhoRajadaProcessadaTijolo.Name = "btCaminhoRajadaProcessadaTijolo";
             this.btCaminhoRajadaProcessadaTijolo.Size = new System.Drawing.Size(26, 22);
             this.btCaminhoRajadaProcessadaTijolo.TabIndex = 9;
@@ -377,6 +377,14 @@
             this.groupBox3.TabStop = false;
             this.groupBox3.Text = "Rajada Digital";
             // 
+            // pbLeituraDigital
+            // 
+            this.pbLeituraDigital.Location = new System.Drawing.Point(539, 82);
+            this.pbLeituraDigital.Name = "pbLeituraDigital";
+            this.pbLeituraDigital.Size = new System.Drawing.Size(159, 21);
+            this.pbLeituraDigital.TabIndex = 20;
+            this.pbLeituraDigital.Visible = false;
+            // 
             // btLerArquivoDigital
             // 
             this.btLerArquivoDigital.Location = new System.Drawing.Point(539, 82);
@@ -506,7 +514,7 @@
             // 
             // btCaminhoRajadaProcessadaDigital
             // 
-            this.btCaminhoRajadaProcessadaDigital.Location = new System.Drawing.Point(345, 110);
+            this.btCaminhoRajadaProcessadaDigital.Location = new System.Drawing.Point(345, 109);
             this.btCaminhoRajadaProcessadaDigital.Name = "btCaminhoRajadaProcessadaDigital";
             this.btCaminhoRajadaProcessadaDigital.Size = new System.Drawing.Size(26, 22);
             this.btCaminhoRajadaProcessadaDigital.TabIndex = 9;
@@ -516,7 +524,7 @@
             // 
             // tbCaminhoRajadaProcessadaDigital
             // 
-            this.tbCaminhoRajadaProcessadaDigital.Location = new System.Drawing.Point(16, 111);
+            this.tbCaminhoRajadaProcessadaDigital.Location = new System.Drawing.Point(16, 110);
             this.tbCaminhoRajadaProcessadaDigital.Name = "tbCaminhoRajadaProcessadaDigital";
             this.tbCaminhoRajadaProcessadaDigital.Size = new System.Drawing.Size(329, 20);
             this.tbCaminhoRajadaProcessadaDigital.TabIndex = 8;
@@ -524,7 +532,7 @@
             // label4
             // 
             this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(15, 96);
+            this.label4.Location = new System.Drawing.Point(15, 95);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(168, 13);
             this.label4.TabIndex = 7;
@@ -532,7 +540,7 @@
             // 
             // btCaminhoArquivoExcelRajadaDigital
             // 
-            this.btCaminhoArquivoExcelRajadaDigital.Location = new System.Drawing.Point(345, 71);
+            this.btCaminhoArquivoExcelRajadaDigital.Location = new System.Drawing.Point(345, 70);
             this.btCaminhoArquivoExcelRajadaDigital.Name = "btCaminhoArquivoExcelRajadaDigital";
             this.btCaminhoArquivoExcelRajadaDigital.Size = new System.Drawing.Size(26, 22);
             this.btCaminhoArquivoExcelRajadaDigital.TabIndex = 6;
@@ -542,7 +550,7 @@
             // 
             // btCaminhoRajadaDigital
             // 
-            this.btCaminhoRajadaDigital.Location = new System.Drawing.Point(345, 33);
+            this.btCaminhoRajadaDigital.Location = new System.Drawing.Point(345, 32);
             this.btCaminhoRajadaDigital.Name = "btCaminhoRajadaDigital";
             this.btCaminhoRajadaDigital.Size = new System.Drawing.Size(26, 22);
             this.btCaminhoRajadaDigital.TabIndex = 5;
@@ -552,14 +560,14 @@
             // 
             // tbCaminhoArquivoExcelRajadaDigital
             // 
-            this.tbCaminhoArquivoExcelRajadaDigital.Location = new System.Drawing.Point(16, 72);
+            this.tbCaminhoArquivoExcelRajadaDigital.Location = new System.Drawing.Point(16, 71);
             this.tbCaminhoArquivoExcelRajadaDigital.Name = "tbCaminhoArquivoExcelRajadaDigital";
             this.tbCaminhoArquivoExcelRajadaDigital.Size = new System.Drawing.Size(329, 20);
             this.tbCaminhoArquivoExcelRajadaDigital.TabIndex = 4;
             // 
             // tbCaminhoRajadaDigital
             // 
-            this.tbCaminhoRajadaDigital.Location = new System.Drawing.Point(16, 34);
+            this.tbCaminhoRajadaDigital.Location = new System.Drawing.Point(16, 33);
             this.tbCaminhoRajadaDigital.Name = "tbCaminhoRajadaDigital";
             this.tbCaminhoRajadaDigital.Size = new System.Drawing.Size(329, 20);
             this.tbCaminhoRajadaDigital.TabIndex = 3;
@@ -567,7 +575,7 @@
             // label5
             // 
             this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(13, 57);
+            this.label5.Location = new System.Drawing.Point(13, 56);
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(126, 13);
             this.label5.TabIndex = 2;
@@ -576,7 +584,7 @@
             // label7
             // 
             this.label7.AutoSize = true;
-            this.label7.Location = new System.Drawing.Point(13, 19);
+            this.label7.Location = new System.Drawing.Point(13, 18);
             this.label7.Name = "label7";
             this.label7.Size = new System.Drawing.Size(105, 13);
             this.label7.TabIndex = 1;
@@ -605,6 +613,14 @@
             this.groupBox4.TabStop = false;
             this.groupBox4.Text = "Rajada Invertida";
             this.groupBox4.Enter += new System.EventHandler(this.groupBox4_Enter);
+            // 
+            // pbLeituraInvertida
+            // 
+            this.pbLeituraInvertida.Location = new System.Drawing.Point(539, 80);
+            this.pbLeituraInvertida.Name = "pbLeituraInvertida";
+            this.pbLeituraInvertida.Size = new System.Drawing.Size(159, 21);
+            this.pbLeituraInvertida.TabIndex = 22;
+            this.pbLeituraInvertida.Visible = false;
             // 
             // btLerArquivoInvertida
             // 
@@ -736,7 +752,7 @@
             // 
             // btCaminhoRajadaProcessadaTrintaTrinta
             // 
-            this.btCaminhoRajadaProcessadaTrintaTrinta.Location = new System.Drawing.Point(345, 110);
+            this.btCaminhoRajadaProcessadaTrintaTrinta.Location = new System.Drawing.Point(345, 109);
             this.btCaminhoRajadaProcessadaTrintaTrinta.Name = "btCaminhoRajadaProcessadaTrintaTrinta";
             this.btCaminhoRajadaProcessadaTrintaTrinta.Size = new System.Drawing.Size(26, 22);
             this.btCaminhoRajadaProcessadaTrintaTrinta.TabIndex = 9;
@@ -746,7 +762,7 @@
             // 
             // tbCaminhoRajadaProcessadaInvertida
             // 
-            this.tbCaminhoRajadaProcessadaInvertida.Location = new System.Drawing.Point(16, 111);
+            this.tbCaminhoRajadaProcessadaInvertida.Location = new System.Drawing.Point(16, 110);
             this.tbCaminhoRajadaProcessadaInvertida.Name = "tbCaminhoRajadaProcessadaInvertida";
             this.tbCaminhoRajadaProcessadaInvertida.Size = new System.Drawing.Size(329, 20);
             this.tbCaminhoRajadaProcessadaInvertida.TabIndex = 8;
@@ -754,7 +770,7 @@
             // label8
             // 
             this.label8.AutoSize = true;
-            this.label8.Location = new System.Drawing.Point(15, 96);
+            this.label8.Location = new System.Drawing.Point(15, 95);
             this.label8.Name = "label8";
             this.label8.Size = new System.Drawing.Size(168, 13);
             this.label8.TabIndex = 7;
@@ -762,7 +778,7 @@
             // 
             // btCaminhoArquivoExcelRajadaTrintaTrinta
             // 
-            this.btCaminhoArquivoExcelRajadaTrintaTrinta.Location = new System.Drawing.Point(345, 72);
+            this.btCaminhoArquivoExcelRajadaTrintaTrinta.Location = new System.Drawing.Point(345, 71);
             this.btCaminhoArquivoExcelRajadaTrintaTrinta.Name = "btCaminhoArquivoExcelRajadaTrintaTrinta";
             this.btCaminhoArquivoExcelRajadaTrintaTrinta.Size = new System.Drawing.Size(26, 22);
             this.btCaminhoArquivoExcelRajadaTrintaTrinta.TabIndex = 6;
@@ -772,7 +788,7 @@
             // 
             // btApontaCaminhoRajadaTrintaTrinta
             // 
-            this.btApontaCaminhoRajadaTrintaTrinta.Location = new System.Drawing.Point(345, 33);
+            this.btApontaCaminhoRajadaTrintaTrinta.Location = new System.Drawing.Point(345, 32);
             this.btApontaCaminhoRajadaTrintaTrinta.Name = "btApontaCaminhoRajadaTrintaTrinta";
             this.btApontaCaminhoRajadaTrintaTrinta.Size = new System.Drawing.Size(26, 22);
             this.btApontaCaminhoRajadaTrintaTrinta.TabIndex = 5;
@@ -782,14 +798,14 @@
             // 
             // tbCaminhoArquivoExcelRajadaInvertida
             // 
-            this.tbCaminhoArquivoExcelRajadaInvertida.Location = new System.Drawing.Point(16, 73);
+            this.tbCaminhoArquivoExcelRajadaInvertida.Location = new System.Drawing.Point(16, 72);
             this.tbCaminhoArquivoExcelRajadaInvertida.Name = "tbCaminhoArquivoExcelRajadaInvertida";
             this.tbCaminhoArquivoExcelRajadaInvertida.Size = new System.Drawing.Size(329, 20);
             this.tbCaminhoArquivoExcelRajadaInvertida.TabIndex = 4;
             // 
             // tbCaminhoRajadaInvertida
             // 
-            this.tbCaminhoRajadaInvertida.Location = new System.Drawing.Point(16, 34);
+            this.tbCaminhoRajadaInvertida.Location = new System.Drawing.Point(16, 33);
             this.tbCaminhoRajadaInvertida.Name = "tbCaminhoRajadaInvertida";
             this.tbCaminhoRajadaInvertida.Size = new System.Drawing.Size(329, 20);
             this.tbCaminhoRajadaInvertida.TabIndex = 3;
@@ -797,7 +813,7 @@
             // label9
             // 
             this.label9.AutoSize = true;
-            this.label9.Location = new System.Drawing.Point(13, 57);
+            this.label9.Location = new System.Drawing.Point(13, 56);
             this.label9.Name = "label9";
             this.label9.Size = new System.Drawing.Size(126, 13);
             this.label9.TabIndex = 2;
@@ -806,7 +822,7 @@
             // label10
             // 
             this.label10.AutoSize = true;
-            this.label10.Location = new System.Drawing.Point(13, 19);
+            this.label10.Location = new System.Drawing.Point(13, 18);
             this.label10.Name = "label10";
             this.label10.Size = new System.Drawing.Size(105, 13);
             this.label10.TabIndex = 1;
@@ -855,22 +871,6 @@
             this.btSalvarArquivoTijolo.Text = "Salvar Configurações";
             this.btSalvarArquivoTijolo.UseVisualStyleBackColor = true;
             this.btSalvarArquivoTijolo.Click += new System.EventHandler(this.btSalvarArquivoTijolo_Click);
-            // 
-            // pbLeituraDigital
-            // 
-            this.pbLeituraDigital.Location = new System.Drawing.Point(539, 82);
-            this.pbLeituraDigital.Name = "pbLeituraDigital";
-            this.pbLeituraDigital.Size = new System.Drawing.Size(159, 21);
-            this.pbLeituraDigital.TabIndex = 20;
-            this.pbLeituraDigital.Visible = false;
-            // 
-            // pbLeituraInvertida
-            // 
-            this.pbLeituraInvertida.Location = new System.Drawing.Point(539, 80);
-            this.pbLeituraInvertida.Name = "pbLeituraInvertida";
-            this.pbLeituraInvertida.Size = new System.Drawing.Size(159, 21);
-            this.pbLeituraInvertida.TabIndex = 22;
-            this.pbLeituraInvertida.Visible = false;
             // 
             // Form1
             // 
