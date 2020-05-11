@@ -733,12 +733,12 @@ namespace rajadas
                                 listaDeObjetosRajadas.Add(rajada);
                             }
                         }
-                        // -- ** Exclui o arquivo do diretório de orgigem caso o sistema esteja parametrizado para isso -- ** //
+                        // -- ** Exclui o arquivo do diretório de origem caso o sistema esteja parametrizado para isso -- ** //
                         if (parametroCopiarOuMover == "Mover Arquivo Processado")
                         {
                             File.Delete(arquivoTxtRajada);
                         }
-                        // -- ** Exclui o arquivo do diretório de orgigem caso o sistema esteja parametrizado para isso -- ** //
+                        // -- ** Exclui o arquivo do diretório de origem caso o sistema esteja parametrizado para isso -- ** //
                     }
                 }
             }
@@ -833,12 +833,33 @@ namespace rajadas
                 listaDeDiretorios = Directory.GetDirectories(caminhoArquivoTXT).ToList();
                 listaDeDiretorios.Add(caminhoArquivoTXT);
 
+                String ano = DateTime.Now.Year.ToString();
+                String mes = DateTime.Now.Month.ToString();
+                // ** Acrescenta 0 ao mês ** //
+                if (Convert.ToInt32(mes) < 10)
+                {
+                    mes = "0" + mes;
+                }
+                // ** Acrescenta 0 ao mês ** //
+                String dia = DateTime.Now.Day.ToString();
+
+                String dataAtual = ano + mes + dia;
+
                 foreach (var diretorio in listaDeDiretorios)
                 {
-                    listaDeArquivosEmCadaDiretorio = Directory.GetFiles(diretorio).ToList();
-                    foreach (var arquivoEncontrado in listaDeArquivosEmCadaDiretorio)
+                    // ** Recupera a quantidade de caracteres do caminho do diretório ** //
+                    int qtdCaracteres = diretorio.Length;
+
+                    // ** Pega o nome da pasta ** //
+                    String diretorioAjustado = diretorio.Substring(qtdCaracteres - 8);
+
+                    if (diretorioAjustado == dataAtual)
                     {
-                        listaDeArquivosTxtRajadas.Add(arquivoEncontrado);
+                        listaDeArquivosEmCadaDiretorio = Directory.GetFiles(diretorio).ToList();
+                        foreach (var arquivoEncontrado in listaDeArquivosEmCadaDiretorio)
+                        {
+                            listaDeArquivosTxtRajadas.Add(arquivoEncontrado);
+                        }
                     }
                 }
 
@@ -851,7 +872,17 @@ namespace rajadas
 
                     if (parteDoNomeDoArquivo == nomeDoArquivo)
                     {
-                        listaDeArquivosEncontrados.Add(arquivoTxtRajada);
+                        // ** Retorna a quantidade de caracteres do nome do arquivo encontrado ** //
+                        int qtdCaracteresArquivoEncontrado = nomeArquivoRajadaTxt.Length;
+
+                        // ** Extrai do nome do arquivo o horário em que ele foi enviado ** //
+                        String horaDoRecebimento = nomeArquivoRajadaTxt.Substring(qtdCaracteresArquivoEncontrado - 10, 4);
+
+                        // ** Formata o horário que o arquivo foi enviado ** //
+                        String horaDoRecebimentoFormatada = horaDoRecebimento.Insert(2, ":");
+
+                        // ** Adiciona o arquivo a lista ** //
+                        listaDeArquivosEncontrados.Add("Rajada das " + horaDoRecebimentoFormatada + "       ====>>       Arquivo:  " + nomeArquivoRajadaTxt);
                     }
                 }
             }

@@ -833,5 +833,79 @@ namespace rajadas
         {
 
         }
-    } 
+
+        // ** Timer que monitora os arquivos de Rajado do tipo Tijolo ** //
+        private void tmMonitoramentoArquivosRajadaTijolo_Tick(object sender, EventArgs e)
+        {
+            Rajada rajada = new Rajada();
+
+            List<String> listaDeArquivosEncontrados = new List<String>();
+            listaDeArquivosEncontrados = rajada.retornaQuantidadeArquivosEncontrados(this.caminhoArquivoTxtRajadaTijolo, "ARQBRSAGORD");
+
+            String arquivosEncontrados = "";
+
+            foreach (String arquivo in listaDeArquivosEncontrados)
+            {
+                arquivosEncontrados =  arquivosEncontrados + " \n " + arquivo;
+            }
+            // ** Adiciona o total de arquivos encontrados ao fim da lista que irá no corpo do e-mail ** //
+            arquivosEncontrados = arquivosEncontrados + " \n \n \n " + "Total de Arquivos:  " + listaDeArquivosEncontrados.Count();
+
+            String horaAtual = DateTime.Now.ToString();
+
+            Email email = new Email();
+            email.enviarEmail("walisson.wmb@gmail.com", "Monitoramento de Rajadas Tijolo - " + horaAtual, "Arquivos lógicos RAJADA TIJOLO encontrados até " + horaAtual + " \n " + arquivosEncontrados);
+        }
+        // ** Timer que monitora os arquivos de Rajado do tipo Tijolo ** //
+
+
+        // ** Timer que monitora os arquivos de Rajado do tipo Digital ** //
+        private void tmMonitoramentoArquivosRajadaDigital_Tick(object sender, EventArgs e)
+        {
+            Rajada rajada = new Rajada();
+
+            List<String> listaDeArquivosEncontrados = new List<String>();
+            listaDeArquivosEncontrados = rajada.retornaQuantidadeArquivosEncontrados(this.caminhoArquivoTxtRajadaTijolo, "BRSCANDIGIT");
+
+            String arquivosEncontrados = "";
+
+            foreach (String arquivo in listaDeArquivosEncontrados)
+            {
+                arquivosEncontrados = arquivosEncontrados + " \n " + arquivo;
+            }
+            // ** Adiciona o total de arquivos encontrados ao fim da lista que irá no corpo do e-mail ** //
+            arquivosEncontrados = arquivosEncontrados + " \n \n \n " + "Total de Arquivos:  " + listaDeArquivosEncontrados.Count();
+
+            String horaAtual = DateTime.Now.ToString();
+
+            Email email = new Email();
+            email.enviarEmail("walisson.wmb@gmail.com", "Monitoramento de Rajadas Digitais (Mundo Velho) - " + horaAtual, "Arquivos lógicos RAJADA DIGITAL (MUNDO VELHO) encontrados até " + horaAtual + " \n " + arquivosEncontrados);
+        }
+        // ** Timer que monitora os arquivos de Rajado do tipo Digital ** //
+
+
+        // ** Timer que monitora os arquivos de Rajado do tipo Invertida ** //
+        private void tmMonitoramentoArquivosRajadaInvertida_Tick(object sender, EventArgs e)
+        {
+            Rajada rajada = new Rajada();
+
+            List<String> listaDeArquivosEncontrados = new List<String>();
+            listaDeArquivosEncontrados = rajada.retornaQuantidadeArquivosEncontrados(this.caminhoArquivoTxtRajadaTijolo, "ARQBRSINVER");
+
+            String arquivosEncontrados = "";
+
+            foreach (String arquivo in listaDeArquivosEncontrados)
+            {
+                arquivosEncontrados = arquivosEncontrados + " \n " + arquivo;
+            }
+            // ** Adiciona o total de arquivos encontrados ao fim da lista que irá no corpo do e-mail ** //
+            arquivosEncontrados = arquivosEncontrados + " \n \n \n " + "Total de Arquivos:  " + listaDeArquivosEncontrados.Count();
+
+            String horaAtual = DateTime.Now.ToString();
+
+            Email email = new Email();
+            email.enviarEmail("walisson.wmb@gmail.com", "Monitoramento de Rajadas Invertidas - " + horaAtual, "Arquivos lógicos RAJADA INVERTIDA encontrados até " + horaAtual + " \n " + arquivosEncontrados);
+        }
+        // ** Timer que monitora os arquivos de Rajado do tipo Invertida ** //
+    }
 }
