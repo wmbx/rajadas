@@ -13,6 +13,7 @@ using System.Xml;
 using System.Xml.Linq;
 using System.Threading;
 
+
 namespace rajadas
 {
     public partial class Form1 : Form
@@ -26,6 +27,10 @@ namespace rajadas
         private String parametroIntervaloRajadaTijolo;
         private String parametroFrequenciaRajadaTijolo;
         private String statusLeituraRajadaTijolo;
+        private String parametroIntervaloMonitoramentoRajadaTijolo;
+        private String parametroFrequenciaMonitoramentoRajadaTijolo;
+        private String statusMonitoramentoRajadaTijolo;
+        private List<String> destinatariosRajadaTijolo;
 
         private String caminhoArquivoTxtRajadaDigital;
         private String caminhoArquivoExcelRajadaDigital;
@@ -34,6 +39,10 @@ namespace rajadas
         private String parametroIntervaloRajadaDigital;
         private String parametroFrequenciaRajadaDigital;
         private String statusLeituraRajadaDigital;
+        private String parametroIntervaloMonitoramentoRajadaDigital;
+        private String parametroFrequenciaMonitoramentoRajadaDigital;
+        private String statusMonitoramentoRajadaDigital;
+        private String destinatariosRajadaDigital;
 
         private String caminhoArquivoTxtRajadaInvertida;
         private String caminhoArquivoExcelRajadaInvertida;
@@ -42,6 +51,10 @@ namespace rajadas
         private String parametroIntervaloRajadaInvertida;
         private String parametroFrequenciaRajadaInvertida;
         private String statusLeituraRajadaInvertida;
+        private String parametroIntervaloMonitoramentoRajadaInvertida;
+        private String parametroFrequenciaMonitoramentoRajadaInvertida;
+        private String statusMonitoramentoRajadaInvertida;
+        private String destinatariosRajadaInvertida;
 
         public Form1()
         {
@@ -74,6 +87,17 @@ namespace rajadas
             this.parametroIntervaloRajadaTijolo = listaDeParametrosRajadaTijolo[4];
             this.parametroFrequenciaRajadaTijolo = listaDeParametrosRajadaTijolo[5];
             this.statusLeituraRajadaTijolo = listaDeParametrosRajadaTijolo[6];
+            this.statusMonitoramentoRajadaTijolo = listaDeParametrosRajadaTijolo[7];
+            this.parametroIntervaloMonitoramentoRajadaTijolo = listaDeParametrosRajadaTijolo[8];
+            this.parametroFrequenciaMonitoramentoRajadaTijolo = listaDeParametrosRajadaTijolo[9];
+
+            String destinatarios = listaDeParametrosRajadaTijolo[10];
+            int qtdDeDestinatarios = destinatarios.Count(ch => ch == ';');
+            for (int i = 0; i < qtdDeDestinatarios + 1; i++)
+            {
+                destinatariosRajadaTijolo.Add(destinatarios);
+            }
+
 
             tbCaminhoRajadaTijolo.Text = caminhoArquivoTxtRajadaTijolo;
             tbCaminhoArquivoExcelTijolo.Text = caminhoArquivoExcelRajadaTijolo;
@@ -81,6 +105,11 @@ namespace rajadas
             tbIntervaloRajadaTijolo.Text = parametroIntervaloRajadaTijolo;
             cbFrequenciaRajadaTijolo.SelectedItem = parametroFrequenciaRajadaTijolo;
             cbStatusLeituraTijolo.SelectedItem = statusLeituraRajadaTijolo;
+            cbStatusMonitoramentoTijolo.SelectedItem = statusMonitoramentoRajadaTijolo;
+            tbIntervaloMonitoramentoTijolo.Text = parametroIntervaloMonitoramentoRajadaTijolo;
+            cbFrequenciaMonitoramentoTijolo.SelectedItem = parametroFrequenciaMonitoramentoRajadaTijolo;
+            //tbDestinatariosTijolo.Text = destinatariosRajadaTijolo;            
+
 
             if (parametroCopiarOuMoverRajadaTijolo == "Copiar Arquivo Processado")
             {
@@ -93,10 +122,9 @@ namespace rajadas
             // ---------------------------------- Carrega parâmetros da Rajada Tijolo ---------------------------------------------------------//
 
 
-            // ---------------------------------- ** Seta os agendamentos das leituras no timer da Rajada Tijolo ** --------------------------------//
-
+            // ---------------------------------- ** Seta os agendamentos das leituras e monitoramento no timer da Rajada Tijolo ** --------------------------------//
             tmRajadaTijolo.Interval = agendamento.retornaAgendamentoExecucao(parametroIntervaloRajadaTijolo, parametroFrequenciaRajadaTijolo);
-
+            tmMonitoramentoArquivosRajadaTijolo.Interval = agendamento.retornaAgendamentoExecucao(parametroIntervaloMonitoramentoRajadaTijolo, parametroFrequenciaMonitoramentoRajadaTijolo);
             // ---------------------------------- ** Seta os agendamentos das leituras no timer da Rajada Tijolo ** --------------------------------//
 
 
@@ -109,11 +137,19 @@ namespace rajadas
             {
                 tmRajadaTijolo.Enabled = false;
             }
+            if (this.statusMonitoramentoRajadaTijolo == "Ativado")
+            {
+                tmMonitoramentoArquivosRajadaTijolo.Enabled = true;
+            }
+            else
+            {
+                tmMonitoramentoArquivosRajadaTijolo.Enabled = false;
+            }
             // ------------------ ** Ativa ou Desativa os Timers das leituras automáticas de acordo com o parâmetro ** --------------------//
 
-            
+
             // ------------------ ** Ativa ou Desativa os Parâmetros das Leituras Automáticas de acordo com o parâmetro ** -----------------------------//
-            if(this.statusLeituraRajadaTijolo == "Ativada")
+            if (this.statusLeituraRajadaTijolo == "Ativada")
             {
                 tbIntervaloRajadaTijolo.Enabled = true;
                 cbFrequenciaRajadaTijolo.Enabled = true;
@@ -122,6 +158,18 @@ namespace rajadas
             {
                 tbIntervaloRajadaTijolo.Enabled = false;
                 cbFrequenciaRajadaTijolo.Enabled = false;
+            }
+            if (this.statusMonitoramentoRajadaTijolo == "Ativado")
+            {
+                tbIntervaloMonitoramentoTijolo.Enabled = true;
+                cbFrequenciaMonitoramentoTijolo.Enabled = true;
+                tbDestinatariosTijolo.Enabled = true;
+            }
+            else
+            {
+                tbIntervaloMonitoramentoTijolo.Enabled = false;
+                cbFrequenciaMonitoramentoTijolo.Enabled = false;
+                tbDestinatariosTijolo.Enabled = false;
             }
             // ------------------ ** Ativa ou Desativa os Parâmetros das Leituras Automáticas de acordo com o parâmetro ** -----------------------------//
 
@@ -147,6 +195,10 @@ namespace rajadas
             this.parametroIntervaloRajadaDigital = listaDeParametrosRajadaDigital[4];
             this.parametroFrequenciaRajadaDigital = listaDeParametrosRajadaDigital[5];
             this.statusLeituraRajadaDigital = listaDeParametrosRajadaDigital[6];
+            this.statusMonitoramentoRajadaDigital = listaDeParametrosRajadaDigital[7];
+            this.parametroIntervaloMonitoramentoRajadaDigital = listaDeParametrosRajadaDigital[8];
+            this.parametroFrequenciaMonitoramentoRajadaDigital = listaDeParametrosRajadaDigital[9];
+            this.destinatariosRajadaDigital = listaDeParametrosRajadaDigital[10];
 
             tbCaminhoRajadaDigital.Text = caminhoArquivoTxtRajadaDigital;
             tbCaminhoArquivoExcelRajadaDigital.Text = caminhoArquivoExcelRajadaDigital;
@@ -154,6 +206,10 @@ namespace rajadas
             tbIntervaloRajadaDigital.Text = parametroIntervaloRajadaDigital;
             cbFrequenciaRajadaDigital.SelectedItem = parametroFrequenciaRajadaDigital;
             cbStatusLeituraDigital.SelectedItem = statusLeituraRajadaDigital;
+            cbStatusMonitoramentoDigital.SelectedItem = statusMonitoramentoRajadaDigital;
+            tbIntervaloMonitoramentoDigital.Text = parametroIntervaloMonitoramentoRajadaDigital;
+            cbFrequenciaMonitoramentoDigital.SelectedItem = parametroFrequenciaMonitoramentoRajadaDigital;
+            tbDestinatariosDigital.Text = destinatariosRajadaDigital;
 
             if (parametroCopiarOuMoverRajadaDigital == "Copiar Arquivo Processado")
             {
@@ -166,6 +222,7 @@ namespace rajadas
 
             // ---------------------------------- ** Seta os agendamentos das leituras no timer da Rajada Digital ** --------------------------------//
             tmRajadaDigital.Interval = agendamento.retornaAgendamentoExecucao(parametroIntervaloRajadaDigital, parametroFrequenciaRajadaDigital);
+            tmMonitoramentoArquivosRajadaDigital.Interval = agendamento.retornaAgendamentoExecucao(parametroIntervaloMonitoramentoRajadaDigital, parametroFrequenciaMonitoramentoRajadaDigital);
             // ---------------------------------- ** Seta os agendamentos das leituras no timer Digital ** --------------------------------//
 
 
@@ -177,6 +234,14 @@ namespace rajadas
             else
             {
                 tmRajadaDigital.Enabled = false;
+            }
+            if (this.statusMonitoramentoRajadaDigital == "Ativado")
+            {
+                tmMonitoramentoArquivosRajadaDigital.Enabled = true;
+            }
+            else
+            {
+                tmMonitoramentoArquivosRajadaDigital.Enabled = false;
             }
             // ------------------ ** Ativa ou Desativa os Timers das leituras automáticas de acordo com o parâmetro ** --------------------//
 
@@ -191,6 +256,18 @@ namespace rajadas
             {
                 tbIntervaloRajadaDigital.Enabled = false;
                 cbFrequenciaRajadaDigital.Enabled = false;
+            }
+            if (this.statusMonitoramentoRajadaDigital == "Ativado")
+            {
+                tbIntervaloMonitoramentoDigital.Enabled = true;
+                cbFrequenciaMonitoramentoDigital.Enabled = true;
+                tbDestinatariosDigital.Enabled = true;
+            }
+            else
+            {
+                tbIntervaloMonitoramentoDigital.Enabled = false;
+                cbFrequenciaMonitoramentoDigital.Enabled = false;
+                tbDestinatariosDigital.Enabled = false;
             }
             // ------------------ ** Ativa ou Desativa os Parâmetros das Leituras Automáticas de acordo com o parâmetro ** -----------------------------//
 
@@ -216,6 +293,10 @@ namespace rajadas
             this.parametroIntervaloRajadaInvertida = listaDeParametrosRajadaInvertida[4];
             this.parametroFrequenciaRajadaInvertida = listaDeParametrosRajadaInvertida[5];
             this.statusLeituraRajadaInvertida = listaDeParametrosRajadaInvertida[6];
+            this.statusMonitoramentoRajadaInvertida = listaDeParametrosRajadaInvertida[7];
+            this.parametroIntervaloMonitoramentoRajadaInvertida = listaDeParametrosRajadaInvertida[8];
+            this.parametroFrequenciaMonitoramentoRajadaInvertida = listaDeParametrosRajadaInvertida[9];
+            this.destinatariosRajadaInvertida = listaDeParametrosRajadaInvertida[10];
 
             tbCaminhoRajadaInvertida.Text = caminhoArquivoTxtRajadaInvertida;
             tbCaminhoArquivoExcelRajadaInvertida.Text = caminhoArquivoExcelRajadaInvertida;
@@ -223,6 +304,10 @@ namespace rajadas
             tbIntervaloRajadaInvertida.Text = parametroIntervaloRajadaInvertida;
             cbFrequenciaRajadaInvertida.SelectedItem = parametroFrequenciaRajadaInvertida;
             cbStatusLeituraInvertida.SelectedItem = statusLeituraRajadaInvertida;
+            cbStatusMonitoramentoInvertida.SelectedItem = statusMonitoramentoRajadaInvertida;
+            tbIntervaloMonitoramentoInvertida.Text = parametroIntervaloMonitoramentoRajadaInvertida;
+            cbFrequenciaMonitoramentoInvertida.SelectedItem = parametroFrequenciaMonitoramentoRajadaInvertida;
+            tbDestinatariosInvertida.Text = destinatariosRajadaInvertida;
 
             if (parametroCopiarOuMoverRajadaInvertida == "Copiar Arquivo Processado")
             {
@@ -235,6 +320,7 @@ namespace rajadas
 
             // ---------------------------------- ** Seta os agendamentos das leituras no timerda Rajada Invertida ** --------------------------------//
             tmRajadaInvertida.Interval = agendamento.retornaAgendamentoExecucao(parametroIntervaloRajadaInvertida, parametroFrequenciaRajadaInvertida);
+            tmMonitoramentoArquivosRajadaInvertida.Interval = agendamento.retornaAgendamentoExecucao(parametroIntervaloMonitoramentoRajadaInvertida, parametroFrequenciaMonitoramentoRajadaInvertida);
             // ---------------------------------- ** Seta os agendamentos das leituras no timer da Rajada Invertida ** --------------------------------//
 
 
@@ -246,6 +332,14 @@ namespace rajadas
             else
             {
                 tmRajadaInvertida.Enabled = false;
+            }
+            if (this.statusMonitoramentoRajadaInvertida == "Ativado")
+            {
+                tmMonitoramentoArquivosRajadaInvertida.Enabled = true;
+            }
+            else
+            {
+                tmMonitoramentoArquivosRajadaInvertida.Enabled = false;
             }
             // ------------------ ** Ativa ou Desativa os Timers das leituras automáticas de acordo com o parâmetro ** --------------------//
 
@@ -261,6 +355,18 @@ namespace rajadas
             {
                 tbIntervaloRajadaInvertida.Enabled = false;
                 cbFrequenciaRajadaInvertida.Enabled = false;
+            }
+            if (this.statusMonitoramentoRajadaInvertida == "Ativado")
+            {
+                tbIntervaloMonitoramentoInvertida.Enabled = true;
+                cbFrequenciaMonitoramentoInvertida.Enabled = true;
+                tbDestinatariosInvertida.Enabled = true;
+            }
+            else
+            {
+                tbIntervaloMonitoramentoInvertida.Enabled = false;
+                cbFrequenciaMonitoramentoInvertida.Enabled = false;
+                tbDestinatariosInvertida.Enabled = false;
             }
             // ------------------ ** Ativa ou Desativa os Parâmetros das Leituras Automáticas de acordo com o parâmetro ** -----------------------------//
 
@@ -583,7 +689,7 @@ namespace rajadas
         private void btSalvarArquivoTijolo_Click(object sender, EventArgs e)
         {
             // ----- ** Validação dos campos Intervalo para não permitir a digitação de zero ou em branco ** -------- //
-            if (tbIntervaloRajadaTijolo.Text.Equals("") || tbIntervaloRajadaTijolo.Text.Equals("0") || tbIntervaloRajadaDigital.Text.Equals("") || tbIntervaloRajadaDigital.Text.Equals("0") || tbIntervaloRajadaInvertida.Text.Equals("") || tbIntervaloRajadaInvertida.Text.Equals("0"))
+            if (tbIntervaloRajadaTijolo.Text.Equals("") || tbIntervaloRajadaTijolo.Text.Equals("0") || tbIntervaloMonitoramentoTijolo.Text.Equals("") || tbIntervaloMonitoramentoTijolo.Text.Equals("0") || tbDestinatariosTijolo.Text.Equals(""))
             {
                 MessageBox.Show("Não é permitido campos em branco ou iguais a zero !!!");
             }
@@ -605,6 +711,11 @@ namespace rajadas
                     parametroCopiarOuMoverRajadaTijolo = rbMoverArquivoProcessadoRajadaTijolo.Text;
                 }
 
+                this.parametroIntervaloMonitoramentoRajadaTijolo = tbIntervaloMonitoramentoTijolo.Text;
+                this.parametroFrequenciaMonitoramentoRajadaTijolo = cbFrequenciaMonitoramentoTijolo.SelectedItem.ToString();
+                this.statusMonitoramentoRajadaTijolo = cbStatusMonitoramentoTijolo.SelectedItem.ToString();
+                //this.destinatariosRajadaTijolo = tbDestinatariosTijolo.Text;
+
                 listaDeParametrosParaSalvar.Add(this.caminhoArquivoTxtRajadaTijolo);
                 listaDeParametrosParaSalvar.Add(this.caminhoArquivoExcelRajadaTijolo);
                 listaDeParametrosParaSalvar.Add(this.caminhoRajadaProcessadaTijolo);
@@ -612,9 +723,13 @@ namespace rajadas
                 listaDeParametrosParaSalvar.Add(this.parametroIntervaloRajadaTijolo);
                 listaDeParametrosParaSalvar.Add(this.parametroFrequenciaRajadaTijolo);
                 listaDeParametrosParaSalvar.Add(this.statusLeituraRajadaTijolo);
+                listaDeParametrosParaSalvar.Add(this.statusMonitoramentoRajadaTijolo);
+                listaDeParametrosParaSalvar.Add(this.parametroIntervaloMonitoramentoRajadaTijolo);
+                listaDeParametrosParaSalvar.Add(this.parametroFrequenciaMonitoramentoRajadaTijolo);
+                //listaDeParametrosParaSalvar.Add(this.destinatariosRajadaTijolo);
 
                 ParametrosSistema parametrosSistema = new ParametrosSistema();
-                parametrosSistema.salvarConfiguracoes(listaDeParametrosParaSalvar, this.caminhoArquivoDeConfiguracao, "Tijolo", 0, 6);
+                parametrosSistema.salvarConfiguracoes(listaDeParametrosParaSalvar, this.caminhoArquivoDeConfiguracao, "Tijolo", 0, 10);
 
                 MessageBox.Show("As configurações foram salvas !!!", "Mensagem do sistema");
 
@@ -625,7 +740,7 @@ namespace rajadas
         private void btSalvarArquivoDigital_Click(object sender, EventArgs e)
         {
             // ----- ** Validação dos campos Intervalo para não permitir a digitação de zero ou em branco ** -------- //
-            if (tbIntervaloRajadaTijolo.Text.Equals("") || tbIntervaloRajadaTijolo.Text.Equals("0") || tbIntervaloRajadaDigital.Text.Equals("") || tbIntervaloRajadaDigital.Text.Equals("0") || tbIntervaloRajadaInvertida.Text.Equals("") || tbIntervaloRajadaInvertida.Text.Equals("0"))
+            if (tbIntervaloRajadaDigital.Text.Equals("") || tbIntervaloRajadaDigital.Text.Equals("0") || tbIntervaloMonitoramentoDigital.Text.Equals("") || tbIntervaloMonitoramentoDigital.Text.Equals("0") || tbDestinatariosDigital.Text.Equals(""))
             {
                 MessageBox.Show("Não é permitido campos em branco ou iguais a zero !!!");
             }
@@ -646,6 +761,11 @@ namespace rajadas
                     parametroCopiarOuMoverRajadaDigital = rbMoverArquivoProcessadoRajadaDigital.Text;
                 }
 
+                this.parametroIntervaloMonitoramentoRajadaDigital = tbIntervaloMonitoramentoDigital.Text;
+                this.parametroFrequenciaMonitoramentoRajadaDigital = cbFrequenciaMonitoramentoDigital.SelectedItem.ToString();
+                this.statusMonitoramentoRajadaDigital = cbStatusMonitoramentoDigital.SelectedItem.ToString();
+                this.destinatariosRajadaDigital = tbDestinatariosDigital.Text;
+
                 listaDeParametrosParaSalvar.Add(this.caminhoArquivoTxtRajadaDigital);
                 listaDeParametrosParaSalvar.Add(this.caminhoArquivoExcelRajadaDigital);
                 listaDeParametrosParaSalvar.Add(this.caminhoRajadaProcessadaDigital);
@@ -653,9 +773,13 @@ namespace rajadas
                 listaDeParametrosParaSalvar.Add(this.parametroIntervaloRajadaDigital);
                 listaDeParametrosParaSalvar.Add(this.parametroFrequenciaRajadaDigital);
                 listaDeParametrosParaSalvar.Add(this.statusLeituraRajadaDigital);
+                listaDeParametrosParaSalvar.Add(this.statusMonitoramentoRajadaDigital);
+                listaDeParametrosParaSalvar.Add(this.parametroIntervaloMonitoramentoRajadaDigital);
+                listaDeParametrosParaSalvar.Add(this.parametroFrequenciaMonitoramentoRajadaDigital);
+                listaDeParametrosParaSalvar.Add(this.destinatariosRajadaDigital);
 
                 ParametrosSistema parametrosSistema = new ParametrosSistema();
-                parametrosSistema.salvarConfiguracoes(listaDeParametrosParaSalvar, this.caminhoArquivoDeConfiguracao, "Digital", 0, 6);
+                parametrosSistema.salvarConfiguracoes(listaDeParametrosParaSalvar, this.caminhoArquivoDeConfiguracao, "Digital", 0, 10);
 
                 MessageBox.Show("As configurações foram salvas !!!", "Mensagem do sistema");
 
@@ -666,7 +790,7 @@ namespace rajadas
         private void btSalvarArquivoInvertida_Click(object sender, EventArgs e)
         {
             // ----- ** Validação dos campos Intervalo para não permitir a digitação de zero ou em branco ** -------- //
-            if (tbIntervaloRajadaTijolo.Text.Equals("") || tbIntervaloRajadaTijolo.Text.Equals("0") || tbIntervaloRajadaDigital.Text.Equals("") || tbIntervaloRajadaDigital.Text.Equals("0") || tbIntervaloRajadaInvertida.Text.Equals("") || tbIntervaloRajadaInvertida.Text.Equals("0"))
+            if (tbIntervaloRajadaInvertida.Text.Equals("") || tbIntervaloRajadaInvertida.Text.Equals("0") || tbIntervaloMonitoramentoInvertida.Text.Equals("") || tbIntervaloMonitoramentoInvertida.Text.Equals("0") || tbDestinatariosInvertida.Text.Equals(""))
             {
                 MessageBox.Show("Não é permitido campos em branco ou iguais a zero !!!");
             }
@@ -687,6 +811,11 @@ namespace rajadas
                     parametroCopiarOuMoverRajadaInvertida = rbMoverArquivoProcessadoRajadaInvertida.Text;
                 }
 
+                this.parametroIntervaloMonitoramentoRajadaInvertida = tbIntervaloMonitoramentoInvertida.Text;
+                this.parametroFrequenciaMonitoramentoRajadaInvertida = cbFrequenciaMonitoramentoInvertida.SelectedItem.ToString();
+                this.statusMonitoramentoRajadaInvertida = cbStatusMonitoramentoInvertida.SelectedItem.ToString();
+                this.destinatariosRajadaInvertida = tbDestinatariosInvertida.Text;
+
                 listaDeParametrosParaSalvar.Add(this.caminhoArquivoTxtRajadaInvertida);
                 listaDeParametrosParaSalvar.Add(this.caminhoArquivoExcelRajadaInvertida);
                 listaDeParametrosParaSalvar.Add(this.caminhoRajadaProcessadaInvertida);
@@ -694,9 +823,13 @@ namespace rajadas
                 listaDeParametrosParaSalvar.Add(this.parametroIntervaloRajadaInvertida);
                 listaDeParametrosParaSalvar.Add(this.parametroFrequenciaRajadaInvertida);
                 listaDeParametrosParaSalvar.Add(this.statusLeituraRajadaInvertida);
+                listaDeParametrosParaSalvar.Add(this.statusMonitoramentoRajadaInvertida);
+                listaDeParametrosParaSalvar.Add(this.parametroIntervaloMonitoramentoRajadaInvertida);
+                listaDeParametrosParaSalvar.Add(this.parametroFrequenciaMonitoramentoRajadaInvertida);
+                listaDeParametrosParaSalvar.Add(this.destinatariosRajadaInvertida);
 
                 ParametrosSistema parametrosSistema = new ParametrosSistema();
-                parametrosSistema.salvarConfiguracoes(listaDeParametrosParaSalvar, this.caminhoArquivoDeConfiguracao, "Invertida", 0, 6);
+                parametrosSistema.salvarConfiguracoes(listaDeParametrosParaSalvar, this.caminhoArquivoDeConfiguracao, "Invertida", 0, 10);
 
                 MessageBox.Show("As configurações foram salvas !!!", "Mensagem do sistema");
 
@@ -854,7 +987,7 @@ namespace rajadas
             String horaAtual = DateTime.Now.ToString();
 
             Email email = new Email();
-            email.enviarEmail("walisson.wmb@gmail.com", "Monitoramento de Rajadas Tijolo - " + horaAtual, "Arquivos lógicos RAJADA TIJOLO encontrados até " + horaAtual + " \n " + arquivosEncontrados);
+            email.enviarEmail(this.destinatariosRajadaTijolo, "Monitoramento de Rajadas Tijolo - " + horaAtual, "Arquivos lógicos RAJADA TIJOLO encontrados até " + horaAtual + " \n " + arquivosEncontrados);
         }
         // ** Timer que monitora os arquivos de Rajado do tipo Tijolo ** //
 
@@ -879,7 +1012,7 @@ namespace rajadas
             String horaAtual = DateTime.Now.ToString();
 
             Email email = new Email();
-            email.enviarEmail("walisson.wmb@gmail.com", "Monitoramento de Rajadas Digitais (Mundo Velho) - " + horaAtual, "Arquivos lógicos RAJADA DIGITAL (MUNDO VELHO) encontrados até " + horaAtual + " \n " + arquivosEncontrados);
+            //email.enviarEmail(this.destinatariosRajadaDigital, "Monitoramento de Rajadas Digitais (Mundo Velho) - " + horaAtual, "Arquivos lógicos RAJADA DIGITAL (MUNDO VELHO) encontrados até " + horaAtual + " \n " + arquivosEncontrados);
         }
         // ** Timer que monitora os arquivos de Rajado do tipo Digital ** //
 
@@ -904,8 +1037,22 @@ namespace rajadas
             String horaAtual = DateTime.Now.ToString();
 
             Email email = new Email();
-            email.enviarEmail("walisson.wmb@gmail.com", "Monitoramento de Rajadas Invertidas - " + horaAtual, "Arquivos lógicos RAJADA INVERTIDA encontrados até " + horaAtual + " \n " + arquivosEncontrados);
+            //email.enviarEmail(this.destinatariosRajadaInvertida, "Monitoramento de Rajadas Invertidas - " + horaAtual, "Arquivos lógicos RAJADA INVERTIDA encontrados até " + horaAtual + " \n " + arquivosEncontrados);
         }
-        // ** Timer que monitora os arquivos de Rajado do tipo Invertida ** //
+
+        private void btSalvarMonitoramentoTijolo_Click(object sender, EventArgs e)
+        {
+            
+        }
+
+        private void btSalvarMonitoramentoDigital_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void btSalvarMonitoramentoInvertida_Click(object sender, EventArgs e)
+        {
+
+        }
     }
 }

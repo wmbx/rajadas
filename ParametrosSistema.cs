@@ -14,9 +14,13 @@ namespace rajadas
         private String caminhoExcel;
         private String caminhoRajadasProcessadas;
         private String parametroCopiarOuMoverArquivoTxt;
-        private String intervalo;
-        private String frequencia;
+        private String intervaloLeitura;
+        private String frequenciaLeitura;
         private String statusLeitura;
+        private String intervaloMonitoramento;
+        private String frequenciaMonitoramento;
+        private String statusMonitoramento;
+        private String destinatariosMonitoramento;
         List<String> parametrosRajada = new List<String>();
 
         public List<String> carregarParametrosRajada(String arquivoDeConfiguracaoSistema, String tipoRajada)
@@ -37,9 +41,13 @@ namespace rajadas
                     caminhoExcel = parametro.Element("CaminhoExcel").Value;
                     caminhoRajadasProcessadas = parametro.Element("CaminhoRajadasProcessadas").Value;
                     parametroCopiarOuMoverArquivoTxt = parametro.Element("ConfiguracaoCopiarOuMover").Value;
-                    intervalo = parametro.Element("Intervalo").Value;
-                    frequencia = parametro.Element("Frequencia").Value;
+                    intervaloLeitura = parametro.Element("Intervalo").Value;
+                    frequenciaLeitura = parametro.Element("Frequencia").Value;
                     statusLeitura = parametro.Element("StatusLeitura").Value;
+                    statusMonitoramento = parametro.Element("StatusMonitoramento").Value;
+                    intervaloMonitoramento = parametro.Element("IntervaloMonitoramento").Value;
+                    frequenciaMonitoramento = parametro.Element("FrequenciaMonitoramento").Value;
+                    destinatariosMonitoramento = parametro.Element("DestinatariosMonitoramento").Value;
                 }
 
                 List<String> parametrosLocais = new List<String>();
@@ -48,9 +56,13 @@ namespace rajadas
                 parametrosLocais.Add(caminhoExcel);
                 parametrosLocais.Add(caminhoRajadasProcessadas);
                 parametrosLocais.Add(parametroCopiarOuMoverArquivoTxt);
-                parametrosLocais.Add(intervalo);
-                parametrosLocais.Add(frequencia);
+                parametrosLocais.Add(intervaloLeitura);
+                parametrosLocais.Add(frequenciaLeitura);
                 parametrosLocais.Add(statusLeitura);
+                parametrosLocais.Add(statusMonitoramento);
+                parametrosLocais.Add(intervaloMonitoramento);
+                parametrosLocais.Add(frequenciaMonitoramento);
+                parametrosLocais.Add(destinatariosMonitoramento);
 
                 this.parametrosRajada = parametrosLocais;
             }
@@ -123,6 +135,36 @@ namespace rajadas
                             .Elements("TipoRajada")
                             .Where(x => x.Attribute("Id").Value == tipoRajada).FirstOrDefault()
                             .SetElementValue("StatusLeitura", listaDeParametros[contador]);
+
+                    contador = contador + 1;
+
+                    xml.Element("Parametros")
+                        .Elements("TipoRajada")
+                        .Where(x => x.Attribute("Id").Value == tipoRajada).FirstOrDefault()
+                        .SetElementValue("StatusMonitoramento", listaDeParametros[contador]);
+
+                    contador = contador + 1;
+
+                    xml.Element("Parametros")
+                        .Elements("TipoRajada")
+                        .Where(x => x.Attribute("Id").Value == tipoRajada).FirstOrDefault()
+                        .SetElementValue("IntervaloMonitoramento", listaDeParametros[contador]);
+
+                    contador = contador + 1;
+
+                    xml.Element("Parametros")
+                        .Elements("TipoRajada")
+                        .Where(x => x.Attribute("Id").Value == tipoRajada).FirstOrDefault()
+                        .SetElementValue("FrequenciaMonitoramento", listaDeParametros[contador]);
+
+                    contador = contador + 1;
+
+                    xml.Element("Parametros")
+                            .Elements("TipoRajada")
+                            .Where(x => x.Attribute("Id").Value == tipoRajada).FirstOrDefault()
+                            .SetElementValue("DestinatariosMonitoramento", listaDeParametros[contador]);
+
+
                 }
 
                 xml.Save(caminhoArquivoDeConfiguracao);
