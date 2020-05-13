@@ -1217,8 +1217,8 @@
             this.DoubleBuffered = true;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MaximizeBox = false;
-            this.MaximumSize = new System.Drawing.Size(2000, 525);
-            this.MinimumSize = new System.Drawing.Size(452, 400);
+            this.MaximumSize = new System.Drawing.Size(1002, 519);
+            this.MinimumSize = new System.Drawing.Size(1002, 519);
             this.Name = "Form1";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "BotFlow Rajadas V.1.1";

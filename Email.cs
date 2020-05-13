@@ -10,7 +10,7 @@ namespace rajadas
 {
     class Email
     {
-        public void enviarEmail(List<String> ListaDeDestinatario, String assunto, String corpo)
+        public void enviarEmail(String destinatarios, String assunto, String corpo)
         {
             try
             {
@@ -24,11 +24,9 @@ namespace rajadas
 
                 smtp.EnableSsl = true;
 
-                foreach (var destinatario in ListaDeDestinatario)
-                {
-                    MailMessage mensagemEmail = new MailMessage("walisson.benedito@brscan.com.br", destinatario, assunto, corpo);
-                    smtp.Send(mensagemEmail);
-                }
+                MailMessage mensagemEmail = new MailMessage("walisson.benedito@brscan.com.br", destinatarios, assunto, corpo);
+                
+                smtp.Send(mensagemEmail);     
             }
             catch (Exception e)
             {

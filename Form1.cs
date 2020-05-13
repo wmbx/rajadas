@@ -30,7 +30,7 @@ namespace rajadas
         private String parametroIntervaloMonitoramentoRajadaTijolo;
         private String parametroFrequenciaMonitoramentoRajadaTijolo;
         private String statusMonitoramentoRajadaTijolo;
-        private List<String> destinatariosRajadaTijolo;
+        private String destinatariosRajadaTijolo;
 
         private String caminhoArquivoTxtRajadaDigital;
         private String caminhoArquivoExcelRajadaDigital;
@@ -90,15 +90,8 @@ namespace rajadas
             this.statusMonitoramentoRajadaTijolo = listaDeParametrosRajadaTijolo[7];
             this.parametroIntervaloMonitoramentoRajadaTijolo = listaDeParametrosRajadaTijolo[8];
             this.parametroFrequenciaMonitoramentoRajadaTijolo = listaDeParametrosRajadaTijolo[9];
-
-            String destinatarios = listaDeParametrosRajadaTijolo[10];
-            int qtdDeDestinatarios = destinatarios.Count(ch => ch == ';');
-            for (int i = 0; i < qtdDeDestinatarios + 1; i++)
-            {
-                destinatariosRajadaTijolo.Add(destinatarios);
-            }
-
-
+            this.destinatariosRajadaTijolo = listaDeParametrosRajadaTijolo[10];
+            
             tbCaminhoRajadaTijolo.Text = caminhoArquivoTxtRajadaTijolo;
             tbCaminhoArquivoExcelTijolo.Text = caminhoArquivoExcelRajadaTijolo;
             tbCaminhoRajadaProcessadaTijolo.Text = caminhoRajadaProcessadaTijolo;
@@ -108,7 +101,7 @@ namespace rajadas
             cbStatusMonitoramentoTijolo.SelectedItem = statusMonitoramentoRajadaTijolo;
             tbIntervaloMonitoramentoTijolo.Text = parametroIntervaloMonitoramentoRajadaTijolo;
             cbFrequenciaMonitoramentoTijolo.SelectedItem = parametroFrequenciaMonitoramentoRajadaTijolo;
-            //tbDestinatariosTijolo.Text = destinatariosRajadaTijolo;            
+            tbDestinatariosTijolo.Text = destinatariosRajadaTijolo;            
 
 
             if (parametroCopiarOuMoverRajadaTijolo == "Copiar Arquivo Processado")
@@ -714,7 +707,7 @@ namespace rajadas
                 this.parametroIntervaloMonitoramentoRajadaTijolo = tbIntervaloMonitoramentoTijolo.Text;
                 this.parametroFrequenciaMonitoramentoRajadaTijolo = cbFrequenciaMonitoramentoTijolo.SelectedItem.ToString();
                 this.statusMonitoramentoRajadaTijolo = cbStatusMonitoramentoTijolo.SelectedItem.ToString();
-                //this.destinatariosRajadaTijolo = tbDestinatariosTijolo.Text;
+                this.destinatariosRajadaTijolo = tbDestinatariosTijolo.Text;
 
                 listaDeParametrosParaSalvar.Add(this.caminhoArquivoTxtRajadaTijolo);
                 listaDeParametrosParaSalvar.Add(this.caminhoArquivoExcelRajadaTijolo);
@@ -726,7 +719,7 @@ namespace rajadas
                 listaDeParametrosParaSalvar.Add(this.statusMonitoramentoRajadaTijolo);
                 listaDeParametrosParaSalvar.Add(this.parametroIntervaloMonitoramentoRajadaTijolo);
                 listaDeParametrosParaSalvar.Add(this.parametroFrequenciaMonitoramentoRajadaTijolo);
-                //listaDeParametrosParaSalvar.Add(this.destinatariosRajadaTijolo);
+                listaDeParametrosParaSalvar.Add(this.destinatariosRajadaTijolo);
 
                 ParametrosSistema parametrosSistema = new ParametrosSistema();
                 parametrosSistema.salvarConfiguracoes(listaDeParametrosParaSalvar, this.caminhoArquivoDeConfiguracao, "Tijolo", 0, 10);
@@ -1012,7 +1005,7 @@ namespace rajadas
             String horaAtual = DateTime.Now.ToString();
 
             Email email = new Email();
-            //email.enviarEmail(this.destinatariosRajadaDigital, "Monitoramento de Rajadas Digitais (Mundo Velho) - " + horaAtual, "Arquivos lógicos RAJADA DIGITAL (MUNDO VELHO) encontrados até " + horaAtual + " \n " + arquivosEncontrados);
+            email.enviarEmail(this.destinatariosRajadaDigital, "Monitoramento de Rajadas Digitais (Mundo Velho) - " + horaAtual, "Arquivos lógicos RAJADA DIGITAL (MUNDO VELHO) encontrados até " + horaAtual + " \n " + arquivosEncontrados);
         }
         // ** Timer que monitora os arquivos de Rajado do tipo Digital ** //
 
@@ -1037,7 +1030,7 @@ namespace rajadas
             String horaAtual = DateTime.Now.ToString();
 
             Email email = new Email();
-            //email.enviarEmail(this.destinatariosRajadaInvertida, "Monitoramento de Rajadas Invertidas - " + horaAtual, "Arquivos lógicos RAJADA INVERTIDA encontrados até " + horaAtual + " \n " + arquivosEncontrados);
+            email.enviarEmail(this.destinatariosRajadaInvertida, "Monitoramento de Rajadas Invertidas - " + horaAtual, "Arquivos lógicos RAJADA INVERTIDA encontrados até " + horaAtual + " \n " + arquivosEncontrados);
         }
 
         private void btSalvarMonitoramentoTijolo_Click(object sender, EventArgs e)

@@ -2,8 +2,6 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace rajadas
@@ -155,15 +153,38 @@ namespace rajadas
                 listaDeDiretorios = Directory.GetDirectories(caminhoArquivoTXT).ToList();
                 listaDeDiretorios.Add(caminhoArquivoTXT);
 
+                String ano = DateTime.Now.Year.ToString();
+                String mes = DateTime.Now.Month.ToString();
+                // ** Acrescenta 0 ao mês ** //
+                if (Convert.ToInt32(mes) < 10)
+                {
+                    mes = "0" + mes;
+                }
+                // ** Acrescenta 0 ao mês ** //
+                String dia = DateTime.Now.Day.ToString();
+
+                String dataAtual = ano + mes + dia;
+
                 foreach (var diretorio in listaDeDiretorios)
                 {
-                    listaDeArquivosEmCadaDiretorio = Directory.GetFiles(diretorio).ToList();
-                    foreach (var arquivoEncontrado in listaDeArquivosEmCadaDiretorio)
-                    {
-                        listaDeArquivosTxtRajadas.Add(arquivoEncontrado);
-                    }
-                }
+                    // ** Recupera a quantidade de caracteres do caminho do diretório ** //
+                    int qtdCaracteres = diretorio.Length;
 
+                    // ** Pega o nome da pasta ** //
+                    if (qtdCaracteres > 7)
+                    {
+                        String diretorioAjustado = diretorio.Substring(qtdCaracteres - 8);
+
+                        if (diretorioAjustado == dataAtual)
+                        {
+                            listaDeArquivosEmCadaDiretorio = Directory.GetFiles(diretorio).ToList();
+                            foreach (var arquivoEncontrado in listaDeArquivosEmCadaDiretorio)
+                            {
+                                listaDeArquivosTxtRajadas.Add(arquivoEncontrado);
+                            }
+                        }
+                    }                 
+                }
 
                 foreach (var arquivoTxtRajada in listaDeArquivosTxtRajadas)
                 {
@@ -356,19 +377,43 @@ namespace rajadas
             try
             {
 
-            listaDeDiretorios = Directory.GetDirectories(caminhoArquivoTXT).ToList();
-            listaDeDiretorios.Add(caminhoArquivoTXT);
+                listaDeDiretorios = Directory.GetDirectories(caminhoArquivoTXT).ToList();
+                listaDeDiretorios.Add(caminhoArquivoTXT);
 
-            foreach (var diretorio in listaDeDiretorios)
-            {
-                listaDeArquivosEmCadaDiretorio = Directory.GetFiles(diretorio).ToList();
-                foreach (var arquivoEncontrado in listaDeArquivosEmCadaDiretorio)
+                String ano = DateTime.Now.Year.ToString();
+                String mes = DateTime.Now.Month.ToString();
+                // ** Acrescenta 0 ao mês ** //
+                if (Convert.ToInt32(mes) < 10)
                 {
-                    listaDeArquivosTxtRajadas.Add(arquivoEncontrado);
+                    mes = "0" + mes;
                 }
-            }
+                // ** Acrescenta 0 ao mês ** //
+                String dia = DateTime.Now.Day.ToString();
 
-            foreach (var arquivoTxtRajada in listaDeArquivosTxtRajadas)
+                String dataAtual = ano + mes + dia;
+
+                foreach (var diretorio in listaDeDiretorios)
+                {
+                    // ** Recupera a quantidade de caracteres do caminho do diretório ** //
+                    int qtdCaracteres = diretorio.Length;
+
+                    // ** Pega o nome da pasta ** //
+                    if (qtdCaracteres > 7)
+                    {
+                        String diretorioAjustado = diretorio.Substring(qtdCaracteres - 8);
+
+                        if (diretorioAjustado == dataAtual)
+                        {
+                            listaDeArquivosEmCadaDiretorio = Directory.GetFiles(diretorio).ToList();
+                            foreach (var arquivoEncontrado in listaDeArquivosEmCadaDiretorio)
+                            {
+                                listaDeArquivosTxtRajadas.Add(arquivoEncontrado);
+                            }
+                        }
+                    }
+                }
+
+                foreach (var arquivoTxtRajada in listaDeArquivosTxtRajadas)
             {
                 FileInfo informacaoDoArquivo = new FileInfo(arquivoTxtRajada);
                 String nomeArquivoRajadaTxt = informacaoDoArquivo.Name;
@@ -563,16 +608,40 @@ namespace rajadas
                 listaDeDiretorios = Directory.GetDirectories(caminhoArquivoTXT).ToList();
                 listaDeDiretorios.Add(caminhoArquivoTXT);
 
-            foreach (var diretorio in listaDeDiretorios)
-            {
-                listaDeArquivosEmCadaDiretorio = Directory.GetFiles(diretorio).ToList();
-                foreach (var arquivoEncontrado in listaDeArquivosEmCadaDiretorio)
+                String ano = DateTime.Now.Year.ToString();
+                String mes = DateTime.Now.Month.ToString();
+                // ** Acrescenta 0 ao mês ** //
+                if (Convert.ToInt32(mes) < 10)
                 {
-                    listaDeArquivosTxtRajadas.Add(arquivoEncontrado);
+                    mes = "0" + mes;
                 }
-            }
+                // ** Acrescenta 0 ao mês ** //
+                String dia = DateTime.Now.Day.ToString();
 
-            foreach (var arquivoTxtRajada in listaDeArquivosTxtRajadas)
+                String dataAtual = ano + mes + dia;
+
+                foreach (var diretorio in listaDeDiretorios)
+                {
+                    // ** Recupera a quantidade de caracteres do caminho do diretório ** //
+                    int qtdCaracteres = diretorio.Length;
+
+                    // ** Pega o nome da pasta ** //
+                    if (qtdCaracteres > 7)
+                    {
+                        String diretorioAjustado = diretorio.Substring(qtdCaracteres - 8);
+
+                        if (diretorioAjustado == dataAtual)
+                        {
+                            listaDeArquivosEmCadaDiretorio = Directory.GetFiles(diretorio).ToList();
+                            foreach (var arquivoEncontrado in listaDeArquivosEmCadaDiretorio)
+                            {
+                                listaDeArquivosTxtRajadas.Add(arquivoEncontrado);
+                            }
+                        }
+                    }
+                }
+
+                foreach (var arquivoTxtRajada in listaDeArquivosTxtRajadas)
             {
                 FileInfo informacaoDoArquivo = new FileInfo(arquivoTxtRajada);
                 String nomeArquivoRajadaTxt = informacaoDoArquivo.Name;
