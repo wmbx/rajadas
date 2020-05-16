@@ -33,24 +33,18 @@
             this.apontaCaminhoPasta = new System.Windows.Forms.FolderBrowserDialog();
             this.apontaCaminhoArquivo = new System.Windows.Forms.OpenFileDialog();
             this.label1 = new System.Windows.Forms.Label();
-            this.label2 = new System.Windows.Forms.Label();
             this.tbCaminhoRajadaTijolo = new System.Windows.Forms.TextBox();
-            this.tbCaminhoArquivoExcelTijolo = new System.Windows.Forms.TextBox();
             this.btCaminhoRajadaTijolo = new System.Windows.Forms.Button();
-            this.btApontaArquivoExcel = new System.Windows.Forms.Button();
             this.label3 = new System.Windows.Forms.Label();
             this.tbCaminhoRajadaProcessadaTijolo = new System.Windows.Forms.TextBox();
             this.btCaminhoRajadaProcessadaTijolo = new System.Windows.Forms.Button();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.gbMonitoramentoTijolo = new System.Windows.Forms.GroupBox();
+            this.btAgendamentoTijolo = new System.Windows.Forms.Button();
             this.tbDestinatariosTijolo = new System.Windows.Forms.TextBox();
             this.label20 = new System.Windows.Forms.Label();
             this.cbStatusMonitoramentoTijolo = new System.Windows.Forms.ComboBox();
             this.label17 = new System.Windows.Forms.Label();
-            this.cbFrequenciaMonitoramentoTijolo = new System.Windows.Forms.ComboBox();
-            this.label18 = new System.Windows.Forms.Label();
-            this.tbIntervaloMonitoramentoTijolo = new System.Windows.Forms.TextBox();
-            this.label19 = new System.Windows.Forms.Label();
             this.pbLeituraTijolo = new System.Windows.Forms.ProgressBar();
             this.btLerArquivoTijolo = new System.Windows.Forms.Button();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
@@ -65,25 +59,19 @@
             this.label6 = new System.Windows.Forms.Label();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
             this.gbMonitoramentoDigital = new System.Windows.Forms.GroupBox();
+            this.btAgendamentoDigital = new System.Windows.Forms.Button();
             this.tbDestinatariosDigital = new System.Windows.Forms.TextBox();
             this.label21 = new System.Windows.Forms.Label();
             this.cbStatusMonitoramentoDigital = new System.Windows.Forms.ComboBox();
             this.label22 = new System.Windows.Forms.Label();
-            this.cbFrequenciaMonitoramentoDigital = new System.Windows.Forms.ComboBox();
-            this.label23 = new System.Windows.Forms.Label();
-            this.tbIntervaloMonitoramentoDigital = new System.Windows.Forms.TextBox();
-            this.label24 = new System.Windows.Forms.Label();
             this.pbLeituraDigital = new System.Windows.Forms.ProgressBar();
             this.btLerArquivoDigital = new System.Windows.Forms.Button();
             this.btSalvarArquivoDigital = new System.Windows.Forms.Button();
             this.btCaminhoRajadaProcessadaDigital = new System.Windows.Forms.Button();
             this.tbCaminhoRajadaProcessadaDigital = new System.Windows.Forms.TextBox();
             this.label4 = new System.Windows.Forms.Label();
-            this.btCaminhoArquivoExcelRajadaDigital = new System.Windows.Forms.Button();
             this.btCaminhoRajadaDigital = new System.Windows.Forms.Button();
-            this.tbCaminhoArquivoExcelRajadaDigital = new System.Windows.Forms.TextBox();
             this.tbCaminhoRajadaDigital = new System.Windows.Forms.TextBox();
-            this.label5 = new System.Windows.Forms.Label();
             this.label7 = new System.Windows.Forms.Label();
             this.groupBox9 = new System.Windows.Forms.GroupBox();
             this.cbStatusLeituraDigital = new System.Windows.Forms.ComboBox();
@@ -97,14 +85,11 @@
             this.label13 = new System.Windows.Forms.Label();
             this.groupBox4 = new System.Windows.Forms.GroupBox();
             this.gbMonitoramentoInvertida = new System.Windows.Forms.GroupBox();
+            this.btAgendamentoInvertida = new System.Windows.Forms.Button();
             this.tbDestinatariosInvertida = new System.Windows.Forms.TextBox();
             this.label25 = new System.Windows.Forms.Label();
             this.cbStatusMonitoramentoInvertida = new System.Windows.Forms.ComboBox();
             this.label26 = new System.Windows.Forms.Label();
-            this.cbFrequenciaMonitoramentoInvertida = new System.Windows.Forms.ComboBox();
-            this.label27 = new System.Windows.Forms.Label();
-            this.tbIntervaloMonitoramentoInvertida = new System.Windows.Forms.TextBox();
-            this.label28 = new System.Windows.Forms.Label();
             this.pbLeituraInvertida = new System.Windows.Forms.ProgressBar();
             this.btLerArquivoInvertida = new System.Windows.Forms.Button();
             this.btSalvarArquivoInvertida = new System.Windows.Forms.Button();
@@ -114,11 +99,8 @@
             this.btCaminhoRajadaProcessadaTrintaTrinta = new System.Windows.Forms.Button();
             this.tbCaminhoRajadaProcessadaInvertida = new System.Windows.Forms.TextBox();
             this.label8 = new System.Windows.Forms.Label();
-            this.btCaminhoArquivoExcelRajadaTrintaTrinta = new System.Windows.Forms.Button();
             this.btApontaCaminhoRajadaTrintaTrinta = new System.Windows.Forms.Button();
-            this.tbCaminhoArquivoExcelRajadaInvertida = new System.Windows.Forms.TextBox();
             this.tbCaminhoRajadaInvertida = new System.Windows.Forms.TextBox();
-            this.label9 = new System.Windows.Forms.Label();
             this.label10 = new System.Windows.Forms.Label();
             this.groupBox10 = new System.Windows.Forms.GroupBox();
             this.cbStatusLeituraInvertida = new System.Windows.Forms.ComboBox();
@@ -162,38 +144,22 @@
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(4, 18);
+            this.label1.Location = new System.Drawing.Point(4, 30);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(105, 13);
+            this.label1.Size = new System.Drawing.Size(97, 13);
             this.label1.TabIndex = 1;
-            this.label1.Text = "Caminho das rajadas";
-            // 
-            // label2
-            // 
-            this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(4, 58);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(126, 13);
-            this.label2.TabIndex = 2;
-            this.label2.Text = "Caminho do aquivo excel";
+            this.label1.Text = "Origem das rajadas";
             // 
             // tbCaminhoRajadaTijolo
             // 
-            this.tbCaminhoRajadaTijolo.Location = new System.Drawing.Point(7, 33);
+            this.tbCaminhoRajadaTijolo.Location = new System.Drawing.Point(7, 45);
             this.tbCaminhoRajadaTijolo.Name = "tbCaminhoRajadaTijolo";
             this.tbCaminhoRajadaTijolo.Size = new System.Drawing.Size(329, 20);
             this.tbCaminhoRajadaTijolo.TabIndex = 3;
             // 
-            // tbCaminhoArquivoExcelTijolo
-            // 
-            this.tbCaminhoArquivoExcelTijolo.Location = new System.Drawing.Point(7, 73);
-            this.tbCaminhoArquivoExcelTijolo.Name = "tbCaminhoArquivoExcelTijolo";
-            this.tbCaminhoArquivoExcelTijolo.Size = new System.Drawing.Size(329, 20);
-            this.tbCaminhoArquivoExcelTijolo.TabIndex = 4;
-            // 
             // btCaminhoRajadaTijolo
             // 
-            this.btCaminhoRajadaTijolo.Location = new System.Drawing.Point(336, 32);
+            this.btCaminhoRajadaTijolo.Location = new System.Drawing.Point(336, 44);
             this.btCaminhoRajadaTijolo.Name = "btCaminhoRajadaTijolo";
             this.btCaminhoRajadaTijolo.Size = new System.Drawing.Size(26, 22);
             this.btCaminhoRajadaTijolo.TabIndex = 5;
@@ -201,35 +167,25 @@
             this.btCaminhoRajadaTijolo.UseVisualStyleBackColor = true;
             this.btCaminhoRajadaTijolo.Click += new System.EventHandler(this.botaoApontaCaminhoRajada_Click);
             // 
-            // btApontaArquivoExcel
-            // 
-            this.btApontaArquivoExcel.Location = new System.Drawing.Point(336, 72);
-            this.btApontaArquivoExcel.Name = "btApontaArquivoExcel";
-            this.btApontaArquivoExcel.Size = new System.Drawing.Size(26, 22);
-            this.btApontaArquivoExcel.TabIndex = 6;
-            this.btApontaArquivoExcel.Text = "...";
-            this.btApontaArquivoExcel.UseVisualStyleBackColor = true;
-            this.btApontaArquivoExcel.Click += new System.EventHandler(this.botaoApontaArquivoExcel_Click);
-            // 
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(6, 95);
+            this.label3.Location = new System.Drawing.Point(6, 74);
             this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(168, 13);
+            this.label3.Size = new System.Drawing.Size(163, 13);
             this.label3.TabIndex = 7;
-            this.label3.Text = "Caminho das rajadas processadas";
+            this.label3.Text = "Destino das rajadas processadas";
             // 
             // tbCaminhoRajadaProcessadaTijolo
             // 
-            this.tbCaminhoRajadaProcessadaTijolo.Location = new System.Drawing.Point(8, 110);
+            this.tbCaminhoRajadaProcessadaTijolo.Location = new System.Drawing.Point(8, 89);
             this.tbCaminhoRajadaProcessadaTijolo.Name = "tbCaminhoRajadaProcessadaTijolo";
             this.tbCaminhoRajadaProcessadaTijolo.Size = new System.Drawing.Size(329, 20);
             this.tbCaminhoRajadaProcessadaTijolo.TabIndex = 8;
             // 
             // btCaminhoRajadaProcessadaTijolo
             // 
-            this.btCaminhoRajadaProcessadaTijolo.Location = new System.Drawing.Point(337, 109);
+            this.btCaminhoRajadaProcessadaTijolo.Location = new System.Drawing.Point(337, 88);
             this.btCaminhoRajadaProcessadaTijolo.Name = "btCaminhoRajadaProcessadaTijolo";
             this.btCaminhoRajadaProcessadaTijolo.Size = new System.Drawing.Size(26, 22);
             this.btCaminhoRajadaProcessadaTijolo.TabIndex = 9;
@@ -246,11 +202,8 @@
             this.groupBox1.Controls.Add(this.btCaminhoRajadaProcessadaTijolo);
             this.groupBox1.Controls.Add(this.tbCaminhoRajadaProcessadaTijolo);
             this.groupBox1.Controls.Add(this.label3);
-            this.groupBox1.Controls.Add(this.btApontaArquivoExcel);
             this.groupBox1.Controls.Add(this.btCaminhoRajadaTijolo);
-            this.groupBox1.Controls.Add(this.tbCaminhoArquivoExcelTijolo);
             this.groupBox1.Controls.Add(this.tbCaminhoRajadaTijolo);
-            this.groupBox1.Controls.Add(this.label2);
             this.groupBox1.Controls.Add(this.label1);
             this.groupBox1.Controls.Add(this.groupBox8);
             this.groupBox1.Location = new System.Drawing.Point(7, 18);
@@ -262,20 +215,26 @@
             // 
             // gbMonitoramentoTijolo
             // 
+            this.gbMonitoramentoTijolo.Controls.Add(this.btAgendamentoTijolo);
             this.gbMonitoramentoTijolo.Controls.Add(this.tbDestinatariosTijolo);
             this.gbMonitoramentoTijolo.Controls.Add(this.label20);
             this.gbMonitoramentoTijolo.Controls.Add(this.cbStatusMonitoramentoTijolo);
             this.gbMonitoramentoTijolo.Controls.Add(this.label17);
-            this.gbMonitoramentoTijolo.Controls.Add(this.cbFrequenciaMonitoramentoTijolo);
-            this.gbMonitoramentoTijolo.Controls.Add(this.label18);
-            this.gbMonitoramentoTijolo.Controls.Add(this.tbIntervaloMonitoramentoTijolo);
-            this.gbMonitoramentoTijolo.Controls.Add(this.label19);
             this.gbMonitoramentoTijolo.Location = new System.Drawing.Point(701, 12);
             this.gbMonitoramentoTijolo.Name = "gbMonitoramentoTijolo";
             this.gbMonitoramentoTijolo.Size = new System.Drawing.Size(255, 120);
             this.gbMonitoramentoTijolo.TabIndex = 15;
             this.gbMonitoramentoTijolo.TabStop = false;
             this.gbMonitoramentoTijolo.Text = "Configuração do Monitoramento";
+            // 
+            // btAgendamentoTijolo
+            // 
+            this.btAgendamentoTijolo.Location = new System.Drawing.Point(110, 39);
+            this.btAgendamentoTijolo.Name = "btAgendamentoTijolo";
+            this.btAgendamentoTijolo.Size = new System.Drawing.Size(135, 21);
+            this.btAgendamentoTijolo.TabIndex = 17;
+            this.btAgendamentoTijolo.Text = "Agendamento";
+            this.btAgendamentoTijolo.UseVisualStyleBackColor = true;
             // 
             // tbDestinatariosTijolo
             // 
@@ -314,45 +273,6 @@
             this.label17.Size = new System.Drawing.Size(37, 13);
             this.label17.TabIndex = 7;
             this.label17.Text = "Status";
-            // 
-            // cbFrequenciaMonitoramentoTijolo
-            // 
-            this.cbFrequenciaMonitoramentoTijolo.DisplayMember = "Segundo";
-            this.cbFrequenciaMonitoramentoTijolo.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cbFrequenciaMonitoramentoTijolo.FormattingEnabled = true;
-            this.cbFrequenciaMonitoramentoTijolo.Items.AddRange(new object[] {
-            "Segundos",
-            "Minutos",
-            "Horas"});
-            this.cbFrequenciaMonitoramentoTijolo.Location = new System.Drawing.Point(160, 39);
-            this.cbFrequenciaMonitoramentoTijolo.Name = "cbFrequenciaMonitoramentoTijolo";
-            this.cbFrequenciaMonitoramentoTijolo.Size = new System.Drawing.Size(86, 21);
-            this.cbFrequenciaMonitoramentoTijolo.TabIndex = 6;
-            // 
-            // label18
-            // 
-            this.label18.AutoSize = true;
-            this.label18.Location = new System.Drawing.Point(157, 24);
-            this.label18.Name = "label18";
-            this.label18.Size = new System.Drawing.Size(60, 13);
-            this.label18.TabIndex = 5;
-            this.label18.Text = "Frequência";
-            // 
-            // tbIntervaloMonitoramentoTijolo
-            // 
-            this.tbIntervaloMonitoramentoTijolo.Location = new System.Drawing.Point(114, 39);
-            this.tbIntervaloMonitoramentoTijolo.Name = "tbIntervaloMonitoramentoTijolo";
-            this.tbIntervaloMonitoramentoTijolo.Size = new System.Drawing.Size(31, 20);
-            this.tbIntervaloMonitoramentoTijolo.TabIndex = 4;
-            // 
-            // label19
-            // 
-            this.label19.AutoSize = true;
-            this.label19.Location = new System.Drawing.Point(110, 24);
-            this.label19.Name = "label19";
-            this.label19.Size = new System.Drawing.Size(48, 13);
-            this.label19.TabIndex = 2;
-            this.label19.Text = "Intervalo";
             // 
             // pbLeituraTijolo
             // 
@@ -491,11 +411,8 @@
             this.groupBox3.Controls.Add(this.btCaminhoRajadaProcessadaDigital);
             this.groupBox3.Controls.Add(this.tbCaminhoRajadaProcessadaDigital);
             this.groupBox3.Controls.Add(this.label4);
-            this.groupBox3.Controls.Add(this.btCaminhoArquivoExcelRajadaDigital);
             this.groupBox3.Controls.Add(this.btCaminhoRajadaDigital);
-            this.groupBox3.Controls.Add(this.tbCaminhoArquivoExcelRajadaDigital);
             this.groupBox3.Controls.Add(this.tbCaminhoRajadaDigital);
-            this.groupBox3.Controls.Add(this.label5);
             this.groupBox3.Controls.Add(this.label7);
             this.groupBox3.Controls.Add(this.groupBox9);
             this.groupBox3.Location = new System.Drawing.Point(7, 166);
@@ -507,20 +424,26 @@
             // 
             // gbMonitoramentoDigital
             // 
+            this.gbMonitoramentoDigital.Controls.Add(this.btAgendamentoDigital);
             this.gbMonitoramentoDigital.Controls.Add(this.tbDestinatariosDigital);
             this.gbMonitoramentoDigital.Controls.Add(this.label21);
             this.gbMonitoramentoDigital.Controls.Add(this.cbStatusMonitoramentoDigital);
             this.gbMonitoramentoDigital.Controls.Add(this.label22);
-            this.gbMonitoramentoDigital.Controls.Add(this.cbFrequenciaMonitoramentoDigital);
-            this.gbMonitoramentoDigital.Controls.Add(this.label23);
-            this.gbMonitoramentoDigital.Controls.Add(this.tbIntervaloMonitoramentoDigital);
-            this.gbMonitoramentoDigital.Controls.Add(this.label24);
             this.gbMonitoramentoDigital.Location = new System.Drawing.Point(701, 12);
             this.gbMonitoramentoDigital.Name = "gbMonitoramentoDigital";
             this.gbMonitoramentoDigital.Size = new System.Drawing.Size(255, 120);
             this.gbMonitoramentoDigital.TabIndex = 21;
             this.gbMonitoramentoDigital.TabStop = false;
             this.gbMonitoramentoDigital.Text = "Configuração do Monitoramento";
+            // 
+            // btAgendamentoDigital
+            // 
+            this.btAgendamentoDigital.Location = new System.Drawing.Point(110, 39);
+            this.btAgendamentoDigital.Name = "btAgendamentoDigital";
+            this.btAgendamentoDigital.Size = new System.Drawing.Size(135, 21);
+            this.btAgendamentoDigital.TabIndex = 18;
+            this.btAgendamentoDigital.Text = "Agendamento";
+            this.btAgendamentoDigital.UseVisualStyleBackColor = true;
             // 
             // tbDestinatariosDigital
             // 
@@ -560,45 +483,6 @@
             this.label22.TabIndex = 7;
             this.label22.Text = "Status";
             // 
-            // cbFrequenciaMonitoramentoDigital
-            // 
-            this.cbFrequenciaMonitoramentoDigital.DisplayMember = "Segundo";
-            this.cbFrequenciaMonitoramentoDigital.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cbFrequenciaMonitoramentoDigital.FormattingEnabled = true;
-            this.cbFrequenciaMonitoramentoDigital.Items.AddRange(new object[] {
-            "Segundos",
-            "Minutos",
-            "Horas"});
-            this.cbFrequenciaMonitoramentoDigital.Location = new System.Drawing.Point(160, 39);
-            this.cbFrequenciaMonitoramentoDigital.Name = "cbFrequenciaMonitoramentoDigital";
-            this.cbFrequenciaMonitoramentoDigital.Size = new System.Drawing.Size(86, 21);
-            this.cbFrequenciaMonitoramentoDigital.TabIndex = 6;
-            // 
-            // label23
-            // 
-            this.label23.AutoSize = true;
-            this.label23.Location = new System.Drawing.Point(157, 24);
-            this.label23.Name = "label23";
-            this.label23.Size = new System.Drawing.Size(60, 13);
-            this.label23.TabIndex = 5;
-            this.label23.Text = "Frequência";
-            // 
-            // tbIntervaloMonitoramentoDigital
-            // 
-            this.tbIntervaloMonitoramentoDigital.Location = new System.Drawing.Point(114, 39);
-            this.tbIntervaloMonitoramentoDigital.Name = "tbIntervaloMonitoramentoDigital";
-            this.tbIntervaloMonitoramentoDigital.Size = new System.Drawing.Size(31, 20);
-            this.tbIntervaloMonitoramentoDigital.TabIndex = 4;
-            // 
-            // label24
-            // 
-            this.label24.AutoSize = true;
-            this.label24.Location = new System.Drawing.Point(110, 24);
-            this.label24.Name = "label24";
-            this.label24.Size = new System.Drawing.Size(48, 13);
-            this.label24.TabIndex = 2;
-            this.label24.Text = "Intervalo";
-            // 
             // pbLeituraDigital
             // 
             this.pbLeituraDigital.Location = new System.Drawing.Point(525, 80);
@@ -629,7 +513,7 @@
             // 
             // btCaminhoRajadaProcessadaDigital
             // 
-            this.btCaminhoRajadaProcessadaDigital.Location = new System.Drawing.Point(336, 109);
+            this.btCaminhoRajadaProcessadaDigital.Location = new System.Drawing.Point(336, 88);
             this.btCaminhoRajadaProcessadaDigital.Name = "btCaminhoRajadaProcessadaDigital";
             this.btCaminhoRajadaProcessadaDigital.Size = new System.Drawing.Size(26, 22);
             this.btCaminhoRajadaProcessadaDigital.TabIndex = 9;
@@ -639,7 +523,7 @@
             // 
             // tbCaminhoRajadaProcessadaDigital
             // 
-            this.tbCaminhoRajadaProcessadaDigital.Location = new System.Drawing.Point(7, 110);
+            this.tbCaminhoRajadaProcessadaDigital.Location = new System.Drawing.Point(7, 89);
             this.tbCaminhoRajadaProcessadaDigital.Name = "tbCaminhoRajadaProcessadaDigital";
             this.tbCaminhoRajadaProcessadaDigital.Size = new System.Drawing.Size(329, 20);
             this.tbCaminhoRajadaProcessadaDigital.TabIndex = 8;
@@ -647,25 +531,15 @@
             // label4
             // 
             this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(6, 95);
+            this.label4.Location = new System.Drawing.Point(6, 74);
             this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(168, 13);
+            this.label4.Size = new System.Drawing.Size(163, 13);
             this.label4.TabIndex = 7;
-            this.label4.Text = "Caminho das rajadas processadas";
-            // 
-            // btCaminhoArquivoExcelRajadaDigital
-            // 
-            this.btCaminhoArquivoExcelRajadaDigital.Location = new System.Drawing.Point(336, 70);
-            this.btCaminhoArquivoExcelRajadaDigital.Name = "btCaminhoArquivoExcelRajadaDigital";
-            this.btCaminhoArquivoExcelRajadaDigital.Size = new System.Drawing.Size(26, 22);
-            this.btCaminhoArquivoExcelRajadaDigital.TabIndex = 6;
-            this.btCaminhoArquivoExcelRajadaDigital.Text = "...";
-            this.btCaminhoArquivoExcelRajadaDigital.UseVisualStyleBackColor = true;
-            this.btCaminhoArquivoExcelRajadaDigital.Click += new System.EventHandler(this.btCaminhoArquivoExcelRajadaDigital_Click);
+            this.label4.Text = "Destino das rajadas processadas";
             // 
             // btCaminhoRajadaDigital
             // 
-            this.btCaminhoRajadaDigital.Location = new System.Drawing.Point(336, 32);
+            this.btCaminhoRajadaDigital.Location = new System.Drawing.Point(336, 44);
             this.btCaminhoRajadaDigital.Name = "btCaminhoRajadaDigital";
             this.btCaminhoRajadaDigital.Size = new System.Drawing.Size(26, 22);
             this.btCaminhoRajadaDigital.TabIndex = 5;
@@ -673,37 +547,21 @@
             this.btCaminhoRajadaDigital.UseVisualStyleBackColor = true;
             this.btCaminhoRajadaDigital.Click += new System.EventHandler(this.btCaminhoRajadaDigital_Click);
             // 
-            // tbCaminhoArquivoExcelRajadaDigital
-            // 
-            this.tbCaminhoArquivoExcelRajadaDigital.Location = new System.Drawing.Point(7, 71);
-            this.tbCaminhoArquivoExcelRajadaDigital.Name = "tbCaminhoArquivoExcelRajadaDigital";
-            this.tbCaminhoArquivoExcelRajadaDigital.Size = new System.Drawing.Size(329, 20);
-            this.tbCaminhoArquivoExcelRajadaDigital.TabIndex = 4;
-            // 
             // tbCaminhoRajadaDigital
             // 
-            this.tbCaminhoRajadaDigital.Location = new System.Drawing.Point(7, 33);
+            this.tbCaminhoRajadaDigital.Location = new System.Drawing.Point(7, 45);
             this.tbCaminhoRajadaDigital.Name = "tbCaminhoRajadaDigital";
             this.tbCaminhoRajadaDigital.Size = new System.Drawing.Size(329, 20);
             this.tbCaminhoRajadaDigital.TabIndex = 3;
             // 
-            // label5
-            // 
-            this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(4, 56);
-            this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(126, 13);
-            this.label5.TabIndex = 2;
-            this.label5.Text = "Caminho do aquivo excel";
-            // 
             // label7
             // 
             this.label7.AutoSize = true;
-            this.label7.Location = new System.Drawing.Point(4, 18);
+            this.label7.Location = new System.Drawing.Point(4, 30);
             this.label7.Name = "label7";
-            this.label7.Size = new System.Drawing.Size(105, 13);
+            this.label7.Size = new System.Drawing.Size(97, 13);
             this.label7.TabIndex = 1;
-            this.label7.Text = "Caminho das rajadas";
+            this.label7.Text = "Origem das rajadas";
             // 
             // groupBox9
             // 
@@ -823,11 +681,8 @@
             this.groupBox4.Controls.Add(this.btCaminhoRajadaProcessadaTrintaTrinta);
             this.groupBox4.Controls.Add(this.tbCaminhoRajadaProcessadaInvertida);
             this.groupBox4.Controls.Add(this.label8);
-            this.groupBox4.Controls.Add(this.btCaminhoArquivoExcelRajadaTrintaTrinta);
             this.groupBox4.Controls.Add(this.btApontaCaminhoRajadaTrintaTrinta);
-            this.groupBox4.Controls.Add(this.tbCaminhoArquivoExcelRajadaInvertida);
             this.groupBox4.Controls.Add(this.tbCaminhoRajadaInvertida);
-            this.groupBox4.Controls.Add(this.label9);
             this.groupBox4.Controls.Add(this.label10);
             this.groupBox4.Controls.Add(this.groupBox10);
             this.groupBox4.Location = new System.Drawing.Point(7, 315);
@@ -840,20 +695,26 @@
             // 
             // gbMonitoramentoInvertida
             // 
+            this.gbMonitoramentoInvertida.Controls.Add(this.btAgendamentoInvertida);
             this.gbMonitoramentoInvertida.Controls.Add(this.tbDestinatariosInvertida);
             this.gbMonitoramentoInvertida.Controls.Add(this.label25);
             this.gbMonitoramentoInvertida.Controls.Add(this.cbStatusMonitoramentoInvertida);
             this.gbMonitoramentoInvertida.Controls.Add(this.label26);
-            this.gbMonitoramentoInvertida.Controls.Add(this.cbFrequenciaMonitoramentoInvertida);
-            this.gbMonitoramentoInvertida.Controls.Add(this.label27);
-            this.gbMonitoramentoInvertida.Controls.Add(this.tbIntervaloMonitoramentoInvertida);
-            this.gbMonitoramentoInvertida.Controls.Add(this.label28);
             this.gbMonitoramentoInvertida.Location = new System.Drawing.Point(701, 12);
             this.gbMonitoramentoInvertida.Name = "gbMonitoramentoInvertida";
             this.gbMonitoramentoInvertida.Size = new System.Drawing.Size(255, 120);
             this.gbMonitoramentoInvertida.TabIndex = 23;
             this.gbMonitoramentoInvertida.TabStop = false;
             this.gbMonitoramentoInvertida.Text = "Configuração do Monitoramento";
+            // 
+            // btAgendamentoInvertida
+            // 
+            this.btAgendamentoInvertida.Location = new System.Drawing.Point(111, 39);
+            this.btAgendamentoInvertida.Name = "btAgendamentoInvertida";
+            this.btAgendamentoInvertida.Size = new System.Drawing.Size(135, 21);
+            this.btAgendamentoInvertida.TabIndex = 18;
+            this.btAgendamentoInvertida.Text = "Agendamento";
+            this.btAgendamentoInvertida.UseVisualStyleBackColor = true;
             // 
             // tbDestinatariosInvertida
             // 
@@ -892,45 +753,6 @@
             this.label26.Size = new System.Drawing.Size(37, 13);
             this.label26.TabIndex = 7;
             this.label26.Text = "Status";
-            // 
-            // cbFrequenciaMonitoramentoInvertida
-            // 
-            this.cbFrequenciaMonitoramentoInvertida.DisplayMember = "Segundo";
-            this.cbFrequenciaMonitoramentoInvertida.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cbFrequenciaMonitoramentoInvertida.FormattingEnabled = true;
-            this.cbFrequenciaMonitoramentoInvertida.Items.AddRange(new object[] {
-            "Segundos",
-            "Minutos",
-            "Horas"});
-            this.cbFrequenciaMonitoramentoInvertida.Location = new System.Drawing.Point(160, 39);
-            this.cbFrequenciaMonitoramentoInvertida.Name = "cbFrequenciaMonitoramentoInvertida";
-            this.cbFrequenciaMonitoramentoInvertida.Size = new System.Drawing.Size(86, 21);
-            this.cbFrequenciaMonitoramentoInvertida.TabIndex = 6;
-            // 
-            // label27
-            // 
-            this.label27.AutoSize = true;
-            this.label27.Location = new System.Drawing.Point(157, 24);
-            this.label27.Name = "label27";
-            this.label27.Size = new System.Drawing.Size(60, 13);
-            this.label27.TabIndex = 5;
-            this.label27.Text = "Frequência";
-            // 
-            // tbIntervaloMonitoramentoInvertida
-            // 
-            this.tbIntervaloMonitoramentoInvertida.Location = new System.Drawing.Point(114, 39);
-            this.tbIntervaloMonitoramentoInvertida.Name = "tbIntervaloMonitoramentoInvertida";
-            this.tbIntervaloMonitoramentoInvertida.Size = new System.Drawing.Size(31, 20);
-            this.tbIntervaloMonitoramentoInvertida.TabIndex = 4;
-            // 
-            // label28
-            // 
-            this.label28.AutoSize = true;
-            this.label28.Location = new System.Drawing.Point(110, 24);
-            this.label28.Name = "label28";
-            this.label28.Size = new System.Drawing.Size(48, 13);
-            this.label28.TabIndex = 2;
-            this.label28.Text = "Intervalo";
             // 
             // pbLeituraInvertida
             // 
@@ -993,7 +815,7 @@
             // 
             // btCaminhoRajadaProcessadaTrintaTrinta
             // 
-            this.btCaminhoRajadaProcessadaTrintaTrinta.Location = new System.Drawing.Point(336, 109);
+            this.btCaminhoRajadaProcessadaTrintaTrinta.Location = new System.Drawing.Point(336, 88);
             this.btCaminhoRajadaProcessadaTrintaTrinta.Name = "btCaminhoRajadaProcessadaTrintaTrinta";
             this.btCaminhoRajadaProcessadaTrintaTrinta.Size = new System.Drawing.Size(26, 22);
             this.btCaminhoRajadaProcessadaTrintaTrinta.TabIndex = 9;
@@ -1003,7 +825,7 @@
             // 
             // tbCaminhoRajadaProcessadaInvertida
             // 
-            this.tbCaminhoRajadaProcessadaInvertida.Location = new System.Drawing.Point(7, 110);
+            this.tbCaminhoRajadaProcessadaInvertida.Location = new System.Drawing.Point(7, 89);
             this.tbCaminhoRajadaProcessadaInvertida.Name = "tbCaminhoRajadaProcessadaInvertida";
             this.tbCaminhoRajadaProcessadaInvertida.Size = new System.Drawing.Size(329, 20);
             this.tbCaminhoRajadaProcessadaInvertida.TabIndex = 8;
@@ -1011,25 +833,15 @@
             // label8
             // 
             this.label8.AutoSize = true;
-            this.label8.Location = new System.Drawing.Point(6, 95);
+            this.label8.Location = new System.Drawing.Point(6, 74);
             this.label8.Name = "label8";
-            this.label8.Size = new System.Drawing.Size(168, 13);
+            this.label8.Size = new System.Drawing.Size(163, 13);
             this.label8.TabIndex = 7;
-            this.label8.Text = "Caminho das rajadas processadas";
-            // 
-            // btCaminhoArquivoExcelRajadaTrintaTrinta
-            // 
-            this.btCaminhoArquivoExcelRajadaTrintaTrinta.Location = new System.Drawing.Point(336, 71);
-            this.btCaminhoArquivoExcelRajadaTrintaTrinta.Name = "btCaminhoArquivoExcelRajadaTrintaTrinta";
-            this.btCaminhoArquivoExcelRajadaTrintaTrinta.Size = new System.Drawing.Size(26, 22);
-            this.btCaminhoArquivoExcelRajadaTrintaTrinta.TabIndex = 6;
-            this.btCaminhoArquivoExcelRajadaTrintaTrinta.Text = "...";
-            this.btCaminhoArquivoExcelRajadaTrintaTrinta.UseVisualStyleBackColor = true;
-            this.btCaminhoArquivoExcelRajadaTrintaTrinta.Click += new System.EventHandler(this.btCaminhoArquivoExcelRajadaTrintaTrinta_Click);
+            this.label8.Text = "Destino das rajadas processadas";
             // 
             // btApontaCaminhoRajadaTrintaTrinta
             // 
-            this.btApontaCaminhoRajadaTrintaTrinta.Location = new System.Drawing.Point(336, 32);
+            this.btApontaCaminhoRajadaTrintaTrinta.Location = new System.Drawing.Point(336, 44);
             this.btApontaCaminhoRajadaTrintaTrinta.Name = "btApontaCaminhoRajadaTrintaTrinta";
             this.btApontaCaminhoRajadaTrintaTrinta.Size = new System.Drawing.Size(26, 22);
             this.btApontaCaminhoRajadaTrintaTrinta.TabIndex = 5;
@@ -1037,37 +849,21 @@
             this.btApontaCaminhoRajadaTrintaTrinta.UseVisualStyleBackColor = true;
             this.btApontaCaminhoRajadaTrintaTrinta.Click += new System.EventHandler(this.btApontaCaminhoRajadaTrintaTrinta_Click);
             // 
-            // tbCaminhoArquivoExcelRajadaInvertida
-            // 
-            this.tbCaminhoArquivoExcelRajadaInvertida.Location = new System.Drawing.Point(7, 72);
-            this.tbCaminhoArquivoExcelRajadaInvertida.Name = "tbCaminhoArquivoExcelRajadaInvertida";
-            this.tbCaminhoArquivoExcelRajadaInvertida.Size = new System.Drawing.Size(329, 20);
-            this.tbCaminhoArquivoExcelRajadaInvertida.TabIndex = 4;
-            // 
             // tbCaminhoRajadaInvertida
             // 
-            this.tbCaminhoRajadaInvertida.Location = new System.Drawing.Point(7, 33);
+            this.tbCaminhoRajadaInvertida.Location = new System.Drawing.Point(7, 45);
             this.tbCaminhoRajadaInvertida.Name = "tbCaminhoRajadaInvertida";
             this.tbCaminhoRajadaInvertida.Size = new System.Drawing.Size(329, 20);
             this.tbCaminhoRajadaInvertida.TabIndex = 3;
             // 
-            // label9
-            // 
-            this.label9.AutoSize = true;
-            this.label9.Location = new System.Drawing.Point(4, 56);
-            this.label9.Name = "label9";
-            this.label9.Size = new System.Drawing.Size(126, 13);
-            this.label9.TabIndex = 2;
-            this.label9.Text = "Caminho do aquivo excel";
-            // 
             // label10
             // 
             this.label10.AutoSize = true;
-            this.label10.Location = new System.Drawing.Point(4, 18);
+            this.label10.Location = new System.Drawing.Point(4, 30);
             this.label10.Name = "label10";
-            this.label10.Size = new System.Drawing.Size(105, 13);
+            this.label10.Size = new System.Drawing.Size(97, 13);
             this.label10.TabIndex = 1;
-            this.label10.Text = "Caminho das rajadas";
+            this.label10.Text = "Origem das rajadas";
             // 
             // groupBox10
             // 
@@ -1221,7 +1017,7 @@
             this.MinimumSize = new System.Drawing.Size(1002, 519);
             this.Name = "Form1";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-            this.Text = "BotFlow Rajadas V.1.1";
+            this.Text = "BotFlow Rajadas V.1.2";
             this.Load += new System.EventHandler(this.Form1_Load);
             this.Resize += new System.EventHandler(this.Form1_Resize);
             this.groupBox1.ResumeLayout(false);
@@ -1257,11 +1053,8 @@
         private System.Windows.Forms.FolderBrowserDialog apontaCaminhoPasta;
         private System.Windows.Forms.OpenFileDialog apontaCaminhoArquivo;
         private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.Label label2;
         private System.Windows.Forms.TextBox tbCaminhoRajadaTijolo;
-        private System.Windows.Forms.TextBox tbCaminhoArquivoExcelTijolo;
         private System.Windows.Forms.Button btCaminhoRajadaTijolo;
-        private System.Windows.Forms.Button btApontaArquivoExcel;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.TextBox tbCaminhoRajadaProcessadaTijolo;
         private System.Windows.Forms.Button btCaminhoRajadaProcessadaTijolo;
@@ -1270,21 +1063,15 @@
         private System.Windows.Forms.Button btCaminhoRajadaProcessadaDigital;
         private System.Windows.Forms.TextBox tbCaminhoRajadaProcessadaDigital;
         private System.Windows.Forms.Label label4;
-        private System.Windows.Forms.Button btCaminhoArquivoExcelRajadaDigital;
         private System.Windows.Forms.Button btCaminhoRajadaDigital;
-        private System.Windows.Forms.TextBox tbCaminhoArquivoExcelRajadaDigital;
         private System.Windows.Forms.TextBox tbCaminhoRajadaDigital;
-        private System.Windows.Forms.Label label5;
         private System.Windows.Forms.Label label7;
         private System.Windows.Forms.GroupBox groupBox4;
         private System.Windows.Forms.Button btCaminhoRajadaProcessadaTrintaTrinta;
         private System.Windows.Forms.TextBox tbCaminhoRajadaProcessadaInvertida;
         private System.Windows.Forms.Label label8;
-        private System.Windows.Forms.Button btCaminhoArquivoExcelRajadaTrintaTrinta;
         private System.Windows.Forms.Button btApontaCaminhoRajadaTrintaTrinta;
-        private System.Windows.Forms.TextBox tbCaminhoArquivoExcelRajadaInvertida;
         private System.Windows.Forms.TextBox tbCaminhoRajadaInvertida;
-        private System.Windows.Forms.Label label9;
         private System.Windows.Forms.Label label10;
         private System.Windows.Forms.GroupBox groupBox5;
         private System.Windows.Forms.RadioButton rbMoverArquivoProcessadoRajadaTijolo;
@@ -1336,10 +1123,6 @@
         private System.Windows.Forms.GroupBox gbMonitoramentoTijolo;
         private System.Windows.Forms.ComboBox cbStatusMonitoramentoTijolo;
         private System.Windows.Forms.Label label17;
-        private System.Windows.Forms.ComboBox cbFrequenciaMonitoramentoTijolo;
-        private System.Windows.Forms.Label label18;
-        private System.Windows.Forms.TextBox tbIntervaloMonitoramentoTijolo;
-        private System.Windows.Forms.Label label19;
         private System.Windows.Forms.TextBox tbDestinatariosTijolo;
         private System.Windows.Forms.Label label20;
         private System.Windows.Forms.GroupBox gbMonitoramentoDigital;
@@ -1347,19 +1130,14 @@
         private System.Windows.Forms.Label label21;
         private System.Windows.Forms.ComboBox cbStatusMonitoramentoDigital;
         private System.Windows.Forms.Label label22;
-        private System.Windows.Forms.ComboBox cbFrequenciaMonitoramentoDigital;
-        private System.Windows.Forms.Label label23;
-        private System.Windows.Forms.TextBox tbIntervaloMonitoramentoDigital;
-        private System.Windows.Forms.Label label24;
         private System.Windows.Forms.GroupBox gbMonitoramentoInvertida;
         private System.Windows.Forms.TextBox tbDestinatariosInvertida;
         private System.Windows.Forms.Label label25;
         private System.Windows.Forms.ComboBox cbStatusMonitoramentoInvertida;
         private System.Windows.Forms.Label label26;
-        private System.Windows.Forms.ComboBox cbFrequenciaMonitoramentoInvertida;
-        private System.Windows.Forms.Label label27;
-        private System.Windows.Forms.TextBox tbIntervaloMonitoramentoInvertida;
-        private System.Windows.Forms.Label label28;
+        private System.Windows.Forms.Button btAgendamentoTijolo;
+        private System.Windows.Forms.Button btAgendamentoDigital;
+        private System.Windows.Forms.Button btAgendamentoInvertida;
     }
 }
 

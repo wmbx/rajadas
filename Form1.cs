@@ -81,26 +81,22 @@ namespace rajadas
             listaDeParametrosRajadaTijolo = parametrosRajada.carregarParametrosRajada(this.caminhoArquivoDeConfiguracao, "Tijolo");
 
             this.caminhoArquivoTxtRajadaTijolo = listaDeParametrosRajadaTijolo[0];
-            this.caminhoArquivoExcelRajadaTijolo = listaDeParametrosRajadaTijolo[1];
-            this.caminhoRajadaProcessadaTijolo = listaDeParametrosRajadaTijolo[2];
-            this.parametroCopiarOuMoverRajadaTijolo = listaDeParametrosRajadaTijolo[3];
-            this.parametroIntervaloRajadaTijolo = listaDeParametrosRajadaTijolo[4];
-            this.parametroFrequenciaRajadaTijolo = listaDeParametrosRajadaTijolo[5];
-            this.statusLeituraRajadaTijolo = listaDeParametrosRajadaTijolo[6];
-            this.statusMonitoramentoRajadaTijolo = listaDeParametrosRajadaTijolo[7];
-            this.parametroIntervaloMonitoramentoRajadaTijolo = listaDeParametrosRajadaTijolo[8];
-            this.parametroFrequenciaMonitoramentoRajadaTijolo = listaDeParametrosRajadaTijolo[9];
-            this.destinatariosRajadaTijolo = listaDeParametrosRajadaTijolo[10];
+            this.caminhoRajadaProcessadaTijolo = listaDeParametrosRajadaTijolo[1];
+            this.parametroCopiarOuMoverRajadaTijolo = listaDeParametrosRajadaTijolo[2];
+            this.parametroIntervaloRajadaTijolo = listaDeParametrosRajadaTijolo[3];
+            this.parametroFrequenciaRajadaTijolo = listaDeParametrosRajadaTijolo[4];
+            this.statusLeituraRajadaTijolo = listaDeParametrosRajadaTijolo[5];
+            this.statusMonitoramentoRajadaTijolo = listaDeParametrosRajadaTijolo[6];
+            this.parametroIntervaloMonitoramentoRajadaTijolo = listaDeParametrosRajadaTijolo[7];
+            this.parametroFrequenciaMonitoramentoRajadaTijolo = listaDeParametrosRajadaTijolo[8];
+            this.destinatariosRajadaTijolo = listaDeParametrosRajadaTijolo[9];
             
             tbCaminhoRajadaTijolo.Text = caminhoArquivoTxtRajadaTijolo;
-            tbCaminhoArquivoExcelTijolo.Text = caminhoArquivoExcelRajadaTijolo;
             tbCaminhoRajadaProcessadaTijolo.Text = caminhoRajadaProcessadaTijolo;
             tbIntervaloRajadaTijolo.Text = parametroIntervaloRajadaTijolo;
             cbFrequenciaRajadaTijolo.SelectedItem = parametroFrequenciaRajadaTijolo;
             cbStatusLeituraTijolo.SelectedItem = statusLeituraRajadaTijolo;
             cbStatusMonitoramentoTijolo.SelectedItem = statusMonitoramentoRajadaTijolo;
-            tbIntervaloMonitoramentoTijolo.Text = parametroIntervaloMonitoramentoRajadaTijolo;
-            cbFrequenciaMonitoramentoTijolo.SelectedItem = parametroFrequenciaMonitoramentoRajadaTijolo;
             tbDestinatariosTijolo.Text = destinatariosRajadaTijolo;            
 
 
@@ -154,14 +150,12 @@ namespace rajadas
             }
             if (this.statusMonitoramentoRajadaTijolo == "Ativado")
             {
-                tbIntervaloMonitoramentoTijolo.Enabled = true;
-                cbFrequenciaMonitoramentoTijolo.Enabled = true;
+                btAgendamentoTijolo.Enabled = true;
                 tbDestinatariosTijolo.Enabled = true;
             }
             else
             {
-                tbIntervaloMonitoramentoTijolo.Enabled = false;
-                cbFrequenciaMonitoramentoTijolo.Enabled = false;
+                btAgendamentoTijolo.Enabled = false;
                 tbDestinatariosTijolo.Enabled = false;
             }
             // ------------------ ** Ativa ou Desativa os Parâmetros das Leituras Automáticas de acordo com o parâmetro ** -----------------------------//
@@ -182,26 +176,22 @@ namespace rajadas
             listaDeParametrosRajadaDigital = parametrosRajada.carregarParametrosRajada(this.caminhoArquivoDeConfiguracao, "Digital");
 
             this.caminhoArquivoTxtRajadaDigital = listaDeParametrosRajadaDigital[0];
-            this.caminhoArquivoExcelRajadaDigital = listaDeParametrosRajadaDigital[1];
-            this.caminhoRajadaProcessadaDigital = listaDeParametrosRajadaDigital[2];
-            this.parametroCopiarOuMoverRajadaDigital = listaDeParametrosRajadaDigital[3];
-            this.parametroIntervaloRajadaDigital = listaDeParametrosRajadaDigital[4];
-            this.parametroFrequenciaRajadaDigital = listaDeParametrosRajadaDigital[5];
-            this.statusLeituraRajadaDigital = listaDeParametrosRajadaDigital[6];
-            this.statusMonitoramentoRajadaDigital = listaDeParametrosRajadaDigital[7];
-            this.parametroIntervaloMonitoramentoRajadaDigital = listaDeParametrosRajadaDigital[8];
-            this.parametroFrequenciaMonitoramentoRajadaDigital = listaDeParametrosRajadaDigital[9];
-            this.destinatariosRajadaDigital = listaDeParametrosRajadaDigital[10];
+            this.caminhoRajadaProcessadaDigital = listaDeParametrosRajadaDigital[1];
+            this.parametroCopiarOuMoverRajadaDigital = listaDeParametrosRajadaDigital[2];
+            this.parametroIntervaloRajadaDigital = listaDeParametrosRajadaDigital[3];
+            this.parametroFrequenciaRajadaDigital = listaDeParametrosRajadaDigital[4];
+            this.statusLeituraRajadaDigital = listaDeParametrosRajadaDigital[5];
+            this.statusMonitoramentoRajadaDigital = listaDeParametrosRajadaDigital[6];
+            this.parametroIntervaloMonitoramentoRajadaDigital = listaDeParametrosRajadaDigital[7];
+            this.parametroFrequenciaMonitoramentoRajadaDigital = listaDeParametrosRajadaDigital[8];
+            this.destinatariosRajadaDigital = listaDeParametrosRajadaDigital[9];
 
             tbCaminhoRajadaDigital.Text = caminhoArquivoTxtRajadaDigital;
-            tbCaminhoArquivoExcelRajadaDigital.Text = caminhoArquivoExcelRajadaDigital;
             tbCaminhoRajadaProcessadaDigital.Text = caminhoRajadaProcessadaDigital;
             tbIntervaloRajadaDigital.Text = parametroIntervaloRajadaDigital;
             cbFrequenciaRajadaDigital.SelectedItem = parametroFrequenciaRajadaDigital;
             cbStatusLeituraDigital.SelectedItem = statusLeituraRajadaDigital;
             cbStatusMonitoramentoDigital.SelectedItem = statusMonitoramentoRajadaDigital;
-            tbIntervaloMonitoramentoDigital.Text = parametroIntervaloMonitoramentoRajadaDigital;
-            cbFrequenciaMonitoramentoDigital.SelectedItem = parametroFrequenciaMonitoramentoRajadaDigital;
             tbDestinatariosDigital.Text = destinatariosRajadaDigital;
 
             if (parametroCopiarOuMoverRajadaDigital == "Copiar Arquivo Processado")
@@ -252,14 +242,12 @@ namespace rajadas
             }
             if (this.statusMonitoramentoRajadaDigital == "Ativado")
             {
-                tbIntervaloMonitoramentoDigital.Enabled = true;
-                cbFrequenciaMonitoramentoDigital.Enabled = true;
+                btAgendamentoDigital.Enabled = true;
                 tbDestinatariosDigital.Enabled = true;
             }
             else
             {
-                tbIntervaloMonitoramentoDigital.Enabled = false;
-                cbFrequenciaMonitoramentoDigital.Enabled = false;
+                btAgendamentoDigital.Enabled = false;
                 tbDestinatariosDigital.Enabled = false;
             }
             // ------------------ ** Ativa ou Desativa os Parâmetros das Leituras Automáticas de acordo com o parâmetro ** -----------------------------//
@@ -280,26 +268,22 @@ namespace rajadas
             listaDeParametrosRajadaInvertida = parametrosRajada.carregarParametrosRajada(this.caminhoArquivoDeConfiguracao, "Invertida");
 
             this.caminhoArquivoTxtRajadaInvertida = listaDeParametrosRajadaInvertida[0];
-            this.caminhoArquivoExcelRajadaInvertida = listaDeParametrosRajadaInvertida[1];
-            this.caminhoRajadaProcessadaInvertida = listaDeParametrosRajadaInvertida[2];
-            this.parametroCopiarOuMoverRajadaInvertida = listaDeParametrosRajadaInvertida[3];
-            this.parametroIntervaloRajadaInvertida = listaDeParametrosRajadaInvertida[4];
-            this.parametroFrequenciaRajadaInvertida = listaDeParametrosRajadaInvertida[5];
-            this.statusLeituraRajadaInvertida = listaDeParametrosRajadaInvertida[6];
-            this.statusMonitoramentoRajadaInvertida = listaDeParametrosRajadaInvertida[7];
-            this.parametroIntervaloMonitoramentoRajadaInvertida = listaDeParametrosRajadaInvertida[8];
-            this.parametroFrequenciaMonitoramentoRajadaInvertida = listaDeParametrosRajadaInvertida[9];
-            this.destinatariosRajadaInvertida = listaDeParametrosRajadaInvertida[10];
+            this.caminhoRajadaProcessadaInvertida = listaDeParametrosRajadaInvertida[1];
+            this.parametroCopiarOuMoverRajadaInvertida = listaDeParametrosRajadaInvertida[2];
+            this.parametroIntervaloRajadaInvertida = listaDeParametrosRajadaInvertida[3];
+            this.parametroFrequenciaRajadaInvertida = listaDeParametrosRajadaInvertida[4];
+            this.statusLeituraRajadaInvertida = listaDeParametrosRajadaInvertida[5];
+            this.statusMonitoramentoRajadaInvertida = listaDeParametrosRajadaInvertida[6];
+            this.parametroIntervaloMonitoramentoRajadaInvertida = listaDeParametrosRajadaInvertida[7];
+            this.parametroFrequenciaMonitoramentoRajadaInvertida = listaDeParametrosRajadaInvertida[8];
+            this.destinatariosRajadaInvertida = listaDeParametrosRajadaInvertida[9];
 
             tbCaminhoRajadaInvertida.Text = caminhoArquivoTxtRajadaInvertida;
-            tbCaminhoArquivoExcelRajadaInvertida.Text = caminhoArquivoExcelRajadaInvertida;
             tbCaminhoRajadaProcessadaInvertida.Text = caminhoRajadaProcessadaInvertida;
             tbIntervaloRajadaInvertida.Text = parametroIntervaloRajadaInvertida;
             cbFrequenciaRajadaInvertida.SelectedItem = parametroFrequenciaRajadaInvertida;
             cbStatusLeituraInvertida.SelectedItem = statusLeituraRajadaInvertida;
             cbStatusMonitoramentoInvertida.SelectedItem = statusMonitoramentoRajadaInvertida;
-            tbIntervaloMonitoramentoInvertida.Text = parametroIntervaloMonitoramentoRajadaInvertida;
-            cbFrequenciaMonitoramentoInvertida.SelectedItem = parametroFrequenciaMonitoramentoRajadaInvertida;
             tbDestinatariosInvertida.Text = destinatariosRajadaInvertida;
 
             if (parametroCopiarOuMoverRajadaInvertida == "Copiar Arquivo Processado")
@@ -351,14 +335,12 @@ namespace rajadas
             }
             if (this.statusMonitoramentoRajadaInvertida == "Ativado")
             {
-                tbIntervaloMonitoramentoInvertida.Enabled = true;
-                cbFrequenciaMonitoramentoInvertida.Enabled = true;
+                btAgendamentoInvertida.Enabled = true;
                 tbDestinatariosInvertida.Enabled = true;
             }
             else
             {
-                tbIntervaloMonitoramentoInvertida.Enabled = false;
-                cbFrequenciaMonitoramentoInvertida.Enabled = false;
+                btAgendamentoInvertida.Enabled = false;
                 tbDestinatariosInvertida.Enabled = false;
             }
             // ------------------ ** Ativa ou Desativa os Parâmetros das Leituras Automáticas de acordo com o parâmetro ** -----------------------------//
@@ -389,14 +371,7 @@ namespace rajadas
 
         private void botaoApontaArquivoExcel_Click(object sender, EventArgs e)
         {
-            OpenFileDialog abrirArquivoExcel = new OpenFileDialog();
-            abrirArquivoExcel.Title = "Abrir Arquivo Excel";
-            abrirArquivoExcel.Filter = "Arquivos Excel | *.xls;*.xlsx;";
-            if (abrirArquivoExcel.ShowDialog() == DialogResult.OK)
-            {
-                caminhoArquivoExcelRajadaTijolo = abrirArquivoExcel.FileName;
-                tbCaminhoArquivoExcelTijolo.Text = caminhoArquivoExcelRajadaTijolo;
-            }
+            
         }
 
         private void btCaminhoRajadaProcessada_Click(object sender, EventArgs e)
@@ -455,26 +430,12 @@ namespace rajadas
 
         private void btCaminhoArquivoExcelRajadaDigital_Click(object sender, EventArgs e)
         {
-            OpenFileDialog abrirArquivoExcel = new OpenFileDialog();
-            abrirArquivoExcel.Title = "Abrir Arquivo Excel";
-            abrirArquivoExcel.Filter = "Arquivos Excel | *.xls;*.xlsx;";
-            if (abrirArquivoExcel.ShowDialog() == DialogResult.OK)
-            {
-                caminhoArquivoExcelRajadaDigital = abrirArquivoExcel.FileName;
-                tbCaminhoArquivoExcelRajadaDigital.Text = caminhoArquivoExcelRajadaDigital;
-            }
+           
         }
 
         private void btCaminhoArquivoExcelRajadaTrintaTrinta_Click(object sender, EventArgs e)
         {
-            OpenFileDialog abrirArquivoExcel = new OpenFileDialog();
-            abrirArquivoExcel.Title = "Abrir Arquivo Excel";
-            abrirArquivoExcel.Filter = "Arquivos Excel | *.xls;*.xlsx;";
-            if (abrirArquivoExcel.ShowDialog() == DialogResult.OK)
-            {
-                caminhoArquivoExcelRajadaInvertida = abrirArquivoExcel.FileName;
-                tbCaminhoArquivoExcelRajadaInvertida.Text = caminhoArquivoExcelRajadaInvertida;
-            }
+            
         }
 
         private void btApontaCaminhoRajadaTrintaTrinta_Click(object sender, EventArgs e)
@@ -511,17 +472,15 @@ namespace rajadas
         {
             try
             {
-                Excel arquivoExcel = new Excel();
-
-                if (arquivoExcel.validarSePlanilhaAberta(caminhoArquivoExcelRajadaTijolo).Equals(true))
-                {
                     btLerArquivoTijolo.Visible = false;
 
                     pbLeituraTijolo.Visible = true;
 
                     Rajada rajada = new Rajada();
-
+                
                     List<Rajada> listaDeObjetosRajada = new List<Rajada>();
+
+                    BancoDeDados bancoDeDados = new BancoDeDados();
 
                     // ------------------------** Lê Rajada Tijolo e Insere no Excel ** -----------------------------//
                     listaDeObjetosRajada = rajada.lerArquivoTxtRajadaTijolo(caminhoArquivoTxtRajadaTijolo, caminhoRajadaProcessadaTijolo, parametroCopiarOuMoverRajadaTijolo);
@@ -530,14 +489,14 @@ namespace rajadas
 
                     for (int i = 0; i < listaDeObjetosRajada.Count(); i++)
                     {
-                        arquivoExcel.inserirObjetoNaPlanilhaExcel(listaDeObjetosRajada[i], caminhoArquivoExcelRajadaTijolo);
+                        bancoDeDados.insereRajadaNoBD("127.0.0.1", "3306", "root", "160310", "itau", listaDeObjetosRajada[i], "1");
                         pbLeituraTijolo.Value = i;
                     }
                     // ------------------------** Lê Rajada Tijolo e Insere no Excel ** -----------------------------//
 
                     pbLeituraTijolo.Visible = false;
                     btLerArquivoTijolo.Visible = true;
-                }
+                
             }
 
             catch (Exception)
@@ -551,11 +510,7 @@ namespace rajadas
         {
             try
             {
-                Excel arquivoExcel = new Excel();
-
-                // -- ** Verifica se a planilha está fechada antes de iniciar o processamento dos arquivos ** ---- //
-                if (arquivoExcel.validarSePlanilhaAberta(caminhoArquivoExcelRajadaDigital).Equals(true))
-                {
+                
                     btLerArquivoDigital.Visible = false;
 
                     pbLeituraDigital.Visible = true;
@@ -564,6 +519,8 @@ namespace rajadas
 
                     List<Rajada> listaDeObjetosRajada = new List<Rajada>();
 
+                    BancoDeDados bancoDeDados = new BancoDeDados();
+
                     // ------------------------** Lê Rajada Digital Mundo Velho e Insere no Excel ** -----------------------------//
                     listaDeObjetosRajada = rajada.lerArquivoTxtRajadaDigital(caminhoArquivoTxtRajadaDigital, caminhoRajadaProcessadaDigital, parametroCopiarOuMoverRajadaDigital);
 
@@ -571,14 +528,14 @@ namespace rajadas
 
                     for (int i = 0; i < listaDeObjetosRajada.Count(); i++)
                     {
-                        arquivoExcel.inserirObjetoNaPlanilhaExcel(listaDeObjetosRajada[i], caminhoArquivoExcelRajadaDigital);
+                        bancoDeDados.insereRajadaNoBD("127.0.0.1", "3306", "root", "160310", "itau", listaDeObjetosRajada[i], "2");
                         pbLeituraDigital.Value = i;
                     }
                     // ------------------------** Lê Rajada Digital Mundo Velho e Insere no Excel ** -----------------------------//
 
                     pbLeituraDigital.Visible = false;
                     btLerArquivoDigital.Visible = true;
-                }
+                
                 // ------------------------** Lê Rajada Digital Mundo Velho e Insere no Excel ** -----------------------------//
             }
             catch (Exception)
@@ -592,11 +549,6 @@ namespace rajadas
         {
             try
             {
-                Excel arquivoExcel = new Excel();
-
-                // -- ** Verifica se a planilha está fechada antes de iniciar o processamento dos arquivos ** ---- //
-                if (arquivoExcel.validarSePlanilhaAberta(caminhoArquivoExcelRajadaInvertida).Equals(true))
-                {
                     btLerArquivoInvertida.Visible = false;
 
                     pbLeituraInvertida.Visible = true;
@@ -605,6 +557,8 @@ namespace rajadas
 
                     List<Rajada> listaDeObjetosRajada = new List<Rajada>();
 
+                    BancoDeDados bancoDeDados = new BancoDeDados();
+
                     // ------------------------** Lê Rajada Invertida e Insere no Excel ** -----------------------------//
                     listaDeObjetosRajada = rajada.lerArquivoTxtRajadaInvertida(caminhoArquivoTxtRajadaInvertida, caminhoRajadaProcessadaInvertida, parametroCopiarOuMoverRajadaInvertida);
 
@@ -612,14 +566,14 @@ namespace rajadas
 
                     for (int i = 0; i < listaDeObjetosRajada.Count(); i++)
                     {
-                        arquivoExcel.inserirObjetoNaPlanilhaExcel(listaDeObjetosRajada[i], caminhoArquivoExcelRajadaInvertida);
+                        bancoDeDados.insereRajadaNoBD("127.0.0.1", "3306", "root", "160310", "itau", listaDeObjetosRajada[i], "3");
                         pbLeituraInvertida.Value = i;
                     }
                     // ------------------------** Lê Rajada Invertida e Insere no Excel ** -----------------------------//
 
                     pbLeituraInvertida.Visible = false;
                     btLerArquivoInvertida.Visible = true;
-                }
+                
                 // ------------------------** Lê Rajada Invertida e Insere no Excel ** -----------------------------//
             }
 
@@ -682,7 +636,7 @@ namespace rajadas
         private void btSalvarArquivoTijolo_Click(object sender, EventArgs e)
         {
             // ----- ** Validação dos campos Intervalo para não permitir a digitação de zero ou em branco ** -------- //
-            if (tbIntervaloRajadaTijolo.Text.Equals("") || tbIntervaloRajadaTijolo.Text.Equals("0") || tbIntervaloMonitoramentoTijolo.Text.Equals("") || tbIntervaloMonitoramentoTijolo.Text.Equals("0") || tbDestinatariosTijolo.Text.Equals(""))
+            if (tbIntervaloRajadaTijolo.Text.Equals("") || tbIntervaloRajadaTijolo.Text.Equals("0") || tbDestinatariosTijolo.Text.Equals(""))
             {
                 MessageBox.Show("Não é permitido campos em branco ou iguais a zero !!!");
             }
@@ -704,36 +658,41 @@ namespace rajadas
                     parametroCopiarOuMoverRajadaTijolo = rbMoverArquivoProcessadoRajadaTijolo.Text;
                 }
 
-                this.parametroIntervaloMonitoramentoRajadaTijolo = tbIntervaloMonitoramentoTijolo.Text;
-                this.parametroFrequenciaMonitoramentoRajadaTijolo = cbFrequenciaMonitoramentoTijolo.SelectedItem.ToString();
                 this.statusMonitoramentoRajadaTijolo = cbStatusMonitoramentoTijolo.SelectedItem.ToString();
                 this.destinatariosRajadaTijolo = tbDestinatariosTijolo.Text;
 
                 listaDeParametrosParaSalvar.Add(this.caminhoArquivoTxtRajadaTijolo);
-                listaDeParametrosParaSalvar.Add(this.caminhoArquivoExcelRajadaTijolo);
                 listaDeParametrosParaSalvar.Add(this.caminhoRajadaProcessadaTijolo);
                 listaDeParametrosParaSalvar.Add(this.parametroCopiarOuMoverRajadaTijolo);
                 listaDeParametrosParaSalvar.Add(this.parametroIntervaloRajadaTijolo);
                 listaDeParametrosParaSalvar.Add(this.parametroFrequenciaRajadaTijolo);
                 listaDeParametrosParaSalvar.Add(this.statusLeituraRajadaTijolo);
                 listaDeParametrosParaSalvar.Add(this.statusMonitoramentoRajadaTijolo);
-                listaDeParametrosParaSalvar.Add(this.parametroIntervaloMonitoramentoRajadaTijolo);
-                listaDeParametrosParaSalvar.Add(this.parametroFrequenciaMonitoramentoRajadaTijolo);
                 listaDeParametrosParaSalvar.Add(this.destinatariosRajadaTijolo);
 
-                ParametrosSistema parametrosSistema = new ParametrosSistema();
-                parametrosSistema.salvarConfiguracoes(listaDeParametrosParaSalvar, this.caminhoArquivoDeConfiguracao, "Tijolo", 0, 10);
+                //ParametrosSistema parametrosSistema = new ParametrosSistema();
+                //parametrosSistema.salvarConfiguracoes(listaDeParametrosParaSalvar, this.caminhoArquivoDeConfiguracao, "Tijolo", 0, 9);
+                BancoDeDados bancoDeDados = new BancoDeDados();
+                Boolean retorno = bancoDeDados.insereParametrosDoSistemaNoBD("127.0.0.1", "3306", "root", "160310", "itau", listaDeParametrosParaSalvar, "1");
 
-                MessageBox.Show("As configurações foram salvas !!!", "Mensagem do sistema");
+                if (retorno == true)
+                {
+                    MessageBox.Show("As configurações foram salvas !!!", "Mensagem do sistema");
 
-                carregaParametrosRajadaTijolo();
+                    carregaParametrosRajadaTijolo();
+                }
+                else
+                {
+
+                }
+                
             }
         }
 
         private void btSalvarArquivoDigital_Click(object sender, EventArgs e)
         {
             // ----- ** Validação dos campos Intervalo para não permitir a digitação de zero ou em branco ** -------- //
-            if (tbIntervaloRajadaDigital.Text.Equals("") || tbIntervaloRajadaDigital.Text.Equals("0") || tbIntervaloMonitoramentoDigital.Text.Equals("") || tbIntervaloMonitoramentoDigital.Text.Equals("0") || tbDestinatariosDigital.Text.Equals(""))
+            if (tbIntervaloRajadaDigital.Text.Equals("") || tbIntervaloRajadaDigital.Text.Equals("0") || tbDestinatariosDigital.Text.Equals(""))
             {
                 MessageBox.Show("Não é permitido campos em branco ou iguais a zero !!!");
             }
@@ -754,36 +713,40 @@ namespace rajadas
                     parametroCopiarOuMoverRajadaDigital = rbMoverArquivoProcessadoRajadaDigital.Text;
                 }
 
-                this.parametroIntervaloMonitoramentoRajadaDigital = tbIntervaloMonitoramentoDigital.Text;
-                this.parametroFrequenciaMonitoramentoRajadaDigital = cbFrequenciaMonitoramentoDigital.SelectedItem.ToString();
                 this.statusMonitoramentoRajadaDigital = cbStatusMonitoramentoDigital.SelectedItem.ToString();
                 this.destinatariosRajadaDigital = tbDestinatariosDigital.Text;
 
                 listaDeParametrosParaSalvar.Add(this.caminhoArquivoTxtRajadaDigital);
-                listaDeParametrosParaSalvar.Add(this.caminhoArquivoExcelRajadaDigital);
                 listaDeParametrosParaSalvar.Add(this.caminhoRajadaProcessadaDigital);
                 listaDeParametrosParaSalvar.Add(this.parametroCopiarOuMoverRajadaDigital);
                 listaDeParametrosParaSalvar.Add(this.parametroIntervaloRajadaDigital);
                 listaDeParametrosParaSalvar.Add(this.parametroFrequenciaRajadaDigital);
                 listaDeParametrosParaSalvar.Add(this.statusLeituraRajadaDigital);
                 listaDeParametrosParaSalvar.Add(this.statusMonitoramentoRajadaDigital);
-                listaDeParametrosParaSalvar.Add(this.parametroIntervaloMonitoramentoRajadaDigital);
-                listaDeParametrosParaSalvar.Add(this.parametroFrequenciaMonitoramentoRajadaDigital);
                 listaDeParametrosParaSalvar.Add(this.destinatariosRajadaDigital);
 
-                ParametrosSistema parametrosSistema = new ParametrosSistema();
-                parametrosSistema.salvarConfiguracoes(listaDeParametrosParaSalvar, this.caminhoArquivoDeConfiguracao, "Digital", 0, 10);
+                //ParametrosSistema parametrosSistema = new ParametrosSistema();
+                //parametrosSistema.salvarConfiguracoes(listaDeParametrosParaSalvar, this.caminhoArquivoDeConfiguracao, "Digital", 0, 9);
+                BancoDeDados bancoDeDados = new BancoDeDados();
+                Boolean retorno = bancoDeDados.insereParametrosDoSistemaNoBD("127.0.0.1", "3306", "root", "160310", "itau", listaDeParametrosParaSalvar, "2");
 
-                MessageBox.Show("As configurações foram salvas !!!", "Mensagem do sistema");
+                if (retorno == true)
+                {
+                    MessageBox.Show("As configurações foram salvas !!!", "Mensagem do sistema");
 
-                carregaParametrosRajadaDigital();
+                    carregaParametrosRajadaTijolo();
+                }
+                else
+                {
+
+                }
             }
         }
 
         private void btSalvarArquivoInvertida_Click(object sender, EventArgs e)
         {
             // ----- ** Validação dos campos Intervalo para não permitir a digitação de zero ou em branco ** -------- //
-            if (tbIntervaloRajadaInvertida.Text.Equals("") || tbIntervaloRajadaInvertida.Text.Equals("0") || tbIntervaloMonitoramentoInvertida.Text.Equals("") || tbIntervaloMonitoramentoInvertida.Text.Equals("0") || tbDestinatariosInvertida.Text.Equals(""))
+            if (tbIntervaloRajadaInvertida.Text.Equals("") || tbIntervaloRajadaInvertida.Text.Equals("0") || tbDestinatariosInvertida.Text.Equals(""))
             {
                 MessageBox.Show("Não é permitido campos em branco ou iguais a zero !!!");
             }
@@ -804,38 +767,38 @@ namespace rajadas
                     parametroCopiarOuMoverRajadaInvertida = rbMoverArquivoProcessadoRajadaInvertida.Text;
                 }
 
-                this.parametroIntervaloMonitoramentoRajadaInvertida = tbIntervaloMonitoramentoInvertida.Text;
-                this.parametroFrequenciaMonitoramentoRajadaInvertida = cbFrequenciaMonitoramentoInvertida.SelectedItem.ToString();
                 this.statusMonitoramentoRajadaInvertida = cbStatusMonitoramentoInvertida.SelectedItem.ToString();
                 this.destinatariosRajadaInvertida = tbDestinatariosInvertida.Text;
 
                 listaDeParametrosParaSalvar.Add(this.caminhoArquivoTxtRajadaInvertida);
-                listaDeParametrosParaSalvar.Add(this.caminhoArquivoExcelRajadaInvertida);
                 listaDeParametrosParaSalvar.Add(this.caminhoRajadaProcessadaInvertida);
                 listaDeParametrosParaSalvar.Add(this.parametroCopiarOuMoverRajadaInvertida);
                 listaDeParametrosParaSalvar.Add(this.parametroIntervaloRajadaInvertida);
                 listaDeParametrosParaSalvar.Add(this.parametroFrequenciaRajadaInvertida);
                 listaDeParametrosParaSalvar.Add(this.statusLeituraRajadaInvertida);
                 listaDeParametrosParaSalvar.Add(this.statusMonitoramentoRajadaInvertida);
-                listaDeParametrosParaSalvar.Add(this.parametroIntervaloMonitoramentoRajadaInvertida);
-                listaDeParametrosParaSalvar.Add(this.parametroFrequenciaMonitoramentoRajadaInvertida);
                 listaDeParametrosParaSalvar.Add(this.destinatariosRajadaInvertida);
 
-                ParametrosSistema parametrosSistema = new ParametrosSistema();
-                parametrosSistema.salvarConfiguracoes(listaDeParametrosParaSalvar, this.caminhoArquivoDeConfiguracao, "Invertida", 0, 10);
+                //ParametrosSistema parametrosSistema = new ParametrosSistema();
+                //parametrosSistema.salvarConfiguracoes(listaDeParametrosParaSalvar, this.caminhoArquivoDeConfiguracao, "Invertida", 0, 9);
+                BancoDeDados bancoDeDados = new BancoDeDados();
+                Boolean retorno = bancoDeDados.insereParametrosDoSistemaNoBD("127.0.0.1", "3306", "root", "160310", "itau", listaDeParametrosParaSalvar, "3");
 
-                MessageBox.Show("As configurações foram salvas !!!", "Mensagem do sistema");
+                if (retorno == true)
+                {
+                    MessageBox.Show("As configurações foram salvas !!!", "Mensagem do sistema");
 
-                carregaParemetrosRajadaInvertida();
+                    carregaParametrosRajadaTijolo();
+                }
+                else
+                {
+
+                }
             }
         }
 
         private void btLerArquivoTijolo_Click(object sender, EventArgs e)
         {
-            Excel arquivoExcel = new Excel();
-
-            if (arquivoExcel.validarSePlanilhaAberta(caminhoArquivoExcelRajadaTijolo).Equals(true))
-            {
                 btLerArquivoTijolo.Visible = false;
 
                 pbLeituraTijolo.Visible = true;
@@ -844,6 +807,8 @@ namespace rajadas
 
                 List<Rajada> listaDeObjetosRajada = new List<Rajada>();
 
+                BancoDeDados bancoDeDados = new BancoDeDados();
+
                 // ------------------------** Lê Rajada Tijolo e Insere no Excel ** -----------------------------//
                 listaDeObjetosRajada = rajada.lerArquivoTxtRajadaTijolo(caminhoArquivoTxtRajadaTijolo, caminhoRajadaProcessadaTijolo, parametroCopiarOuMoverRajadaTijolo);
 
@@ -851,7 +816,7 @@ namespace rajadas
 
                 for (int i = 0; i < listaDeObjetosRajada.Count(); i++)
                 {
-                    arquivoExcel.inserirObjetoNaPlanilhaExcel(listaDeObjetosRajada[i], caminhoArquivoExcelRajadaTijolo);
+                    bancoDeDados.insereRajadaNoBD("127.0.0.1", "3306", "root", "160310", "itau", listaDeObjetosRajada[i], "1");
                     pbLeituraTijolo.Value = i;
                 }
                 // ------------------------** Lê Rajada Tijolo e Insere no Excel ** -----------------------------//
@@ -861,23 +826,10 @@ namespace rajadas
 
                 // -------------------------** Mensagem ao fim da leitura manual -----------------------------------//
                 MessageBox.Show("Processamento Concluído !!!" + "\n" + "Total de Contas Processadas: " + listaDeObjetosRajada.Count(), "Mensagem do sistema");
-
-            }
-            else 
-            {
-                MessageBox.Show("Erro: Não foi possível acessar a planilha " + caminhoArquivoExcelRajadaTijolo + "\n Verifique se ela está sendo utilizada por outro programa !");
-            }
-
-            
         }
 
         private void btLerArquivoDigital_Click(object sender, EventArgs e)
         {
-            Excel arquivoExcel = new Excel();
-
-            // -- ** Verifica se a planilha está fechada antes de iniciar o processamento dos arquivos ** ---- //
-            if (arquivoExcel.validarSePlanilhaAberta(caminhoArquivoExcelRajadaDigital).Equals(true))
-            {
                 btLerArquivoDigital.Visible = false;
 
                 pbLeituraDigital.Visible = true;
@@ -886,6 +838,8 @@ namespace rajadas
 
                 List<Rajada> listaDeObjetosRajada = new List<Rajada>();
 
+                BancoDeDados bancoDeDados = new BancoDeDados();
+
                 // ------------------------** Lê Rajada Digital Mundo Velho e Insere no Excel ** -----------------------------//
                 listaDeObjetosRajada = rajada.lerArquivoTxtRajadaDigital(caminhoArquivoTxtRajadaDigital, caminhoRajadaProcessadaDigital, parametroCopiarOuMoverRajadaDigital);
 
@@ -893,7 +847,7 @@ namespace rajadas
 
                 for (int i = 0; i < listaDeObjetosRajada.Count(); i++)
                 {
-                    arquivoExcel.inserirObjetoNaPlanilhaExcel(listaDeObjetosRajada[i], caminhoArquivoExcelRajadaDigital);
+                    bancoDeDados.insereRajadaNoBD("127.0.0.1", "3306", "root", "160310", "itau", listaDeObjetosRajada[i], "2");
                     pbLeituraDigital.Value = i;
                 }
                 // ------------------------** Lê Rajada Digital Mundo Velho e Insere no Excel ** -----------------------------//
@@ -903,27 +857,19 @@ namespace rajadas
 
                 // -------------------------** Mensagem ao fim da leitura manual -----------------------------------//
                 MessageBox.Show("Processamento Concluído !!!" + "\n" + "Total de Contas Processadas: " + listaDeObjetosRajada.Count(), "Mensagem do sistema");
-            }
-            else
-            {
-                MessageBox.Show("Erro: Não foi possível acessar a planilha " + caminhoArquivoExcelRajadaDigital + "\n Verifique se ela está sendo utilizada por outro programa !");
-            }
         }
 
         private void btLerArquivoInvertida_Click(object sender, EventArgs e)
         {
-            Excel arquivoExcel = new Excel();
-
-            // -- ** Verifica se a planilha está fechada antes de iniciar o processamento dos arquivos ** ---- //
-            if (arquivoExcel.validarSePlanilhaAberta(caminhoArquivoExcelRajadaInvertida).Equals(true))
-            {
                 btLerArquivoInvertida.Visible = false;
 
                 pbLeituraInvertida.Visible = true;
 
                 Rajada rajada = new Rajada();
 
-                List<Rajada> listaDeObjetosRajada = new List<Rajada>();              
+                List<Rajada> listaDeObjetosRajada = new List<Rajada>();
+
+                BancoDeDados bancoDeDados = new BancoDeDados();
 
                 // ------------------------** Lê Rajada Invertida e Insere no Excel ** -----------------------------//
                 listaDeObjetosRajada = rajada.lerArquivoTxtRajadaInvertida(caminhoArquivoTxtRajadaInvertida, caminhoRajadaProcessadaInvertida, parametroCopiarOuMoverRajadaInvertida);
@@ -932,7 +878,7 @@ namespace rajadas
 
                 for (int i = 0; i < listaDeObjetosRajada.Count(); i++)
                 {
-                    arquivoExcel.inserirObjetoNaPlanilhaExcel(listaDeObjetosRajada[i], caminhoArquivoExcelRajadaInvertida);
+                    bancoDeDados.insereRajadaNoBD("127.0.0.1", "3306", "root", "160310", "itau", listaDeObjetosRajada[i], "3");
                     pbLeituraInvertida.Value = i;
                 }
                 // ------------------------** Lê Rajada Invertida e Insere no Excel ** -----------------------------//
@@ -942,12 +888,6 @@ namespace rajadas
 
                 // -------------------------** Mensagem ao fim da leitura manual -----------------------------------//
                 MessageBox.Show("Processamento Concluído !!!" + "\n" + "Total de Contas Processadas: " + listaDeObjetosRajada.Count(), "Mensagem do sistema");
-
-            }
-            else
-            {
-                MessageBox.Show("Erro: Não foi possível acessar a planilha " + caminhoArquivoExcelRajadaInvertida + "\n Verifique se ela está sendo utilizada por outro programa !");
-            }
         }
 
         private void bwLerArquivoTijolo_DoWork(object sender, DoWorkEventArgs e)

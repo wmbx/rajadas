@@ -11,7 +11,6 @@ namespace rajadas
     class ParametrosSistema
     {
         private String caminhoRajadas;
-        private String caminhoExcel;
         private String caminhoRajadasProcessadas;
         private String parametroCopiarOuMoverArquivoTxt;
         private String intervaloLeitura;
@@ -38,7 +37,6 @@ namespace rajadas
                 foreach (var parametro in parametrosXml)
                 {
                     caminhoRajadas = parametro.Element("CaminhoRajadas").Value;
-                    caminhoExcel = parametro.Element("CaminhoExcel").Value;
                     caminhoRajadasProcessadas = parametro.Element("CaminhoRajadasProcessadas").Value;
                     parametroCopiarOuMoverArquivoTxt = parametro.Element("ConfiguracaoCopiarOuMover").Value;
                     intervaloLeitura = parametro.Element("Intervalo").Value;
@@ -53,7 +51,6 @@ namespace rajadas
                 List<String> parametrosLocais = new List<String>();
 
                 parametrosLocais.Add(caminhoRajadas);
-                parametrosLocais.Add(caminhoExcel);
                 parametrosLocais.Add(caminhoRajadasProcessadas);
                 parametrosLocais.Add(parametroCopiarOuMoverArquivoTxt);
                 parametrosLocais.Add(intervaloLeitura);
@@ -93,13 +90,6 @@ namespace rajadas
                             .Elements("TipoRajada")
                             .Where(x => x.Attribute("Id").Value == tipoRajada).FirstOrDefault()
                             .SetElementValue("CaminhoRajadas", listaDeParametros[contador]);
-
-                      contador = contador + 1;
-
-                        xml.Element("Parametros")
-                            .Elements("TipoRajada")
-                            .Where(x => x.Attribute("Id").Value == tipoRajada).FirstOrDefault()
-                            .SetElementValue("CaminhoExcel", listaDeParametros[contador]);
 
                       contador = contador + 1;
 
