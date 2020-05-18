@@ -8,14 +8,8 @@ namespace rajadas
 {
     class Monitoramento
     {
-        public int retornaQuantidadeDeArquivos(String caminhoRajadas, String tipoRajada)
-        {
-            int quantidadeDeArquivos = 0;
-
-
-
-
-            return quantidadeDeArquivos;
-        }
+        public String codigoRajada;
+        public String horarioMonitoramento { get; set; }
+        public String qtdArquivos { get; set; }
     }
 }

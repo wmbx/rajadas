@@ -21,40 +21,37 @@ namespace rajadas
         private String caminhoArquivoDeConfiguracao = "Parametros.xml";
 
         private String caminhoArquivoTxtRajadaTijolo;
-        private String caminhoArquivoExcelRajadaTijolo;
         private String caminhoRajadaProcessadaTijolo;
         private String parametroCopiarOuMoverRajadaTijolo;
         private String parametroIntervaloRajadaTijolo;
         private String parametroFrequenciaRajadaTijolo;
         private String statusLeituraRajadaTijolo;
-        private String parametroIntervaloMonitoramentoRajadaTijolo;
-        private String parametroFrequenciaMonitoramentoRajadaTijolo;
         private String statusMonitoramentoRajadaTijolo;
         private String destinatariosRajadaTijolo;
 
         private String caminhoArquivoTxtRajadaDigital;
-        private String caminhoArquivoExcelRajadaDigital;
         private String caminhoRajadaProcessadaDigital;
         private String parametroCopiarOuMoverRajadaDigital;
         private String parametroIntervaloRajadaDigital;
         private String parametroFrequenciaRajadaDigital;
         private String statusLeituraRajadaDigital;
-        private String parametroIntervaloMonitoramentoRajadaDigital;
-        private String parametroFrequenciaMonitoramentoRajadaDigital;
         private String statusMonitoramentoRajadaDigital;
         private String destinatariosRajadaDigital;
 
         private String caminhoArquivoTxtRajadaInvertida;
-        private String caminhoArquivoExcelRajadaInvertida;
         private String caminhoRajadaProcessadaInvertida;
         private String parametroCopiarOuMoverRajadaInvertida;
         private String parametroIntervaloRajadaInvertida;
         private String parametroFrequenciaRajadaInvertida;
         private String statusLeituraRajadaInvertida;
-        private String parametroIntervaloMonitoramentoRajadaInvertida;
-        private String parametroFrequenciaMonitoramentoRajadaInvertida;
         private String statusMonitoramentoRajadaInvertida;
         private String destinatariosRajadaInvertida;
+
+        private String enderecoBD;
+        private String portaBD;
+        private String usuarioBD;
+        private String senhaBD;
+        private String nomeBD;
 
         public Form1()
         {
@@ -63,41 +60,54 @@ namespace rajadas
 
         private void Form1_Load(object sender, EventArgs e)
         {
+            carregarParametrosBD();
             carregaParametrosRajadaTijolo();
             carregaParametrosRajadaDigital();
             carregaParemetrosRajadaInvertida();
         }
 
 
+        protected void carregarParametrosBD()
+        {
+            ParametrosSistema parametrosBD = new ParametrosSistema();
+            List<String> listaDeParametrosBD = new List<String>();
+
+            listaDeParametrosBD = parametrosBD.carregarParametrosBD(this.caminhoArquivoDeConfiguracao);
+
+            this.enderecoBD = listaDeParametrosBD[0];
+            this.portaBD = listaDeParametrosBD[1];
+            this.usuarioBD = listaDeParametrosBD[2];
+            this.senhaBD = listaDeParametrosBD[3];
+            this.nomeBD = listaDeParametrosBD[4];
+        }
+
         protected void carregaParametrosRajadaTijolo()
         {
             Agendamento agendamento = new Agendamento();
 
-            ParametrosSistema parametrosRajada = new ParametrosSistema();
+            BancoDeDados bancoDeDados = new BancoDeDados();
 
             // ---------------------------------- Carrega parâmetros da Rajada Tijolo -------------------------------------------------------//
             List<String> listaDeParametrosRajadaTijolo = new List<String>();
 
-            listaDeParametrosRajadaTijolo = parametrosRajada.carregarParametrosRajada(this.caminhoArquivoDeConfiguracao, "Tijolo");
+            listaDeParametrosRajadaTijolo = bancoDeDados.carregarParametrosDoSistema(this.enderecoBD, this.portaBD, this.usuarioBD, this.senhaBD, this.nomeBD, "1");
 
-            this.caminhoArquivoTxtRajadaTijolo = listaDeParametrosRajadaTijolo[0];
-            this.caminhoRajadaProcessadaTijolo = listaDeParametrosRajadaTijolo[1];
-            this.parametroCopiarOuMoverRajadaTijolo = listaDeParametrosRajadaTijolo[2];
-            this.parametroIntervaloRajadaTijolo = listaDeParametrosRajadaTijolo[3];
-            this.parametroFrequenciaRajadaTijolo = listaDeParametrosRajadaTijolo[4];
-            this.statusLeituraRajadaTijolo = listaDeParametrosRajadaTijolo[5];
-            this.statusMonitoramentoRajadaTijolo = listaDeParametrosRajadaTijolo[6];
-            this.parametroIntervaloMonitoramentoRajadaTijolo = listaDeParametrosRajadaTijolo[7];
-            this.parametroFrequenciaMonitoramentoRajadaTijolo = listaDeParametrosRajadaTijolo[8];
-            this.destinatariosRajadaTijolo = listaDeParametrosRajadaTijolo[9];
-            
+            this.caminhoArquivoTxtRajadaTijolo = listaDeParametrosRajadaTijolo[1];
+            this.caminhoRajadaProcessadaTijolo = listaDeParametrosRajadaTijolo[2];
+            this.parametroCopiarOuMoverRajadaTijolo = listaDeParametrosRajadaTijolo[3];
+            this.parametroIntervaloRajadaTijolo = listaDeParametrosRajadaTijolo[4];
+            this.parametroFrequenciaRajadaTijolo = listaDeParametrosRajadaTijolo[5];
+            this.statusLeituraRajadaTijolo = listaDeParametrosRajadaTijolo[6];
+            this.statusMonitoramentoRajadaTijolo = listaDeParametrosRajadaTijolo[7];
+            this.destinatariosRajadaTijolo = listaDeParametrosRajadaTijolo[8];
+
             tbCaminhoRajadaTijolo.Text = caminhoArquivoTxtRajadaTijolo;
             tbCaminhoRajadaProcessadaTijolo.Text = caminhoRajadaProcessadaTijolo;
             tbIntervaloRajadaTijolo.Text = parametroIntervaloRajadaTijolo;
             cbFrequenciaRajadaTijolo.SelectedItem = parametroFrequenciaRajadaTijolo;
             cbStatusLeituraTijolo.SelectedItem = statusLeituraRajadaTijolo;
             cbStatusMonitoramentoTijolo.SelectedItem = statusMonitoramentoRajadaTijolo;
-            tbDestinatariosTijolo.Text = destinatariosRajadaTijolo;            
+            tbDestinatariosTijolo.Text = destinatariosRajadaTijolo;
 
 
             if (parametroCopiarOuMoverRajadaTijolo == "Copiar Arquivo Processado")
@@ -111,9 +121,8 @@ namespace rajadas
             // ---------------------------------- Carrega parâmetros da Rajada Tijolo ---------------------------------------------------------//
 
 
-            // ---------------------------------- ** Seta os agendamentos das leituras e monitoramento no timer da Rajada Tijolo ** --------------------------------//
+            // ---------------------------------- ** Seta os agendamentos das leituras no timer da Rajada Tijolo ** --------------------------------//
             tmRajadaTijolo.Interval = agendamento.retornaAgendamentoExecucao(parametroIntervaloRajadaTijolo, parametroFrequenciaRajadaTijolo);
-            tmMonitoramentoArquivosRajadaTijolo.Interval = agendamento.retornaAgendamentoExecucao(parametroIntervaloMonitoramentoRajadaTijolo, parametroFrequenciaMonitoramentoRajadaTijolo);
             // ---------------------------------- ** Seta os agendamentos das leituras no timer da Rajada Tijolo ** --------------------------------//
 
 
@@ -125,14 +134,6 @@ namespace rajadas
             else
             {
                 tmRajadaTijolo.Enabled = false;
-            }
-            if (this.statusMonitoramentoRajadaTijolo == "Ativado")
-            {
-                tmMonitoramentoArquivosRajadaTijolo.Enabled = true;
-            }
-            else
-            {
-                tmMonitoramentoArquivosRajadaTijolo.Enabled = false;
             }
             // ------------------ ** Ativa ou Desativa os Timers das leituras automáticas de acordo com o parâmetro ** --------------------//
 
@@ -169,22 +170,20 @@ namespace rajadas
         {
             Agendamento agendamento = new Agendamento();
 
-            ParametrosSistema parametrosRajada = new ParametrosSistema();
+            BancoDeDados bancoDeDados = new BancoDeDados();
 
             List<String> listaDeParametrosRajadaDigital = new List<String>();
 
-            listaDeParametrosRajadaDigital = parametrosRajada.carregarParametrosRajada(this.caminhoArquivoDeConfiguracao, "Digital");
+            listaDeParametrosRajadaDigital = bancoDeDados.carregarParametrosDoSistema(this.enderecoBD, this.portaBD, this.usuarioBD, this.senhaBD, this.nomeBD, "2");
 
-            this.caminhoArquivoTxtRajadaDigital = listaDeParametrosRajadaDigital[0];
-            this.caminhoRajadaProcessadaDigital = listaDeParametrosRajadaDigital[1];
-            this.parametroCopiarOuMoverRajadaDigital = listaDeParametrosRajadaDigital[2];
-            this.parametroIntervaloRajadaDigital = listaDeParametrosRajadaDigital[3];
-            this.parametroFrequenciaRajadaDigital = listaDeParametrosRajadaDigital[4];
-            this.statusLeituraRajadaDigital = listaDeParametrosRajadaDigital[5];
-            this.statusMonitoramentoRajadaDigital = listaDeParametrosRajadaDigital[6];
-            this.parametroIntervaloMonitoramentoRajadaDigital = listaDeParametrosRajadaDigital[7];
-            this.parametroFrequenciaMonitoramentoRajadaDigital = listaDeParametrosRajadaDigital[8];
-            this.destinatariosRajadaDigital = listaDeParametrosRajadaDigital[9];
+            this.caminhoArquivoTxtRajadaDigital = listaDeParametrosRajadaDigital[1];
+            this.caminhoRajadaProcessadaDigital = listaDeParametrosRajadaDigital[2];
+            this.parametroCopiarOuMoverRajadaDigital = listaDeParametrosRajadaDigital[3];
+            this.parametroIntervaloRajadaDigital = listaDeParametrosRajadaDigital[4];
+            this.parametroFrequenciaRajadaDigital = listaDeParametrosRajadaDigital[5];
+            this.statusLeituraRajadaDigital = listaDeParametrosRajadaDigital[6];
+            this.statusMonitoramentoRajadaDigital = listaDeParametrosRajadaDigital[7];
+            this.destinatariosRajadaDigital = listaDeParametrosRajadaDigital[8];
 
             tbCaminhoRajadaDigital.Text = caminhoArquivoTxtRajadaDigital;
             tbCaminhoRajadaProcessadaDigital.Text = caminhoRajadaProcessadaDigital;
@@ -205,7 +204,6 @@ namespace rajadas
 
             // ---------------------------------- ** Seta os agendamentos das leituras no timer da Rajada Digital ** --------------------------------//
             tmRajadaDigital.Interval = agendamento.retornaAgendamentoExecucao(parametroIntervaloRajadaDigital, parametroFrequenciaRajadaDigital);
-            tmMonitoramentoArquivosRajadaDigital.Interval = agendamento.retornaAgendamentoExecucao(parametroIntervaloMonitoramentoRajadaDigital, parametroFrequenciaMonitoramentoRajadaDigital);
             // ---------------------------------- ** Seta os agendamentos das leituras no timer Digital ** --------------------------------//
 
 
@@ -217,14 +215,6 @@ namespace rajadas
             else
             {
                 tmRajadaDigital.Enabled = false;
-            }
-            if (this.statusMonitoramentoRajadaDigital == "Ativado")
-            {
-                tmMonitoramentoArquivosRajadaDigital.Enabled = true;
-            }
-            else
-            {
-                tmMonitoramentoArquivosRajadaDigital.Enabled = false;
             }
             // ------------------ ** Ativa ou Desativa os Timers das leituras automáticas de acordo com o parâmetro ** --------------------//
 
@@ -261,22 +251,20 @@ namespace rajadas
         {
             Agendamento agendamento = new Agendamento();
 
-            ParametrosSistema parametrosRajada = new ParametrosSistema();
+            BancoDeDados bancoDeDados = new BancoDeDados();
 
             List<String> listaDeParametrosRajadaInvertida = new List<String>();
 
-            listaDeParametrosRajadaInvertida = parametrosRajada.carregarParametrosRajada(this.caminhoArquivoDeConfiguracao, "Invertida");
+            listaDeParametrosRajadaInvertida = bancoDeDados.carregarParametrosDoSistema(this.enderecoBD, this.portaBD, this.usuarioBD, this.senhaBD, this.nomeBD, "3");
 
-            this.caminhoArquivoTxtRajadaInvertida = listaDeParametrosRajadaInvertida[0];
-            this.caminhoRajadaProcessadaInvertida = listaDeParametrosRajadaInvertida[1];
-            this.parametroCopiarOuMoverRajadaInvertida = listaDeParametrosRajadaInvertida[2];
-            this.parametroIntervaloRajadaInvertida = listaDeParametrosRajadaInvertida[3];
-            this.parametroFrequenciaRajadaInvertida = listaDeParametrosRajadaInvertida[4];
-            this.statusLeituraRajadaInvertida = listaDeParametrosRajadaInvertida[5];
-            this.statusMonitoramentoRajadaInvertida = listaDeParametrosRajadaInvertida[6];
-            this.parametroIntervaloMonitoramentoRajadaInvertida = listaDeParametrosRajadaInvertida[7];
-            this.parametroFrequenciaMonitoramentoRajadaInvertida = listaDeParametrosRajadaInvertida[8];
-            this.destinatariosRajadaInvertida = listaDeParametrosRajadaInvertida[9];
+            this.caminhoArquivoTxtRajadaInvertida = listaDeParametrosRajadaInvertida[1];
+            this.caminhoRajadaProcessadaInvertida = listaDeParametrosRajadaInvertida[2];
+            this.parametroCopiarOuMoverRajadaInvertida = listaDeParametrosRajadaInvertida[3];
+            this.parametroIntervaloRajadaInvertida = listaDeParametrosRajadaInvertida[4];
+            this.parametroFrequenciaRajadaInvertida = listaDeParametrosRajadaInvertida[5];
+            this.statusLeituraRajadaInvertida = listaDeParametrosRajadaInvertida[6];
+            this.statusMonitoramentoRajadaInvertida = listaDeParametrosRajadaInvertida[7];
+            this.destinatariosRajadaInvertida = listaDeParametrosRajadaInvertida[8];
 
             tbCaminhoRajadaInvertida.Text = caminhoArquivoTxtRajadaInvertida;
             tbCaminhoRajadaProcessadaInvertida.Text = caminhoRajadaProcessadaInvertida;
@@ -297,7 +285,6 @@ namespace rajadas
 
             // ---------------------------------- ** Seta os agendamentos das leituras no timerda Rajada Invertida ** --------------------------------//
             tmRajadaInvertida.Interval = agendamento.retornaAgendamentoExecucao(parametroIntervaloRajadaInvertida, parametroFrequenciaRajadaInvertida);
-            tmMonitoramentoArquivosRajadaInvertida.Interval = agendamento.retornaAgendamentoExecucao(parametroIntervaloMonitoramentoRajadaInvertida, parametroFrequenciaMonitoramentoRajadaInvertida);
             // ---------------------------------- ** Seta os agendamentos das leituras no timer da Rajada Invertida ** --------------------------------//
 
 
@@ -309,14 +296,6 @@ namespace rajadas
             else
             {
                 tmRajadaInvertida.Enabled = false;
-            }
-            if (this.statusMonitoramentoRajadaInvertida == "Ativado")
-            {
-                tmMonitoramentoArquivosRajadaInvertida.Enabled = true;
-            }
-            else
-            {
-                tmMonitoramentoArquivosRajadaInvertida.Enabled = false;
             }
             // ------------------ ** Ativa ou Desativa os Timers das leituras automáticas de acordo com o parâmetro ** --------------------//
 
@@ -489,7 +468,7 @@ namespace rajadas
 
                     for (int i = 0; i < listaDeObjetosRajada.Count(); i++)
                     {
-                        bancoDeDados.insereRajadaNoBD("127.0.0.1", "3306", "root", "160310", "itau", listaDeObjetosRajada[i], "1");
+                        bancoDeDados.insereRajadaNoBD(this.enderecoBD, this.portaBD, this.usuarioBD, this.senhaBD, this.nomeBD, listaDeObjetosRajada[i], "1");
                         pbLeituraTijolo.Value = i;
                     }
                     // ------------------------** Lê Rajada Tijolo e Insere no Excel ** -----------------------------//
@@ -528,7 +507,7 @@ namespace rajadas
 
                     for (int i = 0; i < listaDeObjetosRajada.Count(); i++)
                     {
-                        bancoDeDados.insereRajadaNoBD("127.0.0.1", "3306", "root", "160310", "itau", listaDeObjetosRajada[i], "2");
+                        bancoDeDados.insereRajadaNoBD("this.enderecoBD", this.portaBD, this.usuarioBD, this.senhaBD, this.nomeBD, listaDeObjetosRajada[i], "2");
                         pbLeituraDigital.Value = i;
                     }
                     // ------------------------** Lê Rajada Digital Mundo Velho e Insere no Excel ** -----------------------------//
@@ -566,7 +545,7 @@ namespace rajadas
 
                     for (int i = 0; i < listaDeObjetosRajada.Count(); i++)
                     {
-                        bancoDeDados.insereRajadaNoBD("127.0.0.1", "3306", "root", "160310", "itau", listaDeObjetosRajada[i], "3");
+                        bancoDeDados.insereRajadaNoBD(this.enderecoBD, this.portaBD, this.usuarioBD, this.senhaBD, this.nomeBD, listaDeObjetosRajada[i], "3");
                         pbLeituraInvertida.Value = i;
                     }
                     // ------------------------** Lê Rajada Invertida e Insere no Excel ** -----------------------------//
@@ -670,10 +649,8 @@ namespace rajadas
                 listaDeParametrosParaSalvar.Add(this.statusMonitoramentoRajadaTijolo);
                 listaDeParametrosParaSalvar.Add(this.destinatariosRajadaTijolo);
 
-                //ParametrosSistema parametrosSistema = new ParametrosSistema();
-                //parametrosSistema.salvarConfiguracoes(listaDeParametrosParaSalvar, this.caminhoArquivoDeConfiguracao, "Tijolo", 0, 9);
                 BancoDeDados bancoDeDados = new BancoDeDados();
-                Boolean retorno = bancoDeDados.insereParametrosDoSistemaNoBD("127.0.0.1", "3306", "root", "160310", "itau", listaDeParametrosParaSalvar, "1");
+                Boolean retorno = bancoDeDados.atualizaParametrosDoSistemaNoBD(this.enderecoBD, this.portaBD, this.usuarioBD, this.senhaBD, this.nomeBD, listaDeParametrosParaSalvar, "1");
 
                 if (retorno == true)
                 {
@@ -725,16 +702,14 @@ namespace rajadas
                 listaDeParametrosParaSalvar.Add(this.statusMonitoramentoRajadaDigital);
                 listaDeParametrosParaSalvar.Add(this.destinatariosRajadaDigital);
 
-                //ParametrosSistema parametrosSistema = new ParametrosSistema();
-                //parametrosSistema.salvarConfiguracoes(listaDeParametrosParaSalvar, this.caminhoArquivoDeConfiguracao, "Digital", 0, 9);
                 BancoDeDados bancoDeDados = new BancoDeDados();
-                Boolean retorno = bancoDeDados.insereParametrosDoSistemaNoBD("127.0.0.1", "3306", "root", "160310", "itau", listaDeParametrosParaSalvar, "2");
+                Boolean retorno = bancoDeDados.atualizaParametrosDoSistemaNoBD(this.enderecoBD, this.portaBD, this.usuarioBD, this.senhaBD, this.nomeBD, listaDeParametrosParaSalvar, "2");
 
                 if (retorno == true)
                 {
                     MessageBox.Show("As configurações foram salvas !!!", "Mensagem do sistema");
 
-                    carregaParametrosRajadaTijolo();
+                    carregaParametrosRajadaDigital();
                 }
                 else
                 {
@@ -779,16 +754,14 @@ namespace rajadas
                 listaDeParametrosParaSalvar.Add(this.statusMonitoramentoRajadaInvertida);
                 listaDeParametrosParaSalvar.Add(this.destinatariosRajadaInvertida);
 
-                //ParametrosSistema parametrosSistema = new ParametrosSistema();
-                //parametrosSistema.salvarConfiguracoes(listaDeParametrosParaSalvar, this.caminhoArquivoDeConfiguracao, "Invertida", 0, 9);
                 BancoDeDados bancoDeDados = new BancoDeDados();
-                Boolean retorno = bancoDeDados.insereParametrosDoSistemaNoBD("127.0.0.1", "3306", "root", "160310", "itau", listaDeParametrosParaSalvar, "3");
+                Boolean retorno = bancoDeDados.atualizaParametrosDoSistemaNoBD(this.enderecoBD, this.portaBD, this.usuarioBD, this.senhaBD, this.nomeBD, listaDeParametrosParaSalvar, "3");
 
                 if (retorno == true)
                 {
                     MessageBox.Show("As configurações foram salvas !!!", "Mensagem do sistema");
 
-                    carregaParametrosRajadaTijolo();
+                    carregaParemetrosRajadaInvertida();
                 }
                 else
                 {
@@ -816,7 +789,7 @@ namespace rajadas
 
                 for (int i = 0; i < listaDeObjetosRajada.Count(); i++)
                 {
-                    bancoDeDados.insereRajadaNoBD("127.0.0.1", "3306", "root", "160310", "itau", listaDeObjetosRajada[i], "1");
+                    bancoDeDados.insereRajadaNoBD(this.enderecoBD, this.portaBD, this.usuarioBD, this.senhaBD, this.nomeBD, listaDeObjetosRajada[i], "1");
                     pbLeituraTijolo.Value = i;
                 }
                 // ------------------------** Lê Rajada Tijolo e Insere no Excel ** -----------------------------//
@@ -847,7 +820,7 @@ namespace rajadas
 
                 for (int i = 0; i < listaDeObjetosRajada.Count(); i++)
                 {
-                    bancoDeDados.insereRajadaNoBD("127.0.0.1", "3306", "root", "160310", "itau", listaDeObjetosRajada[i], "2");
+                    bancoDeDados.insereRajadaNoBD(this.enderecoBD, this.portaBD, this.usuarioBD, this.senhaBD, this.nomeBD, listaDeObjetosRajada[i], "2");
                     pbLeituraDigital.Value = i;
                 }
                 // ------------------------** Lê Rajada Digital Mundo Velho e Insere no Excel ** -----------------------------//
@@ -878,7 +851,7 @@ namespace rajadas
 
                 for (int i = 0; i < listaDeObjetosRajada.Count(); i++)
                 {
-                    bancoDeDados.insereRajadaNoBD("127.0.0.1", "3306", "root", "160310", "itau", listaDeObjetosRajada[i], "3");
+                    bancoDeDados.insereRajadaNoBD(this.enderecoBD, this.portaBD, this.usuarioBD, this.senhaBD, this.nomeBD, listaDeObjetosRajada[i], "3");
                     pbLeituraInvertida.Value = i;
                 }
                 // ------------------------** Lê Rajada Invertida e Insere no Excel ** -----------------------------//
@@ -986,6 +959,30 @@ namespace rajadas
         private void btSalvarMonitoramentoInvertida_Click(object sender, EventArgs e)
         {
 
+        }
+
+        private void btAgendamentoTijolo_Click(object sender, EventArgs e)
+        {
+            FormMonitoramento formMonitoramento = new FormMonitoramento();
+            formMonitoramento.Show();
+
+            this.Hide();
+        }
+
+        private void btAgendamentoDigital_Click(object sender, EventArgs e)
+        {
+            FormMonitoramento formMonitoramento = new FormMonitoramento();
+            formMonitoramento.Show();
+
+            this.Hide();
+        }
+
+        private void btAgendamentoInvertida_Click(object sender, EventArgs e)
+        {
+            FormMonitoramento formMonitoramento = new FormMonitoramento();
+            formMonitoramento.Show();
+
+            this.Hide();
         }
     }
 }

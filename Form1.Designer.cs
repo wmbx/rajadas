@@ -115,9 +115,6 @@
             this.tmRajadaInvertida = new System.Windows.Forms.Timer(this.components);
             this.niBandeja = new System.Windows.Forms.NotifyIcon(this.components);
             this.btSalvarArquivoTijolo = new System.Windows.Forms.Button();
-            this.tmMonitoramentoArquivosRajadaTijolo = new System.Windows.Forms.Timer(this.components);
-            this.tmMonitoramentoArquivosRajadaDigital = new System.Windows.Forms.Timer(this.components);
-            this.tmMonitoramentoArquivosRajadaInvertida = new System.Windows.Forms.Timer(this.components);
             this.groupBox1.SuspendLayout();
             this.gbMonitoramentoTijolo.SuspendLayout();
             this.groupBox2.SuspendLayout();
@@ -235,6 +232,7 @@
             this.btAgendamentoTijolo.TabIndex = 17;
             this.btAgendamentoTijolo.Text = "Agendamento";
             this.btAgendamentoTijolo.UseVisualStyleBackColor = true;
+            this.btAgendamentoTijolo.Click += new System.EventHandler(this.btAgendamentoTijolo_Click);
             // 
             // tbDestinatariosTijolo
             // 
@@ -444,6 +442,7 @@
             this.btAgendamentoDigital.TabIndex = 18;
             this.btAgendamentoDigital.Text = "Agendamento";
             this.btAgendamentoDigital.UseVisualStyleBackColor = true;
+            this.btAgendamentoDigital.Click += new System.EventHandler(this.btAgendamentoDigital_Click);
             // 
             // tbDestinatariosDigital
             // 
@@ -715,6 +714,7 @@
             this.btAgendamentoInvertida.TabIndex = 18;
             this.btAgendamentoInvertida.Text = "Agendamento";
             this.btAgendamentoInvertida.UseVisualStyleBackColor = true;
+            this.btAgendamentoInvertida.Click += new System.EventHandler(this.btAgendamentoInvertida_Click);
             // 
             // tbDestinatariosInvertida
             // 
@@ -986,21 +986,6 @@
             this.btSalvarArquivoTijolo.UseVisualStyleBackColor = true;
             this.btSalvarArquivoTijolo.Click += new System.EventHandler(this.btSalvarArquivoTijolo_Click);
             // 
-            // tmMonitoramentoArquivosRajadaTijolo
-            // 
-            this.tmMonitoramentoArquivosRajadaTijolo.Interval = 1000;
-            this.tmMonitoramentoArquivosRajadaTijolo.Tick += new System.EventHandler(this.tmMonitoramentoArquivosRajadaTijolo_Tick);
-            // 
-            // tmMonitoramentoArquivosRajadaDigital
-            // 
-            this.tmMonitoramentoArquivosRajadaDigital.Interval = 1000;
-            this.tmMonitoramentoArquivosRajadaDigital.Tick += new System.EventHandler(this.tmMonitoramentoArquivosRajadaDigital_Tick);
-            // 
-            // tmMonitoramentoArquivosRajadaInvertida
-            // 
-            this.tmMonitoramentoArquivosRajadaInvertida.Interval = 1000;
-            this.tmMonitoramentoArquivosRajadaInvertida.Tick += new System.EventHandler(this.tmMonitoramentoArquivosRajadaInvertida_Tick);
-            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -1117,9 +1102,6 @@
         private System.Windows.Forms.ProgressBar pbLeituraTijolo;
         private System.Windows.Forms.ProgressBar pbLeituraDigital;
         private System.Windows.Forms.ProgressBar pbLeituraInvertida;
-        private System.Windows.Forms.Timer tmMonitoramentoArquivosRajadaTijolo;
-        private System.Windows.Forms.Timer tmMonitoramentoArquivosRajadaDigital;
-        private System.Windows.Forms.Timer tmMonitoramentoArquivosRajadaInvertida;
         private System.Windows.Forms.GroupBox gbMonitoramentoTijolo;
         private System.Windows.Forms.ComboBox cbStatusMonitoramentoTijolo;
         private System.Windows.Forms.Label label17;
