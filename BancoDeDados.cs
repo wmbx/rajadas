@@ -206,5 +206,59 @@ namespace rajadas
             return listaDeMonitoramento;
         }
 
+        public Boolean atualizaTabelaDeMonitoramento(String endereco, String porta, String usuario, String senha, String nomeBD, List<Monitoramento> listaMonitoramento, String tipoRajada)
+        {
+            // ** String de conexão com o banco ** //
+            String stringConexao = "server=" + endereco + ";port=" + porta + ";User Id=" + usuario + ";database=" + nomeBD + ";password=" + senha;
+
+            // ** String para limpar os registros da tabela MONITORAMENTO ** //
+            String stringComandoLimparTabela = "DELETE FROM monitoramento WHERE codigoRajada = " + tipoRajada;
+
+            // ** String para inserção de registros no banco ** //
+            String stringComando = "INSERT INTO monitoramento (codigoRajada, horarioMonitoramento, qtdArquivos) VALUES (@CODIGO, @HORARIO, @QTD)";
+
+            try
+            {
+                // ** Cria e inicia a conexão com o banco ** //
+                conexao = new MySqlConnection(stringConexao);
+                conexao.Open();
+
+                // ** Cria o objeto de comando para limpeza** //
+                comando = new MySqlCommand(stringComandoLimparTabela, conexao);
+                comando.ExecuteNonQuery();
+                comando = null;
+
+                // ** Adiciona os parâmetros ao objeto de comando
+                foreach (Monitoramento monitoramento in listaMonitoramento)
+                {
+                    // ** Cria o objeto de comando ** //
+                    comando = new MySqlCommand(stringComando, conexao);
+
+                    comando.Parameters.AddWithValue("@CODIGO", monitoramento.codigoRajada);
+                    comando.Parameters.AddWithValue("@HORARIO", monitoramento.horarioMonitoramento);
+                    comando.Parameters.AddWithValue("@QTD", monitoramento.qtdArquivos);
+
+                    // ** Executa o comando de inserção no banco ** //
+                    comando.ExecuteNonQuery();
+
+                    // ** Limpa o objeto comando ** //
+                    comando = null;
+                }
+
+                return true;
+            }
+            catch (Exception e)
+            {
+                return false;
+                throw;
+            }
+            finally
+            {
+                conexao.Close();
+                conexao = null;
+                comando = null;
+            }
+        }
+
     }
 }

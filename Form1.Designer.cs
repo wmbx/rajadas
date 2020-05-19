@@ -115,6 +115,9 @@
             this.tmRajadaInvertida = new System.Windows.Forms.Timer(this.components);
             this.niBandeja = new System.Windows.Forms.NotifyIcon(this.components);
             this.btSalvarArquivoTijolo = new System.Windows.Forms.Button();
+            this.tmMonitoramentoTijolo = new System.Windows.Forms.Timer(this.components);
+            this.tmMonitoramentoDigital = new System.Windows.Forms.Timer(this.components);
+            this.tmMonitoramentoInvertida = new System.Windows.Forms.Timer(this.components);
             this.groupBox1.SuspendLayout();
             this.gbMonitoramentoTijolo.SuspendLayout();
             this.groupBox2.SuspendLayout();
@@ -986,6 +989,21 @@
             this.btSalvarArquivoTijolo.UseVisualStyleBackColor = true;
             this.btSalvarArquivoTijolo.Click += new System.EventHandler(this.btSalvarArquivoTijolo_Click);
             // 
+            // tmMonitoramentoTijolo
+            // 
+            this.tmMonitoramentoTijolo.Interval = 60000;
+            this.tmMonitoramentoTijolo.Tick += new System.EventHandler(this.tmMonitoramentoTijolo_Tick);
+            // 
+            // tmMonitoramentoDigital
+            // 
+            this.tmMonitoramentoDigital.Interval = 60000;
+            this.tmMonitoramentoDigital.Tick += new System.EventHandler(this.tmMonitoramentoDigital_Tick);
+            // 
+            // tmMonitoramentoInvertida
+            // 
+            this.tmMonitoramentoInvertida.Interval = 60000;
+            this.tmMonitoramentoInvertida.Tick += new System.EventHandler(this.tmMonitoramentoInvertida_Tick);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -1003,6 +1021,7 @@
             this.Name = "Form1";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "BotFlow Rajadas V.1.2";
+            this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.Form1_FormClosed);
             this.Load += new System.EventHandler(this.Form1_Load);
             this.Resize += new System.EventHandler(this.Form1_Resize);
             this.groupBox1.ResumeLayout(false);
@@ -1120,6 +1139,9 @@
         private System.Windows.Forms.Button btAgendamentoTijolo;
         private System.Windows.Forms.Button btAgendamentoDigital;
         private System.Windows.Forms.Button btAgendamentoInvertida;
+        private System.Windows.Forms.Timer tmMonitoramentoTijolo;
+        private System.Windows.Forms.Timer tmMonitoramentoDigital;
+        private System.Windows.Forms.Timer tmMonitoramentoInvertida;
     }
 }
 

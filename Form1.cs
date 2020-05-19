@@ -53,6 +53,10 @@ namespace rajadas
         private String senhaBD;
         private String nomeBD;
 
+        private List<Monitoramento> listaMonitoramentoTijolo;
+        private List<Monitoramento> listaMonitoramentoDigital;
+        private List<Monitoramento> listaMonitoramentoInvertida;
+
         public Form1()
         {
             InitializeComponent();
@@ -64,8 +68,56 @@ namespace rajadas
             carregaParametrosRajadaTijolo();
             carregaParametrosRajadaDigital();
             carregaParemetrosRajadaInvertida();
+            carregaObjetosMonitoramento();
+            
         }
 
+        protected void monitoramentoTijolo()
+        {
+            List<string> listaDeArquivosEncontrados = new List<string>();
+
+            Rajada rajada = new Rajada();
+
+            foreach (Monitoramento monitoramento in this.listaMonitoramentoTijolo)
+            {
+                String hora = DateTime.Now.Hour.ToString();
+                String minuto = DateTime.Now.Minute.ToString();
+                if (Convert.ToInt32(minuto) < 10)
+                {
+                    minuto = "0" + minuto;
+                }
+                String horaFormatada = hora + ":" + minuto;
+
+                if (horaFormatada == monitoramento.horarioMonitoramento)
+                {
+                    listaDeArquivosEncontrados = rajada.retornaQuantidadeArquivosEncontrados(this.caminhoArquivoTxtRajadaTijolo, "ARQBRSAGORD");
+                    if (listaDeArquivosEncontrados.Count < Convert.ToInt32(monitoramento.qtdArquivos))
+                    {
+                        String arquivosEncontrados = "";
+
+                        foreach (String arquivo in listaDeArquivosEncontrados)
+                        {
+                            arquivosEncontrados = arquivosEncontrados + " \n " + arquivo;
+                        }
+                        // ** Adiciona o total de arquivos encontrados ao fim da lista que irá no corpo do e-mail ** //
+                        arquivosEncontrados = arquivosEncontrados + " \n \n \n " + "Total de Arquivos:  " + listaDeArquivosEncontrados.Count();
+
+                        Email email = new Email();
+                        email.enviarEmail(this.destinatariosRajadaTijolo, "Monitoramento de Rajadas Tijolo - " + horaFormatada, "Estava previsto o envio de " + monitoramento.qtdArquivos +
+                            " arquivos, porém foram localizados apenas " + listaDeArquivosEncontrados.Count + " arquivos na pasta de origem." + "\n \n " + "Seguem arquivos localizados: " + "\n \n \n" + arquivosEncontrados);
+                    }
+                }
+            }
+        }
+
+        protected void carregaObjetosMonitoramento()
+        {
+            BancoDeDados bancoDeDados = new BancoDeDados();
+
+            this.listaMonitoramentoTijolo = bancoDeDados.listaMonitoramento(this.enderecoBD, this.portaBD, this.usuarioBD, this.senhaBD, this.nomeBD, "1");
+            this.listaMonitoramentoDigital = bancoDeDados.listaMonitoramento(this.enderecoBD, this.portaBD, this.usuarioBD, this.senhaBD, this.nomeBD, "2");
+            this.listaMonitoramentoInvertida = bancoDeDados.listaMonitoramento(this.enderecoBD, this.portaBD, this.usuarioBD, this.senhaBD, this.nomeBD, "3");
+        }
 
         protected void carregarParametrosBD()
         {
@@ -134,6 +186,14 @@ namespace rajadas
             else
             {
                 tmRajadaTijolo.Enabled = false;
+            }
+            if (this.statusMonitoramentoRajadaTijolo == "Ativado")
+            {
+                tmMonitoramentoTijolo.Enabled = true;
+            }
+            else
+            {
+                tmMonitoramentoTijolo.Enabled = false;
             }
             // ------------------ ** Ativa ou Desativa os Timers das leituras automáticas de acordo com o parâmetro ** --------------------//
 
@@ -216,6 +276,14 @@ namespace rajadas
             {
                 tmRajadaDigital.Enabled = false;
             }
+            if (this.statusMonitoramentoRajadaDigital == "Ativado")
+            {
+                tmMonitoramentoDigital.Enabled = true;
+            }
+            else
+            {
+                tmMonitoramentoDigital.Enabled = false;
+            }
             // ------------------ ** Ativa ou Desativa os Timers das leituras automáticas de acordo com o parâmetro ** --------------------//
 
 
@@ -296,6 +364,14 @@ namespace rajadas
             else
             {
                 tmRajadaInvertida.Enabled = false;
+            }
+            if (this.statusMonitoramentoRajadaInvertida == "Ativado")
+            {
+                tmMonitoramentoInvertida.Enabled = true;
+            }
+            else
+            {
+                tmMonitoramentoInvertida.Enabled = false;
             }
             // ------------------ ** Ativa ou Desativa os Timers das leituras automáticas de acordo com o parâmetro ** --------------------//
 
@@ -964,6 +1040,8 @@ namespace rajadas
         private void btAgendamentoTijolo_Click(object sender, EventArgs e)
         {
             FormMonitoramento formMonitoramento = new FormMonitoramento();
+            formMonitoramento.ParametroTipoRajada = "1";
+            formMonitoramento.ParametroNomeRajada = "TIJOLO";
             formMonitoramento.Show();
 
             this.Hide();
@@ -972,6 +1050,8 @@ namespace rajadas
         private void btAgendamentoDigital_Click(object sender, EventArgs e)
         {
             FormMonitoramento formMonitoramento = new FormMonitoramento();
+            formMonitoramento.ParametroTipoRajada = "2";
+            formMonitoramento.ParametroNomeRajada = "DIGITAL";
             formMonitoramento.Show();
 
             this.Hide();
@@ -980,9 +1060,31 @@ namespace rajadas
         private void btAgendamentoInvertida_Click(object sender, EventArgs e)
         {
             FormMonitoramento formMonitoramento = new FormMonitoramento();
+            formMonitoramento.ParametroTipoRajada = "3";
+            formMonitoramento.ParametroNomeRajada = "INVERTIDA";
             formMonitoramento.Show();
 
             this.Hide();
+        }
+
+        private void Form1_FormClosed(object sender, FormClosedEventArgs e)
+        {
+            Application.Exit();
+        }
+
+        private void tmMonitoramentoTijolo_Tick(object sender, EventArgs e)
+        {
+            monitoramentoTijolo();
+        }
+
+        private void tmMonitoramentoDigital_Tick(object sender, EventArgs e)
+        {
+
+        }
+
+        private void tmMonitoramentoInvertida_Tick(object sender, EventArgs e)
+        {
+
         }
     }
 }

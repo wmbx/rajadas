@@ -11,5 +11,7 @@ namespace rajadas
         public String codigoRajada;
         public String horarioMonitoramento { get; set; }
         public String qtdArquivos { get; set; }
+
+        
     }
 }
