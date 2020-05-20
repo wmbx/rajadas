@@ -66,7 +66,7 @@ namespace rajadas
         protected void carregarGridViewMonitoramentoAtual()
         {
             BancoDeDados bancoDeDados = new BancoDeDados();
-            dgvMonitoramentoAtual.DataSource = bancoDeDados.listaMonitoramento(this.enderecoBD, this.portaBD, this.usuarioBD, this.senhaBD, this.nomeBD, this.tipoRajada);
+            dgvMonitoramentoAtual.DataSource = bancoDeDados.listaTodosMonitoramentos(this.enderecoBD, this.portaBD, this.usuarioBD, this.senhaBD, this.nomeBD, this.tipoRajada);
         }
 
         private void gbMonitoramento_Enter(object sender, EventArgs e)
@@ -102,6 +102,8 @@ namespace rajadas
                     {
                         MessageBox.Show("Alterações realizadas com sucesso !!!");
                         carregarGridViewMonitoramentoAtual();
+
+                        dgvMonitoramentoNovo.Rows.Clear();
                     }
                     else
                     {

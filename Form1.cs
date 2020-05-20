@@ -63,17 +63,18 @@ namespace rajadas
         }
 
         private void Form1_Load(object sender, EventArgs e)
-        {
+        {  
             carregarParametrosBD();
             carregaParametrosRajadaTijolo();
             carregaParametrosRajadaDigital();
             carregaParemetrosRajadaInvertida();
             carregaObjetosMonitoramento();
-            
         }
 
         protected void monitoramentoTijolo()
         {
+            carregaObjetosMonitoramento();
+
             List<string> listaDeArquivosEncontrados = new List<string>();
 
             Rajada rajada = new Rajada();
@@ -102,12 +103,118 @@ namespace rajadas
                         // ** Adiciona o total de arquivos encontrados ao fim da lista que irá no corpo do e-mail ** //
                         arquivosEncontrados = arquivosEncontrados + " \n \n \n " + "Total de Arquivos:  " + listaDeArquivosEncontrados.Count();
 
+                        // ** Envia e-mail aos destinatários parametrizando comunicando que algum arquivo não foi enviado ** //
                         Email email = new Email();
-                        email.enviarEmail(this.destinatariosRajadaTijolo, "Monitoramento de Rajadas Tijolo - " + horaFormatada, "Estava previsto o envio de " + monitoramento.qtdArquivos +
-                            " arquivos, porém foram localizados apenas " + listaDeArquivosEncontrados.Count + " arquivos na pasta de origem." + "\n \n " + "Seguem arquivos localizados: " + "\n \n \n" + arquivosEncontrados);
+                        email.enviarEmail(this.destinatariosRajadaTijolo, "Monitoramento RAJADA TIJOLO - " + horaFormatada, "Estava previsto o envio de " + monitoramento.qtdArquivos +
+                            " arquivos, porém foram localizados apenas " + listaDeArquivosEncontrados.Count + " arquivos na pasta de origem." + "\n \n " + "Seguem arquivos localizados: " + "\n \n" + arquivosEncontrados);
+
+                        // ** Atualizada a data de processamento do objeto monitoramento para evitar duplicidades ** //
+                        BancoDeDados bancoDeDados = new BancoDeDados();
+                        bancoDeDados.atualizaDataMonitoramentoExecutado(this.enderecoBD, this.portaBD, this.usuarioBD, this.senhaBD, this.nomeBD, monitoramento, "1");
+
+                        // ** Atualiza os objetos de monitoramento
+                        carregaObjetosMonitoramento();
                     }
                 }
             }
+        }
+
+        protected void monitoramentoDigital()
+        {
+            carregaObjetosMonitoramento();
+
+            List<string> listaDeArquivosEncontrados = new List<string>();
+
+            Rajada rajada = new Rajada();
+
+            foreach (Monitoramento monitoramento in this.listaMonitoramentoDigital)
+            {
+                String hora = DateTime.Now.Hour.ToString();
+                String minuto = DateTime.Now.Minute.ToString();
+                if (Convert.ToInt32(minuto) < 10)
+                {
+                    minuto = "0" + minuto;
+                }
+                String horaFormatada = hora + ":" + minuto;
+
+                if (horaFormatada == monitoramento.horarioMonitoramento)
+                {
+                    listaDeArquivosEncontrados = rajada.retornaQuantidadeArquivosEncontrados(this.caminhoArquivoTxtRajadaDigital, "BRSCANDIGIT");
+                    if (listaDeArquivosEncontrados.Count < Convert.ToInt32(monitoramento.qtdArquivos))
+                    {
+                        String arquivosEncontrados = "";
+
+                        foreach (String arquivo in listaDeArquivosEncontrados)
+                        {
+                            arquivosEncontrados = arquivosEncontrados + " \n " + arquivo;
+                        }
+                        // ** Adiciona o total de arquivos encontrados ao fim da lista que irá no corpo do e-mail ** //
+                        arquivosEncontrados = arquivosEncontrados + " \n \n \n " + "Total de Arquivos:  " + listaDeArquivosEncontrados.Count();
+
+                        // ** Envia e-mail aos destinatários parametrizando comunicando que algum arquivo não foi enviado ** //
+                        Email email = new Email();
+                        email.enviarEmail(this.destinatariosRajadaDigital, "Monitoramento RAJADA DIGITAL (MUNDO VELHO) - " + horaFormatada, "Estava previsto o envio de " + monitoramento.qtdArquivos +
+                            " arquivos, porém foram localizados apenas " + listaDeArquivosEncontrados.Count + " arquivos na pasta de origem." + "\n \n " + "Seguem arquivos localizados: " + "\n \n" + arquivosEncontrados);
+
+                        // ** Atualizada a data de processamento do objeto monitoramento para evitar duplicidades ** //
+                        BancoDeDados bancoDeDados = new BancoDeDados();
+                        bancoDeDados.atualizaDataMonitoramentoExecutado(this.enderecoBD, this.portaBD, this.usuarioBD, this.senhaBD, this.nomeBD, monitoramento, "2");
+
+                        // ** Atualiza os objetos de monitoramento
+                        carregaObjetosMonitoramento();
+                    }
+                }
+            }
+        
+        }
+
+        protected void monitoramentoInvertida()
+        {
+            carregaObjetosMonitoramento();
+
+            List<string> listaDeArquivosEncontrados = new List<string>();
+
+            Rajada rajada = new Rajada();
+
+            foreach (Monitoramento monitoramento in this.listaMonitoramentoInvertida)
+            {
+                String hora = DateTime.Now.Hour.ToString();
+                String minuto = DateTime.Now.Minute.ToString();
+                if (Convert.ToInt32(minuto) < 10)
+                {
+                    minuto = "0" + minuto;
+                }
+                String horaFormatada = hora + ":" + minuto;
+
+                if (horaFormatada == monitoramento.horarioMonitoramento)
+                {
+                    listaDeArquivosEncontrados = rajada.retornaQuantidadeArquivosEncontrados(this.caminhoArquivoTxtRajadaInvertida, "ARQBRSINVER");
+                    if (listaDeArquivosEncontrados.Count < Convert.ToInt32(monitoramento.qtdArquivos))
+                    {
+                        String arquivosEncontrados = "";
+
+                        foreach (String arquivo in listaDeArquivosEncontrados)
+                        {
+                            arquivosEncontrados = arquivosEncontrados + " \n " + arquivo;
+                        }
+                        // ** Adiciona o total de arquivos encontrados ao fim da lista que irá no corpo do e-mail ** //
+                        arquivosEncontrados = arquivosEncontrados + " \n \n \n " + "Total de Arquivos:  " + listaDeArquivosEncontrados.Count();
+
+                        // ** Envia e-mail aos destinatários parametrizando comunicando que algum arquivo não foi enviado ** //
+                        Email email = new Email();
+                        email.enviarEmail(this.destinatariosRajadaInvertida, "Monitoramento RAJADA INVERTIDA - " + horaFormatada, "Estava previsto o envio de " + monitoramento.qtdArquivos +
+                            " arquivos, porém foram localizados apenas " + listaDeArquivosEncontrados.Count + " arquivos na pasta de origem." + "\n \n " + "Seguem arquivos localizados: " + "\n \n" + arquivosEncontrados);
+
+                        // ** Atualizada a data de processamento do objeto monitoramento para evitar duplicidades ** //
+                        BancoDeDados bancoDeDados = new BancoDeDados();
+                        bancoDeDados.atualizaDataMonitoramentoExecutado(this.enderecoBD, this.portaBD, this.usuarioBD, this.senhaBD, this.nomeBD, monitoramento, "3");
+
+                        // ** Atualiza os objetos de monitoramento
+                        carregaObjetosMonitoramento();
+                    }
+                }
+            }
+
         }
 
         protected void carregaObjetosMonitoramento()
@@ -952,24 +1059,24 @@ namespace rajadas
         // ** Timer que monitora os arquivos de Rajado do tipo Tijolo ** //
         private void tmMonitoramentoArquivosRajadaTijolo_Tick(object sender, EventArgs e)
         {
-            Rajada rajada = new Rajada();
+            //    Rajada rajada = new Rajada();
 
-            List<String> listaDeArquivosEncontrados = new List<String>();
-            listaDeArquivosEncontrados = rajada.retornaQuantidadeArquivosEncontrados(this.caminhoArquivoTxtRajadaTijolo, "ARQBRSAGORD");
+            //    List<String> listaDeArquivosEncontrados = new List<String>();
+            //    listaDeArquivosEncontrados = rajada.retornaQuantidadeArquivosEncontrados(this.caminhoArquivoTxtRajadaTijolo, "ARQBRSAGORD");
 
-            String arquivosEncontrados = "";
+            //    String arquivosEncontrados = "";
 
-            foreach (String arquivo in listaDeArquivosEncontrados)
-            {
-                arquivosEncontrados =  arquivosEncontrados + " \n " + arquivo;
-            }
-            // ** Adiciona o total de arquivos encontrados ao fim da lista que irá no corpo do e-mail ** //
-            arquivosEncontrados = arquivosEncontrados + " \n \n \n " + "Total de Arquivos:  " + listaDeArquivosEncontrados.Count();
+            //    foreach (String arquivo in listaDeArquivosEncontrados)
+            //    {
+            //        arquivosEncontrados =  arquivosEncontrados + " \n " + arquivo;
+            //    }
+            //    // ** Adiciona o total de arquivos encontrados ao fim da lista que irá no corpo do e-mail ** //
+            //    arquivosEncontrados = arquivosEncontrados + " \n \n \n " + "Total de Arquivos:  " + listaDeArquivosEncontrados.Count();
 
-            String horaAtual = DateTime.Now.ToString();
+            //    String horaAtual = DateTime.Now.ToString();
 
-            Email email = new Email();
-            email.enviarEmail(this.destinatariosRajadaTijolo, "Monitoramento de Rajadas Tijolo - " + horaAtual, "Arquivos lógicos RAJADA TIJOLO encontrados até " + horaAtual + " \n " + arquivosEncontrados);
+            //    Email email = new Email();
+            //    email.enviarEmail(this.destinatariosRajadaTijolo, "Monitoramento de Rajadas Tijolo - " + horaAtual, "Arquivos lógicos RAJADA TIJOLO encontrados até " + horaAtual + " \n " + arquivosEncontrados);
         }
         // ** Timer que monitora os arquivos de Rajado do tipo Tijolo ** //
 
@@ -977,24 +1084,24 @@ namespace rajadas
         // ** Timer que monitora os arquivos de Rajado do tipo Digital ** //
         private void tmMonitoramentoArquivosRajadaDigital_Tick(object sender, EventArgs e)
         {
-            Rajada rajada = new Rajada();
+            //Rajada rajada = new Rajada();
 
-            List<String> listaDeArquivosEncontrados = new List<String>();
-            listaDeArquivosEncontrados = rajada.retornaQuantidadeArquivosEncontrados(this.caminhoArquivoTxtRajadaTijolo, "BRSCANDIGIT");
+            //List<String> listaDeArquivosEncontrados = new List<String>();
+            //listaDeArquivosEncontrados = rajada.retornaQuantidadeArquivosEncontrados(this.caminhoArquivoTxtRajadaTijolo, "BRSCANDIGIT");
 
-            String arquivosEncontrados = "";
+            //String arquivosEncontrados = "";
 
-            foreach (String arquivo in listaDeArquivosEncontrados)
-            {
-                arquivosEncontrados = arquivosEncontrados + " \n " + arquivo;
-            }
-            // ** Adiciona o total de arquivos encontrados ao fim da lista que irá no corpo do e-mail ** //
-            arquivosEncontrados = arquivosEncontrados + " \n \n \n " + "Total de Arquivos:  " + listaDeArquivosEncontrados.Count();
+            //foreach (String arquivo in listaDeArquivosEncontrados)
+            //{
+            //    arquivosEncontrados = arquivosEncontrados + " \n " + arquivo;
+            //}
+            //// ** Adiciona o total de arquivos encontrados ao fim da lista que irá no corpo do e-mail ** //
+            //arquivosEncontrados = arquivosEncontrados + " \n \n \n " + "Total de Arquivos:  " + listaDeArquivosEncontrados.Count();
 
-            String horaAtual = DateTime.Now.ToString();
+            //String horaAtual = DateTime.Now.ToString();
 
-            Email email = new Email();
-            email.enviarEmail(this.destinatariosRajadaDigital, "Monitoramento de Rajadas Digitais (Mundo Velho) - " + horaAtual, "Arquivos lógicos RAJADA DIGITAL (MUNDO VELHO) encontrados até " + horaAtual + " \n " + arquivosEncontrados);
+            //Email email = new Email();
+            //email.enviarEmail(this.destinatariosRajadaDigital, "Monitoramento de Rajadas Digitais (Mundo Velho) - " + horaAtual, "Arquivos lógicos RAJADA DIGITAL (MUNDO VELHO) encontrados até " + horaAtual + " \n " + arquivosEncontrados);
         }
         // ** Timer que monitora os arquivos de Rajado do tipo Digital ** //
 
@@ -1002,24 +1109,24 @@ namespace rajadas
         // ** Timer que monitora os arquivos de Rajado do tipo Invertida ** //
         private void tmMonitoramentoArquivosRajadaInvertida_Tick(object sender, EventArgs e)
         {
-            Rajada rajada = new Rajada();
+            //Rajada rajada = new Rajada();
 
-            List<String> listaDeArquivosEncontrados = new List<String>();
-            listaDeArquivosEncontrados = rajada.retornaQuantidadeArquivosEncontrados(this.caminhoArquivoTxtRajadaTijolo, "ARQBRSINVER");
+            //List<String> listaDeArquivosEncontrados = new List<String>();
+            //listaDeArquivosEncontrados = rajada.retornaQuantidadeArquivosEncontrados(this.caminhoArquivoTxtRajadaTijolo, "ARQBRSINVER");
 
-            String arquivosEncontrados = "";
+            //String arquivosEncontrados = "";
 
-            foreach (String arquivo in listaDeArquivosEncontrados)
-            {
-                arquivosEncontrados = arquivosEncontrados + " \n " + arquivo;
-            }
-            // ** Adiciona o total de arquivos encontrados ao fim da lista que irá no corpo do e-mail ** //
-            arquivosEncontrados = arquivosEncontrados + " \n \n \n " + "Total de Arquivos:  " + listaDeArquivosEncontrados.Count();
+            //foreach (String arquivo in listaDeArquivosEncontrados)
+            //{
+            //    arquivosEncontrados = arquivosEncontrados + " \n " + arquivo;
+            //}
+            //// ** Adiciona o total de arquivos encontrados ao fim da lista que irá no corpo do e-mail ** //
+            //arquivosEncontrados = arquivosEncontrados + " \n \n \n " + "Total de Arquivos:  " + listaDeArquivosEncontrados.Count();
 
-            String horaAtual = DateTime.Now.ToString();
+            //String horaAtual = DateTime.Now.ToString();
 
-            Email email = new Email();
-            email.enviarEmail(this.destinatariosRajadaInvertida, "Monitoramento de Rajadas Invertidas - " + horaAtual, "Arquivos lógicos RAJADA INVERTIDA encontrados até " + horaAtual + " \n " + arquivosEncontrados);
+            //Email email = new Email();
+            //email.enviarEmail(this.destinatariosRajadaInvertida, "Monitoramento de Rajadas Invertidas - " + horaAtual, "Arquivos lógicos RAJADA INVERTIDA encontrados até " + horaAtual + " \n " + arquivosEncontrados);
         }
 
         private void btSalvarMonitoramentoTijolo_Click(object sender, EventArgs e)
@@ -1079,12 +1186,12 @@ namespace rajadas
 
         private void tmMonitoramentoDigital_Tick(object sender, EventArgs e)
         {
-
+            monitoramentoDigital();
         }
 
         private void tmMonitoramentoInvertida_Tick(object sender, EventArgs e)
         {
-
+            monitoramentoInvertida();
         }
     }
 }

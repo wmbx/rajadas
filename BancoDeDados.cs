@@ -163,8 +163,8 @@ namespace rajadas
             // ** String de conexão com o banco ** //
             String stringConexao = "server=" + endereco + ";port=" + porta + ";User Id=" + usuario + ";database=" + nomeBD + ";password=" + senha;
 
-            // ** String para busar os registros no banco // **
-            String stringComando = "SELECT * FROM monitoramento WHERE codigoRajada = " + tipoRajada;
+            // ** String para busar os registros no banco que ainda não foram executados // **
+            String stringComando = "SELECT * FROM monitoramento WHERE codigoRajada = " + tipoRajada + " AND (dataProcessamento = 'vazio' OR dataProcessamento != CURDATE()) ORDER BY horarioMonitoramento";
 
             // ** Cria a lista de parâmetros ** //
             List<Monitoramento> listaDeMonitoramento = new List<Monitoramento>();
@@ -206,6 +206,55 @@ namespace rajadas
             return listaDeMonitoramento;
         }
 
+        public List<Monitoramento> listaTodosMonitoramentos(String endereco, String porta, String usuario, String senha, String nomeBD, String tipoRajada)
+        {
+            // ** String de conexão com o banco ** //
+            String stringConexao = "server=" + endereco + ";port=" + porta + ";User Id=" + usuario + ";database=" + nomeBD + ";password=" + senha;
+
+            // ** String para busar os registros no banco que ainda não foram executados // **
+            String stringComando = "SELECT * FROM monitoramento WHERE codigoRajada = " + tipoRajada + " ORDER BY horarioMonitoramento";
+
+            // ** Cria a lista de parâmetros ** //
+            List<Monitoramento> listaDeMonitoramento = new List<Monitoramento>();
+
+            try
+            {
+                // ** Cria e inicia a conexão com o banco ** //
+                conexao = new MySqlConnection(stringConexao);
+                conexao.Open();
+
+                // ** Cria o objeto de comando ** //
+                comando = new MySqlCommand(stringComando, conexao);
+
+                // ** Executa o comando de pesquisa no banco e retorna para um objeto Data Reader ** //
+                dataReader = comando.ExecuteReader();
+
+                while (dataReader.Read())
+                {
+                    Monitoramento monitoramento = new Monitoramento();
+
+                    monitoramento.codigoRajada = dataReader["codigoRajada"].ToString();
+                    monitoramento.horarioMonitoramento = dataReader["horarioMonitoramento"].ToString();
+                    monitoramento.qtdArquivos = dataReader["qtdArquivos"].ToString();
+
+                    listaDeMonitoramento.Add(monitoramento);
+                }
+            }
+            catch (Exception e)
+            {
+                System.Windows.Forms.MessageBox.Show(e.ToString());
+                throw;
+            }
+            finally
+            {
+                conexao.Close();
+                conexao = null;
+                comando = null;
+            }
+            return listaDeMonitoramento;
+        }
+
+
         public Boolean atualizaTabelaDeMonitoramento(String endereco, String porta, String usuario, String senha, String nomeBD, List<Monitoramento> listaMonitoramento, String tipoRajada)
         {
             // ** String de conexão com o banco ** //
@@ -215,7 +264,7 @@ namespace rajadas
             String stringComandoLimparTabela = "DELETE FROM monitoramento WHERE codigoRajada = " + tipoRajada;
 
             // ** String para inserção de registros no banco ** //
-            String stringComando = "INSERT INTO monitoramento (codigoRajada, horarioMonitoramento, qtdArquivos) VALUES (@CODIGO, @HORARIO, @QTD)";
+            String stringComando = "INSERT INTO monitoramento (codigoRajada, horarioMonitoramento, qtdArquivos, dataProcessamento) VALUES (@CODIGO, @HORARIO, @QTD, @DATAPROCESSAMENTO)";
 
             try
             {
@@ -237,6 +286,7 @@ namespace rajadas
                     comando.Parameters.AddWithValue("@CODIGO", monitoramento.codigoRajada);
                     comando.Parameters.AddWithValue("@HORARIO", monitoramento.horarioMonitoramento);
                     comando.Parameters.AddWithValue("@QTD", monitoramento.qtdArquivos);
+                    comando.Parameters.AddWithValue("@DATAPROCESSAMENTO", "vazio");
 
                     // ** Executa o comando de inserção no banco ** //
                     comando.ExecuteNonQuery();
@@ -249,6 +299,58 @@ namespace rajadas
             }
             catch (Exception e)
             {
+                return false;
+                throw;
+            }
+            finally
+            {
+                conexao.Close();
+                conexao = null;
+                comando = null;
+            }
+        }
+
+        public Boolean atualizaDataMonitoramentoExecutado(String endereco, String porta, String usuario, String senha, String nomeBD, Monitoramento monitoramento, String tipoRajada)
+        {
+            // ** String de conexão com o banco ** //
+            String stringConexao = "server=" + endereco + ";port=" + porta + ";User Id=" + usuario + ";database=" + nomeBD + ";password=" + senha;
+
+            // ** String para atualização da data do monitoramento executado // **
+           String stringComando = "UPDATE monitoramento SET dataProcessamento = @DATA WHERE codigoRajada = " + tipoRajada + " AND horarioMonitoramento = '" + monitoramento.horarioMonitoramento + "'";
+            try
+            {
+                // ** Cria e inicia a conexão com o banco ** //
+                conexao = new MySqlConnection(stringConexao);
+                conexao.Open();
+
+                // ** Cria o objeto de comando ** //
+                comando = new MySqlCommand(stringComando, conexao);
+
+                // ** Pega a data atual e formata para para AAAA-MM-DD
+                String dia = DateTime.Now.Day.ToString();
+                if (Convert.ToInt32(dia) < 10)
+                {
+                    dia = "0" + dia;
+                }
+                String mes = DateTime.Now.Month.ToString();
+                if (Convert.ToInt32(mes) < 10)
+                {
+                    mes = "0" + mes;
+                }
+                String ano = DateTime.Now.Year.ToString();
+                String dataFormatada = ano + "-" + mes + "-" + dia;
+
+                // ** Adiciona os parâmetros ao objeto de comando
+                comando.Parameters.AddWithValue("@DATA", dataFormatada);
+
+                // ** Executa o comando de inserção no banco ** //
+                comando.ExecuteNonQuery();
+
+                return true;
+            }
+            catch (Exception e)
+            {
+                System.Windows.Forms.MessageBox.Show(e.ToString());
                 return false;
                 throw;
             }

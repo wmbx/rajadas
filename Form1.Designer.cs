@@ -991,17 +991,17 @@
             // 
             // tmMonitoramentoTijolo
             // 
-            this.tmMonitoramentoTijolo.Interval = 60000;
+            this.tmMonitoramentoTijolo.Interval = 30000;
             this.tmMonitoramentoTijolo.Tick += new System.EventHandler(this.tmMonitoramentoTijolo_Tick);
             // 
             // tmMonitoramentoDigital
             // 
-            this.tmMonitoramentoDigital.Interval = 60000;
+            this.tmMonitoramentoDigital.Interval = 30000;
             this.tmMonitoramentoDigital.Tick += new System.EventHandler(this.tmMonitoramentoDigital_Tick);
             // 
             // tmMonitoramentoInvertida
             // 
-            this.tmMonitoramentoInvertida.Interval = 60000;
+            this.tmMonitoramentoInvertida.Interval = 30000;
             this.tmMonitoramentoInvertida.Tick += new System.EventHandler(this.tmMonitoramentoInvertida_Tick);
             // 
             // Form1
