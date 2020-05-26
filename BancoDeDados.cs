@@ -3,6 +3,7 @@ using MySql.Data.MySqlClient;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.Remoting.Messaging;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -39,6 +40,87 @@ namespace rajadas
                 comando.Parameters.AddWithValue("@DAC", rajada.dac);
                 comando.Parameters.AddWithValue("@DATA", rajada.dataLiberacaoDocumento);
                 comando.Parameters.AddWithValue("@HORA", rajada.horaLiberacaoDocumento);
+
+                // ** Executa o comando de inserção no banco ** //
+                comando.ExecuteNonQuery();
+
+                return true;
+            }
+            catch (Exception e)
+            {
+                return false;
+                throw;
+            }
+            finally
+            {
+                conexao.Close();
+                conexao = null;
+                comando = null;
+            }
+        }
+
+        public Boolean insereRajadaSumarizada(String endereco, String porta, String usuario, String senha, String nomeBD, List<Rajada> listaDeRajadas, String tipoRajada)
+        {
+            // ** Pega a data atual e formata para para DD-MM-AAAA
+            String dia = DateTime.Now.Day.ToString();
+            if (Convert.ToInt32(dia) < 10)
+            {
+                dia = "0" + dia;
+            }
+            String mes = DateTime.Now.Month.ToString();
+            if (Convert.ToInt32(mes) < 10)
+            {
+                mes = "0" + mes;
+            }
+            String ano = DateTime.Now.Year.ToString();
+            String dataFormatada = dia + "-" + mes + "-" + ano;
+
+            // ** Pega a hora da rajada ** //
+            String horarioRajada = "1";
+            // ** Pega a hora da rajada ** //
+
+            // ** Pega a quantidade de contas ** //
+            String qtdContasTitular = "1";
+            // ** Pega a quantidade de contas ** //
+
+
+            // ** Percorre a lista de rajadas para recuperar os horários das rajadas ** //
+            List<string> listaHorarios = new List<string>();
+          
+            foreach (Rajada rajada in listaDeRajadas)
+            {
+                bool retorno = listaHorarios.Any(l => l == rajada.horarioRajada);
+                if (retorno.Equals(false))
+                {
+                    listaHorarios.Add(rajada.horarioRajada);
+                }
+            }
+            // ** Percorre a lista de rajadas para recuperar a quantidade contas processadas ** //
+
+            // ** Percorre a lista de rajadas para recuperar a quantidade contas processadas ** //
+
+            // ** Percorre a lista de rajadas para recuperar os horários das rajadas ** //
+
+            // ** String de conexão com o banco ** //
+            String stringConexao = "server=" + endereco + ";port=" + porta + ";User Id=" + usuario + ";database=" + nomeBD + ";password=" + senha;
+
+            // ** String para inserção de registros no banco // **
+            String stringComando = "INSERT INTO rajadas_sumarizadas (codigoRajada, dataRajada, horarioRajada, qtdContasTitular) VALUES (@CODIGO, @DATA, @HORARIO, @QTD)";
+
+            try
+            {
+                // ** Cria e inicia a conexão com o banco ** //
+                conexao = new MySqlConnection(stringConexao);
+                conexao.Open();
+
+                // ** Cria o objeto de comando ** //
+                comando = new MySqlCommand(stringComando, conexao);
+
+                // ** Adiciona os parâmetros ao objeto de comando
+                comando.Parameters.AddWithValue("@CODIGO", tipoRajada);
+                comando.Parameters.AddWithValue("@DATA", dataFormatada);
+                comando.Parameters.AddWithValue("@HORARIO", horarioRajada);
+                comando.Parameters.AddWithValue("@QTD", qtdContasTitular);
 
                 // ** Executa o comando de inserção no banco ** //
                 comando.ExecuteNonQuery();
@@ -361,6 +443,8 @@ namespace rajadas
                 comando = null;
             }
         }
+
+        
 
     }
 }

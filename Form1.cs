@@ -69,6 +69,15 @@ namespace rajadas
             carregaParametrosRajadaDigital();
             carregaParemetrosRajadaInvertida();
             carregaObjetosMonitoramento();
+            
+        }
+
+        protected void expurgoArquivosAntigos()
+        {
+            Rajada rajada = new Rajada();
+            rajada.ExcluirArquivosProcessadosAntigos(this.caminhoRajadaProcessadaTijolo);
+            rajada.ExcluirArquivosProcessadosAntigos(this.caminhoRajadaProcessadaDigital);
+            rajada.ExcluirArquivosProcessadosAntigos(this.caminhoRajadaProcessadaInvertida);
         }
 
         protected void monitoramentoTijolo()
@@ -105,8 +114,8 @@ namespace rajadas
 
                         // ** Envia e-mail aos destinatários parametrizando comunicando que algum arquivo não foi enviado ** //
                         Email email = new Email();
-                        email.enviarEmail(this.destinatariosRajadaTijolo, "Monitoramento RAJADA TIJOLO - " + horaFormatada, "Estava previsto o envio de " + monitoramento.qtdArquivos +
-                            " arquivos, porém foram localizados apenas " + listaDeArquivosEncontrados.Count + " arquivos na pasta de origem." + "\n \n " + "Seguem arquivos localizados: " + "\n \n" + arquivosEncontrados);
+                        email.enviarEmail(this.destinatariosRajadaTijolo, "Monitoramento RAJADA TIJOLO - " + horaFormatada, "Estava prevista a recepção de " + monitoramento.qtdArquivos +
+                            " arquivo(s), porém foram localizados " + listaDeArquivosEncontrados.Count + " arquivo(s) na pasta de origem." + "\n \n " + "Segue(m) arquivo(s) localizado(s): " + "\n \n" + arquivosEncontrados);
 
                         // ** Atualizada a data de processamento do objeto monitoramento para evitar duplicidades ** //
                         BancoDeDados bancoDeDados = new BancoDeDados();
@@ -153,8 +162,8 @@ namespace rajadas
 
                         // ** Envia e-mail aos destinatários parametrizando comunicando que algum arquivo não foi enviado ** //
                         Email email = new Email();
-                        email.enviarEmail(this.destinatariosRajadaDigital, "Monitoramento RAJADA DIGITAL (MUNDO VELHO) - " + horaFormatada, "Estava previsto o envio de " + monitoramento.qtdArquivos +
-                            " arquivos, porém foram localizados apenas " + listaDeArquivosEncontrados.Count + " arquivos na pasta de origem." + "\n \n " + "Seguem arquivos localizados: " + "\n \n" + arquivosEncontrados);
+                        email.enviarEmail(this.destinatariosRajadaDigital, "Monitoramento RAJADA DIGITAL (MUNDO VELHO) - " + horaFormatada, "Estava prevista a recepção de " + monitoramento.qtdArquivos +
+                            " arquivo(s), porém foram localizados " + listaDeArquivosEncontrados.Count + " arquivo(s) na pasta de origem." + "\n \n " + "Segue(m) arquivo(s) localizado(s): " + "\n \n" + arquivosEncontrados);
 
                         // ** Atualizada a data de processamento do objeto monitoramento para evitar duplicidades ** //
                         BancoDeDados bancoDeDados = new BancoDeDados();
@@ -202,8 +211,8 @@ namespace rajadas
 
                         // ** Envia e-mail aos destinatários parametrizando comunicando que algum arquivo não foi enviado ** //
                         Email email = new Email();
-                        email.enviarEmail(this.destinatariosRajadaInvertida, "Monitoramento RAJADA INVERTIDA - " + horaFormatada, "Estava previsto o envio de " + monitoramento.qtdArquivos +
-                            " arquivos, porém foram localizados apenas " + listaDeArquivosEncontrados.Count + " arquivos na pasta de origem." + "\n \n " + "Seguem arquivos localizados: " + "\n \n" + arquivosEncontrados);
+                        email.enviarEmail(this.destinatariosRajadaInvertida, "Monitoramento RAJADA INVERTIDA - " + horaFormatada, "Estava prevista a recepção de " + monitoramento.qtdArquivos +
+                            " arquivo(s), porém foram localizados " + listaDeArquivosEncontrados.Count + " arquivo(s) na pasta de origem." + "\n \n " + "Segue(m) arquivo(s) localizado(s): " + "\n \n" + arquivosEncontrados);
 
                         // ** Atualizada a data de processamento do objeto monitoramento para evitar duplicidades ** //
                         BancoDeDados bancoDeDados = new BancoDeDados();
@@ -970,6 +979,8 @@ namespace rajadas
 
                 pbLeituraTijolo.Maximum = listaDeObjetosRajada.Count();
 
+                bancoDeDados.insereRajadaSumarizada(this.enderecoBD, this.portaBD, this.usuarioBD, this.senhaBD, this.nomeBD, listaDeObjetosRajada, "1");
+
                 for (int i = 0; i < listaDeObjetosRajada.Count(); i++)
                 {
                     bancoDeDados.insereRajadaNoBD(this.enderecoBD, this.portaBD, this.usuarioBD, this.senhaBD, this.nomeBD, listaDeObjetosRajada[i], "1");
@@ -1192,6 +1203,11 @@ namespace rajadas
         private void tmMonitoramentoInvertida_Tick(object sender, EventArgs e)
         {
             monitoramentoInvertida();
+        }
+
+        private void tmRotinaExpurgo_Tick(object sender, EventArgs e)
+        {
+            expurgoArquivosAntigos();
         }
     }
 }

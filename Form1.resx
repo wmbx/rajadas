@@ -221,6 +221,9 @@
   <metadata name="tmMonitoramentoInvertida.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
     <value>205, 41</value>
   </metadata>
+  <metadata name="tmRotinaExpurgo.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+    <value>399, 44</value>
+  </metadata>
   <data name="$this.BackgroundImage" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
         iVBORw0KGgoAAAANSUhEUgAAAZEAAAHdCAYAAADcu0RAAAAABGdBTUEAALGPC/xhBQAAAAlwSFlzAAAO

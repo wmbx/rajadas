@@ -47,6 +47,7 @@ namespace rajadas
         {
             carregarParametrosBD();
             carregarGridViewMonitoramentoAtual();
+            carregarGridViewMonitoramentoNovo();
         }
 
         protected void carregarParametrosBD()
@@ -67,6 +68,19 @@ namespace rajadas
         {
             BancoDeDados bancoDeDados = new BancoDeDados();
             dgvMonitoramentoAtual.DataSource = bancoDeDados.listaTodosMonitoramentos(this.enderecoBD, this.portaBD, this.usuarioBD, this.senhaBD, this.nomeBD, this.tipoRajada);
+        }
+
+        protected void carregarGridViewMonitoramentoNovo()
+        {
+            for (int i = 0; i < dgvMonitoramentoAtual.Rows.Count; i++)
+            {
+                dgvMonitoramentoNovo.Rows.Add();
+            }
+            for (int i = 0; i < dgvMonitoramentoAtual.Rows.Count; i++)
+            {
+                dgvMonitoramentoNovo.Rows[i].Cells["horario"].Value = dgvMonitoramentoAtual.Rows[i].Cells["horarioMonitoramento"].Value;
+                dgvMonitoramentoNovo.Rows[i].Cells["arquivos"].Value = dgvMonitoramentoAtual.Rows[i].Cells["qtdArquivos"].Value;
+            }
         }
 
         private void gbMonitoramento_Enter(object sender, EventArgs e)
@@ -102,8 +116,6 @@ namespace rajadas
                     {
                         MessageBox.Show("Alterações realizadas com sucesso !!!");
                         carregarGridViewMonitoramentoAtual();
-
-                        dgvMonitoramentoNovo.Rows.Clear();
                     }
                     else
                     {

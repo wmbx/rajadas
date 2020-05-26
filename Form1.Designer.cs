@@ -118,6 +118,7 @@
             this.tmMonitoramentoTijolo = new System.Windows.Forms.Timer(this.components);
             this.tmMonitoramentoDigital = new System.Windows.Forms.Timer(this.components);
             this.tmMonitoramentoInvertida = new System.Windows.Forms.Timer(this.components);
+            this.tmRotinaExpurgo = new System.Windows.Forms.Timer(this.components);
             this.groupBox1.SuspendLayout();
             this.gbMonitoramentoTijolo.SuspendLayout();
             this.groupBox2.SuspendLayout();
@@ -1004,6 +1005,12 @@
             this.tmMonitoramentoInvertida.Interval = 30000;
             this.tmMonitoramentoInvertida.Tick += new System.EventHandler(this.tmMonitoramentoInvertida_Tick);
             // 
+            // tmRotinaExpurgo
+            // 
+            this.tmRotinaExpurgo.Enabled = true;
+            this.tmRotinaExpurgo.Interval = 36000000;
+            this.tmRotinaExpurgo.Tick += new System.EventHandler(this.tmRotinaExpurgo_Tick);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -1020,7 +1027,7 @@
             this.MinimumSize = new System.Drawing.Size(1002, 519);
             this.Name = "Form1";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-            this.Text = "BotFlow Rajadas V.1.2";
+            this.Text = "BotFlow Rajadas V.1.3";
             this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.Form1_FormClosed);
             this.Load += new System.EventHandler(this.Form1_Load);
             this.Resize += new System.EventHandler(this.Form1_Resize);
@@ -1142,6 +1149,7 @@
         private System.Windows.Forms.Timer tmMonitoramentoTijolo;
         private System.Windows.Forms.Timer tmMonitoramentoDigital;
         private System.Windows.Forms.Timer tmMonitoramentoInvertida;
+        private System.Windows.Forms.Timer tmRotinaExpurgo;
     }
 }
 

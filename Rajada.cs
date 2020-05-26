@@ -8,6 +8,7 @@ namespace rajadas
 {
     class Rajada
     {
+        public String horarioRajada;
         public String tipoRegistro;
         public String agencia;
         public String zeros;
@@ -211,12 +212,18 @@ namespace rajadas
                                 File.Copy(arquivoTxtRajada, diretorioRajadaProcessada);
                                 // ----------- ** Copia o arquivo para o diretório de rajada processada antes de iniciar a leitura ** -----------//
 
+                                // ** Pega o horário da rajada através do nome do arquivo ** //
+                                String horarioOriginal = nomeArquivoRajadaTxt.Substring(nomeArquivoRajadaTxt.Length - 10, 4);
+                                String horarioFormatado = horarioOriginal.Substring(0, 2) + ":" + horarioOriginal.Substring(2, 2);
+                                // ** Pega o horário da rajada através do nome do arquivo ** //
+
                                 string[] arquivoTXT = File.ReadAllLines(arquivoTxtRajada);
                                 foreach (var linha in arquivoTXT)
                                 {
                                     if (linha.Substring(0, 1).Equals("1"))
                                     {
                                         Rajada rajada = new Rajada();
+                                        rajada.horarioRajada = horarioFormatado;
                                         rajada.tipoRegistro = linha.Substring(0, 1);
                                         rajada.agencia = linha.Substring(1, 4);
                                         rajada.zeros = linha.Substring(5, 2);
@@ -987,5 +994,68 @@ namespace rajadas
 
             return listaDeArquivosEncontrados;
         }
+
+        public Boolean ExcluirArquivosProcessadosAntigos(String caminhoRajadasProcessadas)
+        {
+            var listaDeArquivosTxtRajadas = new List<String>();
+
+            var listaDeDiretorios = new List<String>();
+
+            var listaDeArquivosEmCadaDiretorio = new List<String>();
+
+            try
+            {
+                listaDeDiretorios = Directory.GetDirectories(caminhoRajadasProcessadas).ToList();
+                listaDeDiretorios.Add(caminhoRajadasProcessadas);
+
+                String ano = DateTime.Now.Year.ToString();
+                String mes = DateTime.Now.Month.ToString();
+                // ** Acrescenta 0 ao mês ** //
+                if (Convert.ToInt32(mes) < 10)
+                {
+                    mes = "0" + mes;
+                }
+                // ** Acrescenta 0 ao mês ** //
+                String dia = DateTime.Now.Day.ToString();
+
+                String dataAtual = ano + mes + dia;
+
+                foreach (var diretorio in listaDeDiretorios)
+                {
+                    listaDeArquivosEmCadaDiretorio = Directory.GetFiles(diretorio).ToList();
+                    foreach (var arquivoEncontrado in listaDeArquivosEmCadaDiretorio)
+                    {
+                        listaDeArquivosTxtRajadas.Add(arquivoEncontrado);
+                    }
+                }
+
+                foreach (var arquivoTxtRajada in listaDeArquivosTxtRajadas)
+                {
+                    FileInfo informacaoDoArquivo = new FileInfo(arquivoTxtRajada);
+                    String nomeArquivoRajadaTxt = informacaoDoArquivo.Name;
+
+                    // ** Valida se o nome do diretório é maior que 10 antes de fazer o substring ** //
+                    if (nomeArquivoRajadaTxt.Length > 18)
+                    {
+                        String parteDoNomeDoArquivo = nomeArquivoRajadaTxt.Substring(nomeArquivoRajadaTxt.Length - 18, 8);
+
+                        if (parteDoNomeDoArquivo != dataAtual)
+                        {
+                            // -- ** Exclui o arquivo do diretório de origem caso o sistema esteja parametrizado para isso -- ** //
+                            File.Delete(arquivoTxtRajada);
+                            // -- ** Exclui o arquivo do diretório de origem caso o sistema esteja parametrizado para isso -- ** //
+                        
+                        }
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                MessageBox.Show("Erro: " + e.Message);
+            }
+
+            return true;
+        }
+
     }
 }
