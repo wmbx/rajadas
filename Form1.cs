@@ -69,7 +69,7 @@ namespace rajadas
             carregaParametrosRajadaDigital();
             carregaParemetrosRajadaInvertida();
             carregaObjetosMonitoramento();
-            
+            expurgoArquivosAntigos();
         }
 
         protected void expurgoArquivosAntigos()
@@ -643,33 +643,34 @@ namespace rajadas
         {
             try
             {
-                    btLerArquivoTijolo.Visible = false;
+                btLerArquivoTijolo.Visible = false;
 
-                    pbLeituraTijolo.Visible = true;
+                pbLeituraTijolo.Visible = true;
 
-                    Rajada rajada = new Rajada();
+                Rajada rajada = new Rajada();
                 
-                    List<Rajada> listaDeObjetosRajada = new List<Rajada>();
+                List<Rajada> listaDeObjetosRajada = new List<Rajada>();
 
-                    BancoDeDados bancoDeDados = new BancoDeDados();
+                BancoDeDados bancoDeDados = new BancoDeDados();
 
-                    // ------------------------** Lê Rajada Tijolo e Insere no Excel ** -----------------------------//
-                    listaDeObjetosRajada = rajada.lerArquivoTxtRajadaTijolo(caminhoArquivoTxtRajadaTijolo, caminhoRajadaProcessadaTijolo, parametroCopiarOuMoverRajadaTijolo);
+                // ------------------------** Lê Rajada Tijolo e Insere no Excel ** -----------------------------//
+                listaDeObjetosRajada = rajada.lerArquivoTxtRajadaTijolo(caminhoArquivoTxtRajadaTijolo, caminhoRajadaProcessadaTijolo, parametroCopiarOuMoverRajadaTijolo);
 
-                    pbLeituraTijolo.Maximum = listaDeObjetosRajada.Count();
+                pbLeituraTijolo.Maximum = listaDeObjetosRajada.Count();
 
-                    for (int i = 0; i < listaDeObjetosRajada.Count(); i++)
-                    {
-                        bancoDeDados.insereRajadaNoBD(this.enderecoBD, this.portaBD, this.usuarioBD, this.senhaBD, this.nomeBD, listaDeObjetosRajada[i], "1");
-                        pbLeituraTijolo.Value = i;
-                    }
-                    // ------------------------** Lê Rajada Tijolo e Insere no Excel ** -----------------------------//
+                // ** Insere a rajada sumarizada no banco ** //
+                bancoDeDados.insereRajadaSumarizada(this.enderecoBD, this.portaBD, this.usuarioBD, this.senhaBD, this.nomeBD, listaDeObjetosRajada, "1");
 
-                    pbLeituraTijolo.Visible = false;
-                    btLerArquivoTijolo.Visible = true;
-                
+                for (int i = 0; i < listaDeObjetosRajada.Count(); i++)
+                {
+                    bancoDeDados.insereRajadaNoBD(this.enderecoBD, this.portaBD, this.usuarioBD, this.senhaBD, this.nomeBD, listaDeObjetosRajada[i], "1");
+                    pbLeituraTijolo.Value = i;
+                }
+                // ------------------------** Lê Rajada Tijolo e Insere no Excel ** -----------------------------//
+
+                pbLeituraTijolo.Visible = false;
+                btLerArquivoTijolo.Visible = true; 
             }
-
             catch (Exception)
             {
                 MessageBox.Show("O Arquivo 'Parametros.xml' não foi localizado na pasta do sistema, o sistema será encerrado !");
@@ -681,31 +682,33 @@ namespace rajadas
         {
             try
             {
-                
-                    btLerArquivoDigital.Visible = false;
+                btLerArquivoDigital.Visible = false;
 
-                    pbLeituraDigital.Visible = true;
+                pbLeituraDigital.Visible = true;
 
-                    Rajada rajada = new Rajada();
+                Rajada rajada = new Rajada();
 
-                    List<Rajada> listaDeObjetosRajada = new List<Rajada>();
+                List<Rajada> listaDeObjetosRajada = new List<Rajada>();
 
-                    BancoDeDados bancoDeDados = new BancoDeDados();
+                BancoDeDados bancoDeDados = new BancoDeDados();
 
-                    // ------------------------** Lê Rajada Digital Mundo Velho e Insere no Excel ** -----------------------------//
-                    listaDeObjetosRajada = rajada.lerArquivoTxtRajadaDigital(caminhoArquivoTxtRajadaDigital, caminhoRajadaProcessadaDigital, parametroCopiarOuMoverRajadaDigital);
+                // ------------------------** Lê Rajada Digital Mundo Velho e Insere no Excel ** -----------------------------//
+                listaDeObjetosRajada = rajada.lerArquivoTxtRajadaDigital(caminhoArquivoTxtRajadaDigital, caminhoRajadaProcessadaDigital, parametroCopiarOuMoverRajadaDigital);
 
-                    pbLeituraDigital.Maximum = listaDeObjetosRajada.Count();
+                pbLeituraDigital.Maximum = listaDeObjetosRajada.Count();
 
-                    for (int i = 0; i < listaDeObjetosRajada.Count(); i++)
-                    {
-                        bancoDeDados.insereRajadaNoBD("this.enderecoBD", this.portaBD, this.usuarioBD, this.senhaBD, this.nomeBD, listaDeObjetosRajada[i], "2");
-                        pbLeituraDigital.Value = i;
-                    }
-                    // ------------------------** Lê Rajada Digital Mundo Velho e Insere no Excel ** -----------------------------//
+                // ** Insere a rajada sumarizada no banco ** //
+                bancoDeDados.insereRajadaSumarizada(this.enderecoBD, this.portaBD, this.usuarioBD, this.senhaBD, this.nomeBD, listaDeObjetosRajada, "2");
 
-                    pbLeituraDigital.Visible = false;
-                    btLerArquivoDigital.Visible = true;
+                for (int i = 0; i < listaDeObjetosRajada.Count(); i++)
+                {
+                    bancoDeDados.insereRajadaNoBD("this.enderecoBD", this.portaBD, this.usuarioBD, this.senhaBD, this.nomeBD, listaDeObjetosRajada[i], "2");
+                    pbLeituraDigital.Value = i;
+                }
+                // ------------------------** Lê Rajada Digital Mundo Velho e Insere no Excel ** -----------------------------//
+
+                pbLeituraDigital.Visible = false;
+                btLerArquivoDigital.Visible = true;
                 
                 // ------------------------** Lê Rajada Digital Mundo Velho e Insere no Excel ** -----------------------------//
             }
@@ -720,30 +723,33 @@ namespace rajadas
         {
             try
             {
-                    btLerArquivoInvertida.Visible = false;
+                btLerArquivoInvertida.Visible = false;
 
-                    pbLeituraInvertida.Visible = true;
+                pbLeituraInvertida.Visible = true;
 
-                    Rajada rajada = new Rajada();
+                Rajada rajada = new Rajada();
 
-                    List<Rajada> listaDeObjetosRajada = new List<Rajada>();
+                List<Rajada> listaDeObjetosRajada = new List<Rajada>();
 
-                    BancoDeDados bancoDeDados = new BancoDeDados();
+                BancoDeDados bancoDeDados = new BancoDeDados();
 
-                    // ------------------------** Lê Rajada Invertida e Insere no Excel ** -----------------------------//
-                    listaDeObjetosRajada = rajada.lerArquivoTxtRajadaInvertida(caminhoArquivoTxtRajadaInvertida, caminhoRajadaProcessadaInvertida, parametroCopiarOuMoverRajadaInvertida);
+                // ------------------------** Lê Rajada Invertida e Insere no Excel ** -----------------------------//
+                listaDeObjetosRajada = rajada.lerArquivoTxtRajadaInvertida(caminhoArquivoTxtRajadaInvertida, caminhoRajadaProcessadaInvertida, parametroCopiarOuMoverRajadaInvertida);
 
-                    pbLeituraInvertida.Maximum = listaDeObjetosRajada.Count();
+                pbLeituraInvertida.Maximum = listaDeObjetosRajada.Count();
 
-                    for (int i = 0; i < listaDeObjetosRajada.Count(); i++)
-                    {
-                        bancoDeDados.insereRajadaNoBD(this.enderecoBD, this.portaBD, this.usuarioBD, this.senhaBD, this.nomeBD, listaDeObjetosRajada[i], "3");
-                        pbLeituraInvertida.Value = i;
-                    }
-                    // ------------------------** Lê Rajada Invertida e Insere no Excel ** -----------------------------//
+                // ** Insere a rajada sumarizada no banco ** //
+                bancoDeDados.insereRajadaSumarizada(this.enderecoBD, this.portaBD, this.usuarioBD, this.senhaBD, this.nomeBD, listaDeObjetosRajada, "3");
 
-                    pbLeituraInvertida.Visible = false;
-                    btLerArquivoInvertida.Visible = true;
+                for (int i = 0; i < listaDeObjetosRajada.Count(); i++)
+                {
+                    bancoDeDados.insereRajadaNoBD(this.enderecoBD, this.portaBD, this.usuarioBD, this.senhaBD, this.nomeBD, listaDeObjetosRajada[i], "3");
+                    pbLeituraInvertida.Value = i;
+                }
+                // ------------------------** Lê Rajada Invertida e Insere no Excel ** -----------------------------//
+
+                pbLeituraInvertida.Visible = false;
+                btLerArquivoInvertida.Visible = true;
                 
                 // ------------------------** Lê Rajada Invertida e Insere no Excel ** -----------------------------//
             }
@@ -979,6 +985,7 @@ namespace rajadas
 
                 pbLeituraTijolo.Maximum = listaDeObjetosRajada.Count();
 
+                // ** Insere a rajada sumarizada no banco ** //
                 bancoDeDados.insereRajadaSumarizada(this.enderecoBD, this.portaBD, this.usuarioBD, this.senhaBD, this.nomeBD, listaDeObjetosRajada, "1");
 
                 for (int i = 0; i < listaDeObjetosRajada.Count(); i++)
@@ -997,22 +1004,25 @@ namespace rajadas
 
         private void btLerArquivoDigital_Click(object sender, EventArgs e)
         {
-                btLerArquivoDigital.Visible = false;
+            btLerArquivoDigital.Visible = false;
 
-                pbLeituraDigital.Visible = true;
+            pbLeituraDigital.Visible = true;
 
-                Rajada rajada = new Rajada();
+            Rajada rajada = new Rajada();
 
-                List<Rajada> listaDeObjetosRajada = new List<Rajada>();
+            List<Rajada> listaDeObjetosRajada = new List<Rajada>();
 
-                BancoDeDados bancoDeDados = new BancoDeDados();
+            BancoDeDados bancoDeDados = new BancoDeDados();
 
-                // ------------------------** Lê Rajada Digital Mundo Velho e Insere no Excel ** -----------------------------//
-                listaDeObjetosRajada = rajada.lerArquivoTxtRajadaDigital(caminhoArquivoTxtRajadaDigital, caminhoRajadaProcessadaDigital, parametroCopiarOuMoverRajadaDigital);
+            // ------------------------** Lê Rajada Digital Mundo Velho e Insere no Excel ** -----------------------------//
+            listaDeObjetosRajada = rajada.lerArquivoTxtRajadaDigital(caminhoArquivoTxtRajadaDigital, caminhoRajadaProcessadaDigital, parametroCopiarOuMoverRajadaDigital);
 
-                pbLeituraDigital.Maximum = listaDeObjetosRajada.Count();
+            pbLeituraDigital.Maximum = listaDeObjetosRajada.Count();
 
-                for (int i = 0; i < listaDeObjetosRajada.Count(); i++)
+            // ** Insere a rajada sumarizada no banco ** //
+            bancoDeDados.insereRajadaSumarizada(this.enderecoBD, this.portaBD, this.usuarioBD, this.senhaBD, this.nomeBD, listaDeObjetosRajada, "2");
+
+            for (int i = 0; i < listaDeObjetosRajada.Count(); i++)
                 {
                     bancoDeDados.insereRajadaNoBD(this.enderecoBD, this.portaBD, this.usuarioBD, this.senhaBD, this.nomeBD, listaDeObjetosRajada[i], "2");
                     pbLeituraDigital.Value = i;
@@ -1028,22 +1038,25 @@ namespace rajadas
 
         private void btLerArquivoInvertida_Click(object sender, EventArgs e)
         {
-                btLerArquivoInvertida.Visible = false;
+            btLerArquivoInvertida.Visible = false;
 
-                pbLeituraInvertida.Visible = true;
+            pbLeituraInvertida.Visible = true;
 
-                Rajada rajada = new Rajada();
+            Rajada rajada = new Rajada();
 
-                List<Rajada> listaDeObjetosRajada = new List<Rajada>();
+            List<Rajada> listaDeObjetosRajada = new List<Rajada>();
 
-                BancoDeDados bancoDeDados = new BancoDeDados();
+            BancoDeDados bancoDeDados = new BancoDeDados();
 
-                // ------------------------** Lê Rajada Invertida e Insere no Excel ** -----------------------------//
-                listaDeObjetosRajada = rajada.lerArquivoTxtRajadaInvertida(caminhoArquivoTxtRajadaInvertida, caminhoRajadaProcessadaInvertida, parametroCopiarOuMoverRajadaInvertida);
+            // ------------------------** Lê Rajada Invertida e Insere no Excel ** -----------------------------//
+            listaDeObjetosRajada = rajada.lerArquivoTxtRajadaInvertida(caminhoArquivoTxtRajadaInvertida, caminhoRajadaProcessadaInvertida, parametroCopiarOuMoverRajadaInvertida);
 
-                pbLeituraInvertida.Maximum = listaDeObjetosRajada.Count();
+            pbLeituraInvertida.Maximum = listaDeObjetosRajada.Count();
 
-                for (int i = 0; i < listaDeObjetosRajada.Count(); i++)
+            // ** Insere a rajada sumarizada no banco ** //
+            bancoDeDados.insereRajadaSumarizada(this.enderecoBD, this.portaBD, this.usuarioBD, this.senhaBD, this.nomeBD, listaDeObjetosRajada, "3");
+
+            for (int i = 0; i < listaDeObjetosRajada.Count(); i++)
                 {
                     bancoDeDados.insereRajadaNoBD(this.enderecoBD, this.portaBD, this.usuarioBD, this.senhaBD, this.nomeBD, listaDeObjetosRajada[i], "3");
                     pbLeituraInvertida.Value = i;
@@ -1058,102 +1071,29 @@ namespace rajadas
         }
 
         private void bwLerArquivoTijolo_DoWork(object sender, DoWorkEventArgs e)
-        {
-           
-        }
+        {}
 
         private void tmBarraProgressoTijolo_Tick(object sender, EventArgs e)
-        {
+        {}
 
-        }
-
-        // ** Timer que monitora os arquivos de Rajado do tipo Tijolo ** //
+       
         private void tmMonitoramentoArquivosRajadaTijolo_Tick(object sender, EventArgs e)
-        {
-            //    Rajada rajada = new Rajada();
-
-            //    List<String> listaDeArquivosEncontrados = new List<String>();
-            //    listaDeArquivosEncontrados = rajada.retornaQuantidadeArquivosEncontrados(this.caminhoArquivoTxtRajadaTijolo, "ARQBRSAGORD");
-
-            //    String arquivosEncontrados = "";
-
-            //    foreach (String arquivo in listaDeArquivosEncontrados)
-            //    {
-            //        arquivosEncontrados =  arquivosEncontrados + " \n " + arquivo;
-            //    }
-            //    // ** Adiciona o total de arquivos encontrados ao fim da lista que irá no corpo do e-mail ** //
-            //    arquivosEncontrados = arquivosEncontrados + " \n \n \n " + "Total de Arquivos:  " + listaDeArquivosEncontrados.Count();
-
-            //    String horaAtual = DateTime.Now.ToString();
-
-            //    Email email = new Email();
-            //    email.enviarEmail(this.destinatariosRajadaTijolo, "Monitoramento de Rajadas Tijolo - " + horaAtual, "Arquivos lógicos RAJADA TIJOLO encontrados até " + horaAtual + " \n " + arquivosEncontrados);
-        }
-        // ** Timer que monitora os arquivos de Rajado do tipo Tijolo ** //
-
-
-        // ** Timer que monitora os arquivos de Rajado do tipo Digital ** //
+        {}
+      
         private void tmMonitoramentoArquivosRajadaDigital_Tick(object sender, EventArgs e)
-        {
-            //Rajada rajada = new Rajada();
+        {}
 
-            //List<String> listaDeArquivosEncontrados = new List<String>();
-            //listaDeArquivosEncontrados = rajada.retornaQuantidadeArquivosEncontrados(this.caminhoArquivoTxtRajadaTijolo, "BRSCANDIGIT");
-
-            //String arquivosEncontrados = "";
-
-            //foreach (String arquivo in listaDeArquivosEncontrados)
-            //{
-            //    arquivosEncontrados = arquivosEncontrados + " \n " + arquivo;
-            //}
-            //// ** Adiciona o total de arquivos encontrados ao fim da lista que irá no corpo do e-mail ** //
-            //arquivosEncontrados = arquivosEncontrados + " \n \n \n " + "Total de Arquivos:  " + listaDeArquivosEncontrados.Count();
-
-            //String horaAtual = DateTime.Now.ToString();
-
-            //Email email = new Email();
-            //email.enviarEmail(this.destinatariosRajadaDigital, "Monitoramento de Rajadas Digitais (Mundo Velho) - " + horaAtual, "Arquivos lógicos RAJADA DIGITAL (MUNDO VELHO) encontrados até " + horaAtual + " \n " + arquivosEncontrados);
-        }
-        // ** Timer que monitora os arquivos de Rajado do tipo Digital ** //
-
-
-        // ** Timer que monitora os arquivos de Rajado do tipo Invertida ** //
         private void tmMonitoramentoArquivosRajadaInvertida_Tick(object sender, EventArgs e)
-        {
-            //Rajada rajada = new Rajada();
-
-            //List<String> listaDeArquivosEncontrados = new List<String>();
-            //listaDeArquivosEncontrados = rajada.retornaQuantidadeArquivosEncontrados(this.caminhoArquivoTxtRajadaTijolo, "ARQBRSINVER");
-
-            //String arquivosEncontrados = "";
-
-            //foreach (String arquivo in listaDeArquivosEncontrados)
-            //{
-            //    arquivosEncontrados = arquivosEncontrados + " \n " + arquivo;
-            //}
-            //// ** Adiciona o total de arquivos encontrados ao fim da lista que irá no corpo do e-mail ** //
-            //arquivosEncontrados = arquivosEncontrados + " \n \n \n " + "Total de Arquivos:  " + listaDeArquivosEncontrados.Count();
-
-            //String horaAtual = DateTime.Now.ToString();
-
-            //Email email = new Email();
-            //email.enviarEmail(this.destinatariosRajadaInvertida, "Monitoramento de Rajadas Invertidas - " + horaAtual, "Arquivos lógicos RAJADA INVERTIDA encontrados até " + horaAtual + " \n " + arquivosEncontrados);
-        }
+        {}
 
         private void btSalvarMonitoramentoTijolo_Click(object sender, EventArgs e)
-        {
-            
-        }
+        {}
 
         private void btSalvarMonitoramentoDigital_Click(object sender, EventArgs e)
-        {
-
-        }
+        {}
 
         private void btSalvarMonitoramentoInvertida_Click(object sender, EventArgs e)
-        {
-
-        }
+        {}
 
         private void btAgendamentoTijolo_Click(object sender, EventArgs e)
         {

@@ -451,12 +451,18 @@ namespace rajadas
                                 File.Copy(arquivoTxtRajada, diretorioRajadaProcessada);
                                 // ----------- ** Copia o arquivo para o diretório de rajada processada antes de iniciar a leitura ** -----------//
 
+                                // ** Pega o horário da rajada através do nome do arquivo ** //
+                                String horarioOriginal = nomeArquivoRajadaTxt.Substring(nomeArquivoRajadaTxt.Length - 10, 4);
+                                String horarioFormatado = horarioOriginal.Substring(0, 2) + ":" + horarioOriginal.Substring(2, 2);
+                                // ** Pega o horário da rajada através do nome do arquivo ** //
+
                                 string[] arquivoTXT = File.ReadAllLines(arquivoTxtRajada);
                                 foreach (var linha in arquivoTXT)
                                 {
                                     if (linha.Substring(0, 1).Equals("1"))
                                     {
                                         Rajada rajada = new Rajada();
+                                        rajada.horarioRajada = horarioFormatado;
                                         rajada.tipoRegistro = linha.Substring(0, 1);
                                         rajada.agencia = linha.Substring(1, 4);
                                         rajada.zeros = linha.Substring(5, 2);
@@ -682,12 +688,18 @@ namespace rajadas
                                 File.Copy(arquivoTxtRajada, diretorioRajadaProcessada);
                                 // ----------- ** Copia o arquivo para o diretório de rajada processada antes de iniciar a leitura ** -----------//
 
+                                // ** Pega o horário da rajada através do nome do arquivo ** //
+                                String horarioOriginal = nomeArquivoRajadaTxt.Substring(nomeArquivoRajadaTxt.Length - 10, 4);
+                                String horarioFormatado = horarioOriginal.Substring(0, 2) + ":" + horarioOriginal.Substring(2, 2);
+                                // ** Pega o horário da rajada através do nome do arquivo ** //
+
                                 string[] arquivoTXT = File.ReadAllLines(arquivoTxtRajada);
                                 foreach (var linha in arquivoTXT)
                                 {
                                     if (linha.Substring(0, 1).Equals("1"))
                                     {
                                         Rajada rajada = new Rajada();
+                                        rajada.horarioRajada = horarioFormatado;
                                         rajada.tipoRegistro = linha.Substring(0, 1);
                                         rajada.agencia = linha.Substring(1, 4);
                                         rajada.zeros = linha.Substring(5, 2);

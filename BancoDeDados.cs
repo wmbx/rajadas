@@ -1,4 +1,5 @@
 ﻿using DocumentFormat.OpenXml.Drawing.Charts;
+using DocumentFormat.OpenXml.Wordprocessing;
 using MySql.Data.MySqlClient;
 using System;
 using System.Collections.Generic;
@@ -59,8 +60,11 @@ namespace rajadas
             }
         }
 
-        public Boolean insereRajadaSumarizada(String endereco, String porta, String usuario, String senha, String nomeBD, List<Rajada> listaDeRajadas, String tipoRajada)
+        public bool insereRajadaSumarizada(String endereco, String porta, String usuario, String senha, String nomeBD, List<Rajada> listaDeRajadas, String tipoRajada)
         {
+            // ** Variável de retorno do método ** //
+            bool retornoMetodo = false;
+
             // ** Pega a data atual e formata para para DD-MM-AAAA
             String dia = DateTime.Now.Day.ToString();
             if (Convert.ToInt32(dia) < 10)
@@ -75,18 +79,9 @@ namespace rajadas
             String ano = DateTime.Now.Year.ToString();
             String dataFormatada = dia + "-" + mes + "-" + ano;
 
-            // ** Pega a hora da rajada ** //
-            String horarioRajada = "1";
-            // ** Pega a hora da rajada ** //
-
-            // ** Pega a quantidade de contas ** //
-            String qtdContasTitular = "1";
-            // ** Pega a quantidade de contas ** //
-
-
             // ** Percorre a lista de rajadas para recuperar os horários das rajadas ** //
             List<string> listaHorarios = new List<string>();
-          
+
             foreach (Rajada rajada in listaDeRajadas)
             {
                 bool retorno = listaHorarios.Any(l => l == rajada.horarioRajada);
@@ -95,50 +90,106 @@ namespace rajadas
                     listaHorarios.Add(rajada.horarioRajada);
                 }
             }
-            // ** Percorre a lista de rajadas para recuperar a quantidade contas processadas ** //
-
-            // ** Percorre a lista de rajadas para recuperar a quantidade contas processadas ** //
-
             // ** Percorre a lista de rajadas para recuperar os horários das rajadas ** //
 
-            // ** String de conexão com o banco ** //
-            String stringConexao = "server=" + endereco + ";port=" + porta + ";User Id=" + usuario + ";database=" + nomeBD + ";password=" + senha;
-
-            // ** String para inserção de registros no banco // **
-            String stringComando = "INSERT INTO rajadas_sumarizadas (codigoRajada, dataRajada, horarioRajada, qtdContasTitular) VALUES (@CODIGO, @DATA, @HORARIO, @QTD)";
-
-            try
+            // ** Percorre a lista de rajadas para recuperar a quantidade contas processadas por horario da rajada ** //
+            foreach (var horario in listaHorarios)
             {
-                // ** Cria e inicia a conexão com o banco ** //
-                conexao = new MySqlConnection(stringConexao);
-                conexao.Open();
+                
+                //int contadorTotalContasPorRajada = 0;
+                //foreach (var rajada in listaDeRajadas)
+                //{
+                //    if (rajada.horarioRajada == horario)
+                //    {
+                //        contadorTotalContasPorRajada = contadorTotalContasPorRajada + 1;
+                //    }
+                //}
 
-                // ** Cria o objeto de comando ** //
-                comando = new MySqlCommand(stringComando, conexao);
+                // ** Retorna apenas as contas do horário específico da rajada ** //
+                var rajadasPorHorario = listaDeRajadas.Where(r => r.horarioRajada == horario);
 
-                // ** Adiciona os parâmetros ao objeto de comando
-                comando.Parameters.AddWithValue("@CODIGO", tipoRajada);
-                comando.Parameters.AddWithValue("@DATA", dataFormatada);
-                comando.Parameters.AddWithValue("@HORARIO", horarioRajada);
-                comando.Parameters.AddWithValue("@QTD", qtdContasTitular);
+                // ** Retorna a quantidade total de contas processadas por rajada ** //
+                int totalDeContasPorRajada = rajadasPorHorario.Count();
 
-                // ** Executa o comando de inserção no banco ** //
-                comando.ExecuteNonQuery();
+                // ** Retorna as contas dos titulares, ou seja, elimina as contas duplicadas, as quais serão de cotitulares ** //.
+                var listaContasTitular = rajadasPorHorario
+                                               .Select(m => new { m.agencia, m.conta, m.dac })
+                                               .Distinct()
+                                               .ToList();
+                int qtdContasTitular = listaContasTitular.Count();
 
-                return true;
+                //var listaContasTitular =
+                //    (from rajada in rajadasPorHorario
+                //     select rajada.conta).Distinct();
+
+
+
+
+
+                // ** Retorna as contas dos cotitulares ** //
+                int qtdContasCotitular = totalDeContasPorRajada - qtdContasTitular;
+
+                // ** Retorna a quantidade total de contas de titulares por rajada ** //
+                //var itens_duplicados = rajadasPorHorario
+                //.GroupBy(r => new { r.conta })
+                //.Where(x => x.Count() > 1);
+
+                //foreach (var item in itens_duplicados)
+                //{
+                //    System.Windows.Forms.MessageBox.Show(item.Key.ToString());
+                //}
+
+
+                //var itens_duplicados = listaDeRajadas
+                //.GroupBy(r => new { r.conta })
+
+                //.Where(x => x.Equals(horario))
+                //.Sum(x => x.Count());
+
+
+                // ** String de conexão com o banco ** //
+                String stringConexao = "server=" + endereco + ";port=" + porta + ";User Id=" + usuario + ";database=" + nomeBD + ";password=" + senha;
+
+                // ** String para inserção de registros no banco // **
+                String stringComando = "INSERT INTO rajadas_sumarizadas (codigoRajada, dataRajada, horarioRajada, qtdContasTitular, qtdContasCoTitular, qtdTotalContas) VALUES (@CODIGO, @DATA, @HORARIO, @QTDTITULAR, @QTDCOTITULAR, @QTDTOTALCONTAS)";
+
+                try
+                {
+                    // ** Cria e inicia a conexão com o banco ** //
+                    conexao = new MySqlConnection(stringConexao);
+                    conexao.Open();
+
+                    // ** Cria o objeto de comando ** //
+                    comando = new MySqlCommand(stringComando, conexao);
+
+                    // ** Adiciona os parâmetros ao objeto de comando
+                    comando.Parameters.AddWithValue("@CODIGO", tipoRajada);
+                    comando.Parameters.AddWithValue("@DATA", dataFormatada);
+                    comando.Parameters.AddWithValue("@HORARIO", horario);
+                    comando.Parameters.AddWithValue("@QTDTITULAR", qtdContasTitular.ToString());
+                    comando.Parameters.AddWithValue("@QTDCOTITULAR", qtdContasCotitular.ToString());
+                    comando.Parameters.AddWithValue("@QTDTOTALCONTAS", totalDeContasPorRajada.ToString());
+
+                    // ** Executa o comando de inserção no banco ** //
+                    comando.ExecuteNonQuery();
+
+                    retornoMetodo = true;
+                }
+                catch (Exception e)
+                {
+                    retornoMetodo = false;
+                }
+                finally
+                {
+                    conexao.Close();
+                    conexao = null;
+                    comando = null;
+                }
+
             }
-            catch (Exception e)
-            {
-                return false;
-                throw;
-            }
-            finally
-            {
-                conexao.Close();
-                conexao = null;
-                comando = null;
-            }
+            return retornoMetodo;
         }
+   
 
         public Boolean atualizaParametrosDoSistemaNoBD(String endereco, String porta, String usuario, String senha, String nomeBD, List<String> listaDeParametros, String tipoRajada)
         {
