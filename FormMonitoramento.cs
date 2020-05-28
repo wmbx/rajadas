@@ -1,10 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
 using System.Data;
 using System.Drawing;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
@@ -101,6 +103,12 @@ namespace rajadas
                 {
                     for (int i = 0; i < dgvMonitoramentoNovo.Rows.Count - 1; i++)
                     {
+                        if (dgvMonitoramentoNovo.Rows[i].Cells["horario"].Value == null || dgvMonitoramentoNovo.Rows[i].Cells["arquivos"].Value == null)
+                        {
+                            MessageBox.Show("Não são permitidos campos vazios na tabela de monitoramento !!!");
+                            return;
+                        }
+
                         Monitoramento monitoramento = new Monitoramento();
 
                         monitoramento.codigoRajada = this.tipoRajada;
@@ -127,6 +135,54 @@ namespace rajadas
                     MessageBox.Show(ex.Message);
                 }
             }
+        }
+
+        private void dgvMonitoramentoNovo_Validating(object sender, CancelEventArgs e)
+        {
+            
+        }
+
+        private void dgvMonitoramentoNovo_CellValidating(object sender, DataGridViewCellValidatingEventArgs e)
+        {            
+            dgvMonitoramentoNovo.Rows[e.RowIndex].ErrorText = "";
+
+            String valorCelula = e.FormattedValue.ToString();
+
+            int numeroDaColunaGridView = dgvMonitoramentoNovo.Rows[e.ColumnIndex].Index;
+
+            Monitoramento monitoramento = new Monitoramento();
+
+            if (numeroDaColunaGridView == 0)
+            {
+                if (valorCelula != null)
+                {
+                    monitoramento.horarioMonitoramento = valorCelula;
+                }
+            }
+            if (numeroDaColunaGridView == 1)
+            {
+                if (valorCelula != null)
+                {
+                    monitoramento.qtdArquivos = valorCelula;
+                }
+            }
+
+            var erros = Validacao.ValidarCamposGridViewMonitoramento(monitoramento);
+
+            if (dgvMonitoramentoNovo.Rows[e.RowIndex].IsNewRow) { return; }
+            foreach (var error in erros)
+            {
+                e.Cancel = true;
+                dgvMonitoramentoNovo.Rows[e.RowIndex].ErrorText = error.ErrorMessage;
+            }
+        }
+
+        private void dgvMonitoramentoNovo_CellEndEdit(object sender, DataGridViewCellEventArgs e)
+        {}
+
+        private void dgvMonitoramentoNovo_CellValidated(object sender, DataGridViewCellEventArgs e)
+        {
+
         }
     }
 }

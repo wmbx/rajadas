@@ -30,15 +30,15 @@
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormMonitoramento));
             this.dgvMonitoramentoAtual = new System.Windows.Forms.DataGridView();
-            this.gbMonitoramento = new System.Windows.Forms.GroupBox();
-            this.dgvMonitoramentoNovo = new System.Windows.Forms.DataGridView();
             this.horarioMonitoramento = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.qtdArquivos = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.label1 = new System.Windows.Forms.Label();
-            this.label2 = new System.Windows.Forms.Label();
-            this.label3 = new System.Windows.Forms.Label();
-            this.lbTipoRajada = new System.Windows.Forms.Label();
+            this.gbMonitoramento = new System.Windows.Forms.GroupBox();
             this.btAtualizaMonitoramento = new System.Windows.Forms.Button();
+            this.lbTipoRajada = new System.Windows.Forms.Label();
+            this.label3 = new System.Windows.Forms.Label();
+            this.label2 = new System.Windows.Forms.Label();
+            this.label1 = new System.Windows.Forms.Label();
+            this.dgvMonitoramentoNovo = new System.Windows.Forms.DataGridView();
             this.horario = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.arquivos = new System.Windows.Forms.DataGridViewTextBoxColumn();
             ((System.ComponentModel.ISupportInitialize)(this.dgvMonitoramentoAtual)).BeginInit();
@@ -62,37 +62,6 @@
             this.dgvMonitoramentoAtual.Size = new System.Drawing.Size(182, 353);
             this.dgvMonitoramentoAtual.TabIndex = 0;
             // 
-            // gbMonitoramento
-            // 
-            this.gbMonitoramento.BackColor = System.Drawing.Color.Transparent;
-            this.gbMonitoramento.Controls.Add(this.btAtualizaMonitoramento);
-            this.gbMonitoramento.Controls.Add(this.lbTipoRajada);
-            this.gbMonitoramento.Controls.Add(this.label3);
-            this.gbMonitoramento.Controls.Add(this.label2);
-            this.gbMonitoramento.Controls.Add(this.label1);
-            this.gbMonitoramento.Controls.Add(this.dgvMonitoramentoAtual);
-            this.gbMonitoramento.Controls.Add(this.dgvMonitoramentoNovo);
-            this.gbMonitoramento.Location = new System.Drawing.Point(3, 7);
-            this.gbMonitoramento.Name = "gbMonitoramento";
-            this.gbMonitoramento.Size = new System.Drawing.Size(407, 439);
-            this.gbMonitoramento.TabIndex = 1;
-            this.gbMonitoramento.TabStop = false;
-            this.gbMonitoramento.Text = "Configuração";
-            this.gbMonitoramento.Enter += new System.EventHandler(this.gbMonitoramento_Enter);
-            // 
-            // dgvMonitoramentoNovo
-            // 
-            this.dgvMonitoramentoNovo.AllowUserToResizeColumns = false;
-            this.dgvMonitoramentoNovo.AllowUserToResizeRows = false;
-            this.dgvMonitoramentoNovo.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dgvMonitoramentoNovo.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
-            this.horario,
-            this.arquivos});
-            this.dgvMonitoramentoNovo.Location = new System.Drawing.Point(216, 52);
-            this.dgvMonitoramentoNovo.Name = "dgvMonitoramentoNovo";
-            this.dgvMonitoramentoNovo.Size = new System.Drawing.Size(182, 353);
-            this.dgvMonitoramentoNovo.TabIndex = 1;
-            // 
             // horarioMonitoramento
             // 
             this.horarioMonitoramento.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
@@ -111,32 +80,33 @@
             this.qtdArquivos.ReadOnly = true;
             this.qtdArquivos.Width = 73;
             // 
-            // label1
+            // gbMonitoramento
             // 
-            this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(6, 39);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(110, 13);
-            this.label1.TabIndex = 2;
-            this.label1.Text = "Monitoramento (Atual)";
+            this.gbMonitoramento.BackColor = System.Drawing.Color.Transparent;
+            this.gbMonitoramento.Controls.Add(this.btAtualizaMonitoramento);
+            this.gbMonitoramento.Controls.Add(this.lbTipoRajada);
+            this.gbMonitoramento.Controls.Add(this.label3);
+            this.gbMonitoramento.Controls.Add(this.label2);
+            this.gbMonitoramento.Controls.Add(this.label1);
+            this.gbMonitoramento.Controls.Add(this.dgvMonitoramentoAtual);
+            this.gbMonitoramento.Controls.Add(this.dgvMonitoramentoNovo);
+            this.gbMonitoramento.Location = new System.Drawing.Point(3, 7);
+            this.gbMonitoramento.Name = "gbMonitoramento";
+            this.gbMonitoramento.Size = new System.Drawing.Size(407, 439);
+            this.gbMonitoramento.TabIndex = 1;
+            this.gbMonitoramento.TabStop = false;
+            this.gbMonitoramento.Text = "Configuração";
+            this.gbMonitoramento.Enter += new System.EventHandler(this.gbMonitoramento_Enter);
             // 
-            // label2
+            // btAtualizaMonitoramento
             // 
-            this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(213, 39);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(112, 13);
-            this.label2.TabIndex = 3;
-            this.label2.Text = "Monitoramento (Novo)";
-            // 
-            // label3
-            // 
-            this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(282, 15);
-            this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(44, 13);
-            this.label3.TabIndex = 4;
-            this.label3.Text = "Rajada:";
+            this.btAtualizaMonitoramento.Location = new System.Drawing.Point(133, 410);
+            this.btAtualizaMonitoramento.Name = "btAtualizaMonitoramento";
+            this.btAtualizaMonitoramento.Size = new System.Drawing.Size(136, 25);
+            this.btAtualizaMonitoramento.TabIndex = 6;
+            this.btAtualizaMonitoramento.Text = " Atualizar Monitoramento";
+            this.btAtualizaMonitoramento.UseVisualStyleBackColor = true;
+            this.btAtualizaMonitoramento.Click += new System.EventHandler(this.button1_Click);
             // 
             // lbTipoRajada
             // 
@@ -148,15 +118,49 @@
             this.lbTipoRajada.Size = new System.Drawing.Size(0, 19);
             this.lbTipoRajada.TabIndex = 5;
             // 
-            // btAtualizaMonitoramento
+            // label3
             // 
-            this.btAtualizaMonitoramento.Location = new System.Drawing.Point(133, 410);
-            this.btAtualizaMonitoramento.Name = "btAtualizaMonitoramento";
-            this.btAtualizaMonitoramento.Size = new System.Drawing.Size(136, 25);
-            this.btAtualizaMonitoramento.TabIndex = 6;
-            this.btAtualizaMonitoramento.Text = " Atualizar Monitoramento";
-            this.btAtualizaMonitoramento.UseVisualStyleBackColor = true;
-            this.btAtualizaMonitoramento.Click += new System.EventHandler(this.button1_Click);
+            this.label3.AutoSize = true;
+            this.label3.Location = new System.Drawing.Point(282, 15);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(44, 13);
+            this.label3.TabIndex = 4;
+            this.label3.Text = "Rajada:";
+            // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.Location = new System.Drawing.Point(213, 39);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(112, 13);
+            this.label2.TabIndex = 3;
+            this.label2.Text = "Monitoramento (Novo)";
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(6, 39);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(110, 13);
+            this.label1.TabIndex = 2;
+            this.label1.Text = "Monitoramento (Atual)";
+            // 
+            // dgvMonitoramentoNovo
+            // 
+            this.dgvMonitoramentoNovo.AllowUserToResizeColumns = false;
+            this.dgvMonitoramentoNovo.AllowUserToResizeRows = false;
+            this.dgvMonitoramentoNovo.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dgvMonitoramentoNovo.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
+            this.horario,
+            this.arquivos});
+            this.dgvMonitoramentoNovo.Location = new System.Drawing.Point(214, 52);
+            this.dgvMonitoramentoNovo.Name = "dgvMonitoramentoNovo";
+            this.dgvMonitoramentoNovo.Size = new System.Drawing.Size(182, 353);
+            this.dgvMonitoramentoNovo.TabIndex = 1;
+            this.dgvMonitoramentoNovo.CellEndEdit += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvMonitoramentoNovo_CellEndEdit);
+            this.dgvMonitoramentoNovo.CellValidated += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvMonitoramentoNovo_CellValidated);
+            this.dgvMonitoramentoNovo.CellValidating += new System.Windows.Forms.DataGridViewCellValidatingEventHandler(this.dgvMonitoramentoNovo_CellValidating);
+            this.dgvMonitoramentoNovo.Validating += new System.ComponentModel.CancelEventHandler(this.dgvMonitoramentoNovo_Validating);
             // 
             // horario
             // 
