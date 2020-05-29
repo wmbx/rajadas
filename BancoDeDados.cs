@@ -14,6 +14,7 @@ namespace rajadas
     {
         private MySqlConnection conexao;
         private MySqlCommand comando;
+        private MySqlCommand comandoDiaMonitoramento;
         private MySqlDataReader dataReader;
 
         public Boolean insereRajadaNoBD(String endereco, String porta, String usuario, String senha, String nomeBD, Rajada rajada, String tipoRajada)
@@ -344,8 +345,11 @@ namespace rajadas
             // ** String de conexão com o banco ** //
             String stringConexao = "server=" + endereco + ";port=" + porta + ";User Id=" + usuario + ";database=" + nomeBD + ";password=" + senha;
 
-            // ** String para busar os registros no banco que ainda não foram executados // **
+            // ** String para buscar os registros no banco que ainda não foram executados // **
             String stringComando = "SELECT * FROM monitoramento WHERE codigoRajada = " + tipoRajada + " ORDER BY horarioMonitoramento";
+
+            // ** String para buscar os dias da semana em que o monitoramento será executado // **
+            String stringComandoDiaMonitoramento = "SELECT * FROM dia_monitoramento WHERE codigoRajada = " + tipoRajada;
 
             // ** Cria a lista de parâmetros ** //
             List<Monitoramento> listaDeMonitoramento = new List<Monitoramento>();
@@ -387,17 +391,17 @@ namespace rajadas
             return listaDeMonitoramento;
         }
 
-
-        public Boolean atualizaTabelaDeMonitoramento(String endereco, String porta, String usuario, String senha, String nomeBD, List<Monitoramento> listaMonitoramento, String tipoRajada)
+        public DiaMonitoramento listarDiasDeMonitoramento(String endereco, String porta, String usuario, String senha, String nomeBD, String tipoRajada)
         {
             // ** String de conexão com o banco ** //
             String stringConexao = "server=" + endereco + ";port=" + porta + ";User Id=" + usuario + ";database=" + nomeBD + ";password=" + senha;
 
-            // ** String para limpar os registros da tabela MONITORAMENTO ** //
-            String stringComandoLimparTabela = "DELETE FROM monitoramento WHERE codigoRajada = " + tipoRajada;
+            // ** String para buscar os dias da semana em que o monitoramento será executado // **
+            String stringComandoDiaMonitoramento = "SELECT * FROM dia_monitoramento WHERE codigoRajada = " + tipoRajada;
 
-            // ** String para inserção de registros no banco ** //
-            String stringComando = "INSERT INTO monitoramento (codigoRajada, horarioMonitoramento, qtdArquivos, dataProcessamento) VALUES (@CODIGO, @HORARIO, @QTD, @DATAPROCESSAMENTO)";
+            // ** Cria a lista de parâmetros ** //
+            DiaMonitoramento diaMonitoramento = new DiaMonitoramento();
+            diaMonitoramento.codigoRajada = tipoRajada;
 
             try
             {
@@ -405,17 +409,72 @@ namespace rajadas
                 conexao = new MySqlConnection(stringConexao);
                 conexao.Open();
 
-                // ** Cria o objeto de comando para limpeza** //
+                // ** Cria o objeto de comando ** //
+                comando = new MySqlCommand(stringComandoDiaMonitoramento, conexao);
+
+                // ** Executa o comando de pesquisa no banco e retorna para um objeto Data Reader ** //
+                dataReader = comando.ExecuteReader();
+
+                while (dataReader.Read())
+                {
+                    diaMonitoramento.diaMonitoramento.Add(dataReader["dia"].ToString());
+                }
+            }
+            catch (Exception e)
+            {
+                System.Windows.Forms.MessageBox.Show(e.ToString());
+                throw;
+            }
+            finally
+            {
+                conexao.Close();
+                conexao = null;
+                comando = null;
+            }
+            return diaMonitoramento;
+        }
+
+
+        public Boolean atualizaTabelaDeMonitoramento(String endereco, String porta, String usuario, String senha, String nomeBD, List<Monitoramento> listaMonitoramento, DiaMonitoramento diasMonitoramento, String tipoRajada)
+        {
+            // ** String de conexão com o banco ** //
+            String stringConexao = "server=" + endereco + ";port=" + porta + ";User Id=" + usuario + ";database=" + nomeBD + ";password=" + senha;
+
+            // ** String para limpar os registros da tabela MONITORAMENTO ** //
+            String stringComandoLimparTabela = "DELETE FROM monitoramento WHERE codigoRajada = " + tipoRajada;
+
+            // ** String para limpar os registros da tabela DIA MONITORAMENTO ** //
+            String stringComandoLimparTabelaDiaMonitoramento = "DELETE FROM dia_monitoramento WHERE codigoRajada = " + tipoRajada;
+
+            // ** String para inserção de registros no banco ** //
+            String stringComando = "INSERT INTO monitoramento (codigoRajada, horarioMonitoramento, qtdArquivos, dataProcessamento) VALUES (@CODIGO, @HORARIO, @QTD, @DATAPROCESSAMENTO)";
+
+            // ** String para inserção de registros na tabela DIA MONITORAMENTO ** //
+            String stringComandoDiaMonitoramento = "INSERT INTO dia_monitoramento (codigoRajada, dia) VALUES (@CODIGO, @DIA)";
+
+            try
+            {
+                // ** Cria e inicia a conexão com o banco ** //
+                conexao = new MySqlConnection(stringConexao);
+                conexao.Open();
+
+                // ** Cria o objeto de comando para limpeza da tabela MONITORAMENTO ** //
                 comando = new MySqlCommand(stringComandoLimparTabela, conexao);
                 comando.ExecuteNonQuery();
                 comando = null;
 
+                // ** Cria o objeto de comando para limpeza da tabela DIA MONITORAMENTO** //
+                comandoDiaMonitoramento = new MySqlCommand(stringComandoLimparTabelaDiaMonitoramento, conexao);
+                comandoDiaMonitoramento.ExecuteNonQuery();
+                comandoDiaMonitoramento = null;
+
                 // ** Adiciona os parâmetros ao objeto de comando
                 foreach (Monitoramento monitoramento in listaMonitoramento)
                 {
-                    // ** Cria o objeto de comando ** //
+                    // ** Cria o objeto de comando MONITORAMENTO ** //
                     comando = new MySqlCommand(stringComando, conexao);
 
+                    // ** Adiciona os parâmetros para a tabela MONITORAMENTO ** //
                     comando.Parameters.AddWithValue("@CODIGO", monitoramento.codigoRajada);
                     comando.Parameters.AddWithValue("@HORARIO", monitoramento.horarioMonitoramento);
                     comando.Parameters.AddWithValue("@QTD", monitoramento.qtdArquivos);
@@ -426,6 +485,23 @@ namespace rajadas
 
                     // ** Limpa o objeto comando ** //
                     comando = null;
+                }
+
+                // ** Adiciona os parâmetros ao objeto de comando
+                foreach (var dia in diasMonitoramento.diaMonitoramento)
+                {
+                    // ** Cria o objeto de comando DIA MONITORAMENTO ** //
+                    comandoDiaMonitoramento = new MySqlCommand(stringComandoDiaMonitoramento, conexao);
+
+                    // ** Adiciona os parâmetros para a tabela DIA MONITORAMENTO ** //
+                    comandoDiaMonitoramento.Parameters.AddWithValue("@CODIGO", diasMonitoramento.codigoRajada);
+                    comandoDiaMonitoramento.Parameters.AddWithValue("@DIA", dia);
+
+                    // ** Executa o comando de inserção no banco ** //
+                    comandoDiaMonitoramento.ExecuteNonQuery();
+
+                    // ** Limpa o objeto comando ** //
+                    comandoDiaMonitoramento = null;
                 }
 
                 return true;

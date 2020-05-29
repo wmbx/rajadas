@@ -18,7 +18,5 @@ namespace rajadas
         [Display(Name = "Quantidade de Arquivos", Description = "Quantidade Arquivos de Rajada")]
         [Range (1, 999, ErrorMessage = "A quantidade de arquivos deve estar entre 1 e 999.")]
         public string qtdArquivos { get; set; }
-
-        
     }
 }

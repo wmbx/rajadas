@@ -13,6 +13,7 @@ using System.Xml;
 using System.Xml.Linq;
 using System.Threading;
 using System.Diagnostics;
+using System.Globalization;
 
 namespace rajadas
 {
@@ -57,6 +58,10 @@ namespace rajadas
         private List<Monitoramento> listaMonitoramentoDigital;
         private List<Monitoramento> listaMonitoramentoInvertida;
 
+        private DiaMonitoramento listaDiaMonitoramentoTijolo;
+        private DiaMonitoramento listaDiaMonitoramentoDigital;
+        private DiaMonitoramento listaDiaMonitoramentoInvertida;
+
         public Form1()
         {
             InitializeComponent();
@@ -88,41 +93,53 @@ namespace rajadas
 
             Rajada rajada = new Rajada();
 
-            foreach (Monitoramento monitoramento in this.listaMonitoramentoTijolo)
+            // ** Pega o dia da semana ** //
+            Agendamento agendamento = new Agendamento();
+            string diaDaSemana = agendamento.retornarDiaDaSemana();
+
+            // ** Verifica se no dia da semana atual será realizado o monitoramento ** //
+            foreach (var dia in this.listaDiaMonitoramentoTijolo.diaMonitoramento)
             {
-                String hora = DateTime.Now.Hour.ToString();
-                String minuto = DateTime.Now.Minute.ToString();
-                if (Convert.ToInt32(minuto) < 10)
+                if (dia == diaDaSemana)
                 {
-                    minuto = "0" + minuto;
-                }
-                String horaFormatada = hora + ":" + minuto;
-
-                if (horaFormatada == monitoramento.horarioMonitoramento)
-                {
-                    listaDeArquivosEncontrados = rajada.retornaQuantidadeArquivosEncontrados(this.caminhoArquivoTxtRajadaTijolo, "ARQBRSAGORD");
-                    if (listaDeArquivosEncontrados.Count < Convert.ToInt32(monitoramento.qtdArquivos))
+                    foreach (Monitoramento monitoramento in this.listaMonitoramentoTijolo)
                     {
-                        String arquivosEncontrados = "";
-
-                        foreach (String arquivo in listaDeArquivosEncontrados)
+                        String hora = DateTime.Now.Hour.ToString();
+                        String minuto = DateTime.Now.Minute.ToString();
+                        if (Convert.ToInt32(minuto) < 10)
                         {
-                            arquivosEncontrados = arquivosEncontrados + " \n " + arquivo;
+                            minuto = "0" + minuto;
                         }
-                        // ** Adiciona o total de arquivos encontrados ao fim da lista que irá no corpo do e-mail ** //
-                        arquivosEncontrados = arquivosEncontrados + " \n \n \n " + "Total de Arquivos:  " + listaDeArquivosEncontrados.Count();
+                        String horaFormatada = hora + ":" + minuto;
 
-                        // ** Envia e-mail aos destinatários parametrizando comunicando que algum arquivo não foi enviado ** //
-                        Email email = new Email();
-                        email.enviarEmail(this.destinatariosRajadaTijolo, "Monitoramento RAJADA TIJOLO - " + horaFormatada, "Estava prevista a recepção de " + monitoramento.qtdArquivos +
-                            " arquivo(s), porém foram localizados " + listaDeArquivosEncontrados.Count + " arquivo(s) na pasta de origem." + "\n \n " + "Segue(m) arquivo(s) localizado(s): " + "\n \n" + arquivosEncontrados);
+                        // ** Verifica se a horário atual está na lista de monitoramento ** //
+                        if (horaFormatada == monitoramento.horarioMonitoramento)
+                        {
+                            listaDeArquivosEncontrados = rajada.retornaQuantidadeArquivosEncontrados(this.caminhoArquivoTxtRajadaTijolo, "ARQBRSAGORD");
+                            if (listaDeArquivosEncontrados.Count < Convert.ToInt32(monitoramento.qtdArquivos))
+                            {
+                                String arquivosEncontrados = "";
 
-                        // ** Atualizada a data de processamento do objeto monitoramento para evitar duplicidades ** //
-                        BancoDeDados bancoDeDados = new BancoDeDados();
-                        bancoDeDados.atualizaDataMonitoramentoExecutado(this.enderecoBD, this.portaBD, this.usuarioBD, this.senhaBD, this.nomeBD, monitoramento, "1");
+                                foreach (String arquivo in listaDeArquivosEncontrados)
+                                {
+                                    arquivosEncontrados = arquivosEncontrados + " \n " + arquivo;
+                                }
+                                // ** Adiciona o total de arquivos encontrados ao fim da lista que irá no corpo do e-mail ** //
+                                arquivosEncontrados = arquivosEncontrados + " \n \n \n " + "Total de Arquivos:  " + listaDeArquivosEncontrados.Count();
 
-                        // ** Atualiza os objetos de monitoramento
-                        carregaObjetosMonitoramento();
+                                // ** Envia e-mail aos destinatários parametrizando comunicando que algum arquivo não foi enviado ** //
+                                Email email = new Email();
+                                email.enviarEmail(this.destinatariosRajadaTijolo, "Monitoramento RAJADA TIJOLO - " + horaFormatada, "Estava prevista a recepção de " + monitoramento.qtdArquivos +
+                                    " arquivo(s), porém foram localizados " + listaDeArquivosEncontrados.Count + " arquivo(s) na pasta de origem." + "\n \n " + "Segue(m) arquivo(s) localizado(s): " + "\n \n" + arquivosEncontrados);
+
+                                // ** Atualizada a data de processamento do objeto monitoramento para evitar duplicidades ** //
+                                BancoDeDados bancoDeDados = new BancoDeDados();
+                                bancoDeDados.atualizaDataMonitoramentoExecutado(this.enderecoBD, this.portaBD, this.usuarioBD, this.senhaBD, this.nomeBD, monitoramento, "1");
+
+                                // ** Atualiza os objetos de monitoramento
+                                carregaObjetosMonitoramento();
+                            }
+                        }
                     }
                 }
             }
@@ -136,45 +153,55 @@ namespace rajadas
 
             Rajada rajada = new Rajada();
 
-            foreach (Monitoramento monitoramento in this.listaMonitoramentoDigital)
+            // ** Pega o dia da semana ** //
+            Agendamento agendamento = new Agendamento();
+            string diaDaSemana = agendamento.retornarDiaDaSemana();
+
+            // ** Verifica se no dia da semana atual será realizado o monitoramento ** //
+            foreach (var dia in this.listaDiaMonitoramentoDigital.diaMonitoramento)
             {
-                String hora = DateTime.Now.Hour.ToString();
-                String minuto = DateTime.Now.Minute.ToString();
-                if (Convert.ToInt32(minuto) < 10)
+                if (dia == diaDaSemana)
                 {
-                    minuto = "0" + minuto;
-                }
-                String horaFormatada = hora + ":" + minuto;
-
-                if (horaFormatada == monitoramento.horarioMonitoramento)
-                {
-                    listaDeArquivosEncontrados = rajada.retornaQuantidadeArquivosEncontrados(this.caminhoArquivoTxtRajadaDigital, "BRSCANDIGIT");
-                    if (listaDeArquivosEncontrados.Count < Convert.ToInt32(monitoramento.qtdArquivos))
+                    foreach (Monitoramento monitoramento in this.listaMonitoramentoDigital)
                     {
-                        String arquivosEncontrados = "";
-
-                        foreach (String arquivo in listaDeArquivosEncontrados)
+                        String hora = DateTime.Now.Hour.ToString();
+                        String minuto = DateTime.Now.Minute.ToString();
+                        if (Convert.ToInt32(minuto) < 10)
                         {
-                            arquivosEncontrados = arquivosEncontrados + " \n " + arquivo;
+                            minuto = "0" + minuto;
                         }
-                        // ** Adiciona o total de arquivos encontrados ao fim da lista que irá no corpo do e-mail ** //
-                        arquivosEncontrados = arquivosEncontrados + " \n \n \n " + "Total de Arquivos:  " + listaDeArquivosEncontrados.Count();
+                        String horaFormatada = hora + ":" + minuto;
 
-                        // ** Envia e-mail aos destinatários parametrizando comunicando que algum arquivo não foi enviado ** //
-                        Email email = new Email();
-                        email.enviarEmail(this.destinatariosRajadaDigital, "Monitoramento RAJADA DIGITAL (MUNDO VELHO) - " + horaFormatada, "Estava prevista a recepção de " + monitoramento.qtdArquivos +
-                            " arquivo(s), porém foram localizados " + listaDeArquivosEncontrados.Count + " arquivo(s) na pasta de origem." + "\n \n " + "Segue(m) arquivo(s) localizado(s): " + "\n \n" + arquivosEncontrados);
+                        if (horaFormatada == monitoramento.horarioMonitoramento)
+                        {
+                            listaDeArquivosEncontrados = rajada.retornaQuantidadeArquivosEncontrados(this.caminhoArquivoTxtRajadaDigital, "BRSCANDIGIT");
+                            if (listaDeArquivosEncontrados.Count < Convert.ToInt32(monitoramento.qtdArquivos))
+                            {
+                                String arquivosEncontrados = "";
 
-                        // ** Atualizada a data de processamento do objeto monitoramento para evitar duplicidades ** //
-                        BancoDeDados bancoDeDados = new BancoDeDados();
-                        bancoDeDados.atualizaDataMonitoramentoExecutado(this.enderecoBD, this.portaBD, this.usuarioBD, this.senhaBD, this.nomeBD, monitoramento, "2");
+                                foreach (String arquivo in listaDeArquivosEncontrados)
+                                {
+                                    arquivosEncontrados = arquivosEncontrados + " \n " + arquivo;
+                                }
+                                // ** Adiciona o total de arquivos encontrados ao fim da lista que irá no corpo do e-mail ** //
+                                arquivosEncontrados = arquivosEncontrados + " \n \n \n " + "Total de Arquivos:  " + listaDeArquivosEncontrados.Count();
 
-                        // ** Atualiza os objetos de monitoramento
-                        carregaObjetosMonitoramento();
+                                // ** Envia e-mail aos destinatários parametrizando comunicando que algum arquivo não foi enviado ** //
+                                Email email = new Email();
+                                email.enviarEmail(this.destinatariosRajadaDigital, "Monitoramento RAJADA DIGITAL (MUNDO VELHO) - " + horaFormatada, "Estava prevista a recepção de " + monitoramento.qtdArquivos +
+                                    " arquivo(s), porém foram localizados " + listaDeArquivosEncontrados.Count + " arquivo(s) na pasta de origem." + "\n \n " + "Segue(m) arquivo(s) localizado(s): " + "\n \n" + arquivosEncontrados);
+
+                                // ** Atualizada a data de processamento do objeto monitoramento para evitar duplicidades ** //
+                                BancoDeDados bancoDeDados = new BancoDeDados();
+                                bancoDeDados.atualizaDataMonitoramentoExecutado(this.enderecoBD, this.portaBD, this.usuarioBD, this.senhaBD, this.nomeBD, monitoramento, "2");
+
+                                // ** Atualiza os objetos de monitoramento
+                                carregaObjetosMonitoramento();
+                            }
+                        }
                     }
                 }
             }
-        
         }
 
         protected void monitoramentoInvertida()
@@ -185,41 +212,52 @@ namespace rajadas
 
             Rajada rajada = new Rajada();
 
-            foreach (Monitoramento monitoramento in this.listaMonitoramentoInvertida)
+            // ** Pega o dia da semana ** //
+            Agendamento agendamento = new Agendamento();
+            string diaDaSemana = agendamento.retornarDiaDaSemana();
+
+            // ** Verifica se no dia da semana atual será realizado o monitoramento ** //
+            foreach (var dia in this.listaDiaMonitoramentoInvertida.diaMonitoramento)
             {
-                String hora = DateTime.Now.Hour.ToString();
-                String minuto = DateTime.Now.Minute.ToString();
-                if (Convert.ToInt32(minuto) < 10)
+                if (dia == diaDaSemana)
                 {
-                    minuto = "0" + minuto;
-                }
-                String horaFormatada = hora + ":" + minuto;
-
-                if (horaFormatada == monitoramento.horarioMonitoramento)
-                {
-                    listaDeArquivosEncontrados = rajada.retornaQuantidadeArquivosEncontrados(this.caminhoArquivoTxtRajadaInvertida, "ARQBRSINVER");
-                    if (listaDeArquivosEncontrados.Count < Convert.ToInt32(monitoramento.qtdArquivos))
+                    foreach (Monitoramento monitoramento in this.listaMonitoramentoInvertida)
                     {
-                        String arquivosEncontrados = "";
-
-                        foreach (String arquivo in listaDeArquivosEncontrados)
+                        String hora = DateTime.Now.Hour.ToString();
+                        String minuto = DateTime.Now.Minute.ToString();
+                        if (Convert.ToInt32(minuto) < 10)
                         {
-                            arquivosEncontrados = arquivosEncontrados + " \n " + arquivo;
+                            minuto = "0" + minuto;
                         }
-                        // ** Adiciona o total de arquivos encontrados ao fim da lista que irá no corpo do e-mail ** //
-                        arquivosEncontrados = arquivosEncontrados + " \n \n \n " + "Total de Arquivos:  " + listaDeArquivosEncontrados.Count();
+                        String horaFormatada = hora + ":" + minuto;
 
-                        // ** Envia e-mail aos destinatários parametrizando comunicando que algum arquivo não foi enviado ** //
-                        Email email = new Email();
-                        email.enviarEmail(this.destinatariosRajadaInvertida, "Monitoramento RAJADA INVERTIDA - " + horaFormatada, "Estava prevista a recepção de " + monitoramento.qtdArquivos +
-                            " arquivo(s), porém foram localizados " + listaDeArquivosEncontrados.Count + " arquivo(s) na pasta de origem." + "\n \n " + "Segue(m) arquivo(s) localizado(s): " + "\n \n" + arquivosEncontrados);
+                        if (horaFormatada == monitoramento.horarioMonitoramento)
+                        {
+                            listaDeArquivosEncontrados = rajada.retornaQuantidadeArquivosEncontrados(this.caminhoArquivoTxtRajadaInvertida, "ARQBRSINVER");
+                            if (listaDeArquivosEncontrados.Count < Convert.ToInt32(monitoramento.qtdArquivos))
+                            {
+                                String arquivosEncontrados = "";
 
-                        // ** Atualizada a data de processamento do objeto monitoramento para evitar duplicidades ** //
-                        BancoDeDados bancoDeDados = new BancoDeDados();
-                        bancoDeDados.atualizaDataMonitoramentoExecutado(this.enderecoBD, this.portaBD, this.usuarioBD, this.senhaBD, this.nomeBD, monitoramento, "3");
+                                foreach (String arquivo in listaDeArquivosEncontrados)
+                                {
+                                    arquivosEncontrados = arquivosEncontrados + " \n " + arquivo;
+                                }
+                                // ** Adiciona o total de arquivos encontrados ao fim da lista que irá no corpo do e-mail ** //
+                                arquivosEncontrados = arquivosEncontrados + " \n \n \n " + "Total de Arquivos:  " + listaDeArquivosEncontrados.Count();
 
-                        // ** Atualiza os objetos de monitoramento
-                        carregaObjetosMonitoramento();
+                                // ** Envia e-mail aos destinatários parametrizando comunicando que algum arquivo não foi enviado ** //
+                                Email email = new Email();
+                                email.enviarEmail(this.destinatariosRajadaInvertida, "Monitoramento RAJADA INVERTIDA - " + horaFormatada, "Estava prevista a recepção de " + monitoramento.qtdArquivos +
+                                    " arquivo(s), porém foram localizados " + listaDeArquivosEncontrados.Count + " arquivo(s) na pasta de origem." + "\n \n " + "Segue(m) arquivo(s) localizado(s): " + "\n \n" + arquivosEncontrados);
+
+                                // ** Atualizada a data de processamento do objeto monitoramento para evitar duplicidades ** //
+                                BancoDeDados bancoDeDados = new BancoDeDados();
+                                bancoDeDados.atualizaDataMonitoramentoExecutado(this.enderecoBD, this.portaBD, this.usuarioBD, this.senhaBD, this.nomeBD, monitoramento, "3");
+
+                                // ** Atualiza os objetos de monitoramento
+                                carregaObjetosMonitoramento();
+                            }
+                        }
                     }
                 }
             }
@@ -230,9 +268,15 @@ namespace rajadas
         {
             BancoDeDados bancoDeDados = new BancoDeDados();
 
+            // ** Carrega os objetos de monitoramento do banco ** //
             this.listaMonitoramentoTijolo = bancoDeDados.listaMonitoramento(this.enderecoBD, this.portaBD, this.usuarioBD, this.senhaBD, this.nomeBD, "1");
             this.listaMonitoramentoDigital = bancoDeDados.listaMonitoramento(this.enderecoBD, this.portaBD, this.usuarioBD, this.senhaBD, this.nomeBD, "2");
             this.listaMonitoramentoInvertida = bancoDeDados.listaMonitoramento(this.enderecoBD, this.portaBD, this.usuarioBD, this.senhaBD, this.nomeBD, "3");
+
+            // ** Carrega os dias dos monitoramentos do banco ** //
+            this.listaDiaMonitoramentoTijolo = bancoDeDados.listarDiasDeMonitoramento(this.enderecoBD, this.portaBD, this.usuarioBD, this.senhaBD, this.nomeBD, "1");
+            this.listaDiaMonitoramentoDigital = bancoDeDados.listarDiasDeMonitoramento(this.enderecoBD, this.portaBD, this.usuarioBD, this.senhaBD, this.nomeBD, "2");
+            this.listaDiaMonitoramentoInvertida = bancoDeDados.listarDiasDeMonitoramento(this.enderecoBD, this.portaBD, this.usuarioBD, this.senhaBD, this.nomeBD, "3");
         }
 
         protected void carregarParametrosBD()

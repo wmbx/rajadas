@@ -68,8 +68,33 @@ namespace rajadas
 
         protected void carregarGridViewMonitoramentoAtual()
         {
+            // ** Cria objeto de Banco de Dados ** //
             BancoDeDados bancoDeDados = new BancoDeDados();
+            
+            // ** Busca a lista de monitoramento atual e atribui ao gridview monitoramento atual **//
             dgvMonitoramentoAtual.DataSource = bancoDeDados.listaTodosMonitoramentos(this.enderecoBD, this.portaBD, this.usuarioBD, this.senhaBD, this.nomeBD, this.tipoRajada);
+
+            // ** Busca os dias de monitoramento no banco de dados ** //
+            DiaMonitoramento diaMonitoramento = new DiaMonitoramento();
+            diaMonitoramento = bancoDeDados.listarDiasDeMonitoramento(this.enderecoBD, this.portaBD, this.usuarioBD, this.senhaBD, this.nomeBD, this.tipoRajada);
+
+            // ** Limpa a lista de checkbox atual ** //
+            for (int i = 0; i < clbMonitoramentoAtual.Items.Count; i++)
+            {
+                    clbMonitoramentoAtual.SetItemChecked(i, false);                
+            }
+
+            // ** Seleciona os dias de monitoramento na lista de checkbox de acordo o retorno do banco de dados ** //
+            foreach (var dia in diaMonitoramento.diaMonitoramento)
+            {
+                for (int i = 0; i < clbMonitoramentoAtual.Items.Count; i++)
+                {
+                    if (clbMonitoramentoAtual.Items[i].ToString() == dia)
+                    {
+                        clbMonitoramentoAtual.SetItemChecked(i, true);
+                    }
+                }
+            }
         }
 
         protected void carregarGridViewMonitoramentoNovo()
@@ -83,6 +108,30 @@ namespace rajadas
                 dgvMonitoramentoNovo.Rows[i].Cells["horario"].Value = dgvMonitoramentoAtual.Rows[i].Cells["horarioMonitoramento"].Value;
                 dgvMonitoramentoNovo.Rows[i].Cells["arquivos"].Value = dgvMonitoramentoAtual.Rows[i].Cells["qtdArquivos"].Value;
             }
+
+            // ** Busca os dias de monitoramento no banco de dados ** //
+            BancoDeDados bancoDeDados = new BancoDeDados();
+            DiaMonitoramento diaMonitoramento = new DiaMonitoramento();
+            diaMonitoramento = bancoDeDados.listarDiasDeMonitoramento(this.enderecoBD, this.portaBD, this.usuarioBD, this.senhaBD, this.nomeBD, this.tipoRajada);
+
+            // ** Limpa a lista de checkbox atual ** //
+            for (int i = 0; i < clbMonitoramentoNovo.Items.Count; i++)
+            {
+                clbMonitoramentoNovo.SetItemChecked(i, false);
+            }
+
+            // ** Selecione os dias de monitoramento na lista de checkbox de acordo o retorno do banco de dados ** //
+            foreach (var dia in diaMonitoramento.diaMonitoramento)
+            {
+                for (int i = 0; i < clbMonitoramentoNovo.Items.Count; i++)
+                {
+                    if (clbMonitoramentoNovo.Items[i].ToString() == dia)
+                    {
+                        clbMonitoramentoNovo.SetItemChecked(i, true);
+                    }
+                }
+            }
+
         }
 
         private void gbMonitoramento_Enter(object sender, EventArgs e)
@@ -98,7 +147,6 @@ namespace rajadas
 
             if (DialogResult.Yes == MessageBox.Show("Deseja prosseguir com as alterações ?", "Confirmação", MessageBoxButtons.YesNo, MessageBoxIcon.Question, MessageBoxDefaultButton.Button2))
             {
-
                 try
                 {
                     for (int i = 0; i < dgvMonitoramentoNovo.Rows.Count - 1; i++)
@@ -114,11 +162,20 @@ namespace rajadas
                         monitoramento.codigoRajada = this.tipoRajada;
                         monitoramento.horarioMonitoramento = dgvMonitoramentoNovo.Rows[i].Cells["horario"].Value.ToString();
                         monitoramento.qtdArquivos = dgvMonitoramentoNovo.Rows[i].Cells["arquivos"].Value.ToString();
-
+                        
                         listaMonitoramento.Add(monitoramento);
                     }
 
-                    Boolean retorno = bancoDeDados.atualizaTabelaDeMonitoramento(this.enderecoBD, this.portaBD, this.usuarioBD, this.senhaBD, this.nomeBD, listaMonitoramento, this.tipoRajada);
+                    // ** Recupera os dias da semana marcados na lista de checkbox ** //
+                    DiaMonitoramento diasMonitoramento = new DiaMonitoramento();
+                    diasMonitoramento.codigoRajada = this.tipoRajada;
+                    
+                    foreach (var dia in clbMonitoramentoNovo.CheckedItems)
+                    {
+                        diasMonitoramento.diaMonitoramento.Add(dia.ToString());
+                    }
+
+                    Boolean retorno = bancoDeDados.atualizaTabelaDeMonitoramento(this.enderecoBD, this.portaBD, this.usuarioBD, this.senhaBD, this.nomeBD, listaMonitoramento, diasMonitoramento, this.tipoRajada);
 
                     if (retorno.Equals(true))
                     {
@@ -148,12 +205,15 @@ namespace rajadas
 
             String valorCelula = e.FormattedValue.ToString();
 
+            string coluna = "";
+
             int numeroDaColunaGridView = dgvMonitoramentoNovo.Rows[e.ColumnIndex].Index;
 
             Monitoramento monitoramento = new Monitoramento();
 
             if (numeroDaColunaGridView == 0)
             {
+                coluna = "horario";
                 if (valorCelula != null)
                 {
                     monitoramento.horarioMonitoramento = valorCelula;
@@ -161,19 +221,37 @@ namespace rajadas
             }
             if (numeroDaColunaGridView == 1)
             {
+                coluna = "arquivos";
                 if (valorCelula != null)
                 {
                     monitoramento.qtdArquivos = valorCelula;
                 }
             }
 
-            var erros = Validacao.ValidarCamposGridViewMonitoramento(monitoramento);
+            var erros = Validacao.ValidarCampos(monitoramento);
 
             if (dgvMonitoramentoNovo.Rows[e.RowIndex].IsNewRow) { return; }
             foreach (var error in erros)
             {
                 e.Cancel = true;
                 dgvMonitoramentoNovo.Rows[e.RowIndex].ErrorText = error.ErrorMessage;
+            }
+
+
+            // ** Percorre o gridview monitoramento novo para validar se existem horários duplicados ** //
+            if (coluna == "horario")
+            {
+                for (int i = 0; i < dgvMonitoramentoNovo.Rows.Count - 1; i++)
+                {
+                    if (e.RowIndex != i)
+                    {
+                        if (dgvMonitoramentoNovo.Rows[i].Cells["horario"].Value.ToString() == valorCelula)
+                        {
+                            e.Cancel = true;
+                            dgvMonitoramentoNovo.Rows[e.RowIndex].ErrorText = "Não são permitidos horários repetidos na tabela de monitoramento.";
+                        }
+                    }
+                }
             }
         }
 

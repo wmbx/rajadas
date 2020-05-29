@@ -9,11 +9,14 @@ namespace rajadas
 {
     class Validacao
     {
-        public static IEnumerable<ValidationResult> ValidarCamposGridViewMonitoramento(object objeto)
+        public static IEnumerable<ValidationResult> ValidarCampos(object objeto)
         {
             var resultadoValidacao = new List<ValidationResult>();
+
             var contexto = new ValidationContext(objeto, null, null);
+            
             Validator.TryValidateObject(objeto, contexto, resultadoValidacao, true);
+            
             return resultadoValidacao;
         }
 
