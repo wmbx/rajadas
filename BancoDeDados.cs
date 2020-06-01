@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.Remoting.Messaging;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace rajadas
@@ -14,6 +15,7 @@ namespace rajadas
     {
         private MySqlConnection conexao;
         private MySqlCommand comando;
+        private MySqlCommand comandoMonitoramento;
         private MySqlCommand comandoDiaMonitoramento;
         private MySqlDataReader dataReader;
 
@@ -487,6 +489,42 @@ namespace rajadas
                     comando = null;
                 }
 
+                // ** String para limpar os registros da tabela MONITORAMENTO ** //
+                String stringComandoLimparTabelaMonitoramentoTMP = "DELETE FROM monitoramento_tmp WHERE codigoRajada = " + tipoRajada;
+
+                // ** String para inserção de registros no banco ** //
+                String stringComandoMonitoramentoTMP = "INSERT INTO monitoramento_tmp (codigoRajada, horarioMonitoramento, qtdArquivos, dataProcessamento) VALUES (@CODIGO, @HORARIO, @QTD, @DATAPROCESSAMENTO)";
+
+                
+                
+                // ** Cria e inicia a conexão com o banco ** //
+                conexao = new MySqlConnection(stringConexao);
+                conexao.Open();
+
+                // ** Cria o objeto de comando para limpeza da tabela MONITORAMENTO ** //
+                comando = new MySqlCommand(stringComandoLimparTabelaMonitoramentoTMP, conexao);
+                comando.ExecuteNonQuery();
+                comando = null;
+
+                // ** Adiciona os parâmetros ao objeto de comando
+                foreach (Monitoramento monitoramento in listaMonitoramento)
+                {
+                    // ** Cria o objeto de comando MONITORAMENTO ** //
+                    comando = new MySqlCommand(stringComandoMonitoramentoTMP, conexao);
+
+                    // ** Adiciona os parâmetros para a tabela MONITORAMENTO TEMPORÁRIO ** //
+                    comando.Parameters.AddWithValue("@CODIGO", monitoramento.codigoRajada);
+                    comando.Parameters.AddWithValue("@HORARIO", monitoramento.horarioMonitoramento);
+                    comando.Parameters.AddWithValue("@QTD", monitoramento.qtdArquivos);
+                    comando.Parameters.AddWithValue("@DATAPROCESSAMENTO", "vazio");
+
+                    // ** Executa o comando de inserção no banco ** //
+                    comando.ExecuteNonQuery();
+
+                    // ** Limpa o objeto comando ** //
+                    comando = null;
+                }
+
                 // ** Adiciona os parâmetros ao objeto de comando
                 foreach (var dia in diasMonitoramento.diaMonitoramento)
                 {
@@ -525,7 +563,8 @@ namespace rajadas
             String stringConexao = "server=" + endereco + ";port=" + porta + ";User Id=" + usuario + ";database=" + nomeBD + ";password=" + senha;
 
             // ** String para atualização da data do monitoramento executado // **
-           String stringComando = "UPDATE monitoramento SET dataProcessamento = @DATA WHERE codigoRajada = " + tipoRajada + " AND horarioMonitoramento = '" + monitoramento.horarioMonitoramento + "'";
+            String stringComando = "UPDATE monitoramento SET dataProcessamento = @DATA WHERE codigoRajada = @CODIGO AND horarioMonitoramento = @HORARIO";
+
             try
             {
                 // ** Cria e inicia a conexão com o banco ** //
@@ -548,9 +587,12 @@ namespace rajadas
                 }
                 String ano = DateTime.Now.Year.ToString();
                 String dataFormatada = ano + "-" + mes + "-" + dia;
+                //String dataFormatada = "'" + ano + "-" + mes + "-" + dia + "'";
 
                 // ** Adiciona os parâmetros ao objeto de comando
                 comando.Parameters.AddWithValue("@DATA", dataFormatada);
+                comando.Parameters.AddWithValue("@CODIGO", tipoRajada);
+                comando.Parameters.AddWithValue("@HORARIO", monitoramento.horarioMonitoramento);
 
                 // ** Executa o comando de inserção no banco ** //
                 comando.ExecuteNonQuery();
@@ -571,7 +613,169 @@ namespace rajadas
             }
         }
 
-        
+        public Boolean AtualizarTabelaDeMonitoramentoAposNotificarPorEmail(String endereco, String porta, String usuario, String senha, String nomeBD, String tipoRajada)
+        {
+            // ** String de conexão com o banco ** //
+            String stringConexao = "server=" + endereco + ";port=" + porta + ";User Id=" + usuario + ";database=" + nomeBD + ";password=" + senha;
+
+            // ** String para limpar os registros da tabela MONITORAMENTO ** //
+            String stringComandoLimparTabelaMonitoramento = "DELETE FROM monitoramento WHERE codigoRajada = " + tipoRajada;
+
+            // ** String para inserção de registros na tabela MONITORAMENTO ** //
+            String stringInserirMonitoramento = "INSERT INTO monitoramento (codigoRajada, horarioMonitoramento, qtdArquivos, dataProcessamento) VALUES (@CODIGO, @HORARIO, @QTD)";
+
+            // ** String para buscar os registros referentes a tabela de MONITORAMENTO // **
+            String stringBuscarMonitoramento = "SELECT * FROM monitoramento WHERE codigoRajada = " + tipoRajada + " ORDER BY horarioMonitoramento";
+
+            try
+            {
+                // ** Cria e inicia a conexão com o banco ** //
+                conexao = new MySqlConnection(stringConexao);
+                conexao.Open();
+
+                // ** Cria o objeto de comando para buscar os registros dos monitoramentos no banco ** //
+                comando = new MySqlCommand(stringBuscarMonitoramento, conexao);
+
+                // ** Executa o comando de pesquisa no banco e retorna para um objeto Data Reader ** //
+                dataReader = comando.ExecuteReader();
+
+                // ** Cria lista de objetos Monitoramento para armazenar retorno do banco ** //
+                List<Monitoramento> listaDeMonitoramento = new List<Monitoramento>();
+                while (dataReader.Read())
+                {
+                    Monitoramento monitoramento = new Monitoramento();
+
+                    monitoramento.codigoRajada = dataReader["codigoRajada"].ToString();
+                    monitoramento.horarioMonitoramento = dataReader["horarioMonitoramento"].ToString();
+                    monitoramento.qtdArquivos = dataReader["qtdArquivos"].ToString();
+
+                    listaDeMonitoramento.Add(monitoramento);
+                }
+
+                // ** Limpa o objeto comando ** //
+                conexao.Close();
+                comando = null;
+                conexao.Open();
+                                
+                // ** Cria o objeto de comando para limpeza da tabela MONITORAMENTO ** //
+                comando = new MySqlCommand(stringComandoLimparTabelaMonitoramento, conexao);
+                comando.ExecuteNonQuery();
+                comando = null;                
+
+                // ** Insere os valores de monitoramento na tabela MONITORAMENTO subtraindo 1 na quantidade arquivos ** //
+                foreach (Monitoramento monitoramentoAtualizado in listaDeMonitoramento)
+                {
+                    // ** Cria o objeto de comando para inserir os registros dos monitoramentos na tabela Monitoramento** //
+                    comando = new MySqlCommand(stringInserirMonitoramento, conexao);
+
+                    // ** Adiciona os parâmetros para a tabela MONITORAMENTO ** //
+                    comando.Parameters.AddWithValue("@CODIGO", monitoramentoAtualizado.codigoRajada);
+                    comando.Parameters.AddWithValue("@HORARIO", monitoramentoAtualizado.horarioMonitoramento);
+                    comando.Parameters.AddWithValue("@QTD", Convert.ToInt32(monitoramentoAtualizado.qtdArquivos) - 1);
+
+                    // ** Executa o comando de inserção no banco ** //
+                    comando.ExecuteNonQuery();
+
+                    // ** Limpa o objeto comando ** //
+                    comando = null;
+                }
+
+                return true;
+            }
+            catch (Exception e)
+            {
+                return false;
+                throw;
+            }
+            finally
+            {
+                conexao.Close();
+                conexao = null;
+                comando = null;
+            }
+        }
+
+        public Boolean RestaurarTabelaDeMonitoramentoAtual(String endereco, String porta, String usuario, String senha, String nomeBD, String tipoRajada)
+        {
+            // ** String de conexão com o banco ** //
+            String stringConexao = "server=" + endereco + ";port=" + porta + ";User Id=" + usuario + ";database=" + nomeBD + ";password=" + senha;
+
+            // ** String para limpar os registros da tabela MONITORAMENTO ** //
+            String stringComandoLimparTabelaMonitoramento = "DELETE FROM monitoramento WHERE codigoRajada = " + tipoRajada;
+
+            // ** String para inserção de registros na tabela MONITORAMENTO ** //
+            String stringInserirMonitoramento = "INSERT INTO monitoramento (codigoRajada, horarioMonitoramento, qtdArquivos, dataProcessamento) VALUES (@CODIGO, @HORARIO, @QTD)";
+
+            // ** String para buscar os registros referentes a tabela de MONITORAMENTO // **
+            String stringBuscarMonitoramento = "SELECT * FROM monitoramento_tmp WHERE codigoRajada = " + tipoRajada + " ORDER BY horarioMonitoramento";
+
+            try
+            {
+                // ** Cria e inicia a conexão com o banco ** //
+                conexao = new MySqlConnection(stringConexao);
+                conexao.Open();
+
+                // ** Cria o objeto de comando para buscar os registros dos monitoramentos no banco ** //
+                comando = new MySqlCommand(stringBuscarMonitoramento, conexao);
+
+                // ** Executa o comando de pesquisa no banco e retorna para um objeto Data Reader ** //
+                dataReader = comando.ExecuteReader();
+
+                // ** Cria lista de objetos Monitoramento para armazenar retorno do banco ** //
+                List<Monitoramento> listaDeMonitoramento = new List<Monitoramento>();
+                while (dataReader.Read())
+                {
+                    Monitoramento monitoramento = new Monitoramento();
+
+                    monitoramento.codigoRajada = dataReader["codigoRajada"].ToString();
+                    monitoramento.horarioMonitoramento = dataReader["horarioMonitoramento"].ToString();
+                    monitoramento.qtdArquivos = dataReader["qtdArquivos"].ToString();
+
+                    listaDeMonitoramento.Add(monitoramento);
+                }
+
+                // ** Limpa o objeto comando ** //
+                conexao.Close();
+                comando = null;
+                conexao.Open();
+
+                // ** Cria o objeto de comando para limpeza da tabela MONITORAMENTO ** //
+                comando = new MySqlCommand(stringComandoLimparTabelaMonitoramento, conexao);
+                comando.ExecuteNonQuery();
+                comando = null;
+
+                // ** Insere os valores de monitoramento na tabela MONITORAMENTO de acordo com os registros encontrados na tabela MONITORAMENTO TEMPORÁRIO ** //
+                foreach (Monitoramento monitoramentoAtualizado in listaDeMonitoramento)
+                {
+                    // ** Cria o objeto de comando para inserir os registros dos monitoramentos na tabela Monitoramento** //
+                    comando = new MySqlCommand(stringInserirMonitoramento, conexao);
+
+                    // ** Adiciona os parâmetros para a tabela MONITORAMENTO ** //
+                    comando.Parameters.AddWithValue("@CODIGO", monitoramentoAtualizado.codigoRajada);
+                    comando.Parameters.AddWithValue("@HORARIO", monitoramentoAtualizado.horarioMonitoramento);
+                    comando.Parameters.AddWithValue("@QTD", Convert.ToInt32(monitoramentoAtualizado.qtdArquivos));
+
+                    // ** Executa o comando de inserção no banco ** //
+                    comando.ExecuteNonQuery();
+
+                    // ** Limpa o objeto comando ** //
+                    comando = null;
+                }
+
+                return true;
+            }
+            catch (Exception e)
+            {
+                return false;
+                throw;
+            }
+            finally
+            {
+                conexao.Close();
+                conexao = null;
+                comando = null;
+            }
+        }
 
     }
 }

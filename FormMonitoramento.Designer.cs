@@ -43,6 +43,7 @@
             this.label3 = new System.Windows.Forms.Label();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.clbMonitoramentoAtual = new System.Windows.Forms.CheckedListBox();
+            this.btnRestaurarMonitoramento = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.dgvMonitoramentoAtual)).BeginInit();
             this.gbMonitoramento.SuspendLayout();
             this.groupBox2.SuspendLayout();
@@ -88,6 +89,7 @@
             // gbMonitoramento
             // 
             this.gbMonitoramento.BackColor = System.Drawing.Color.Transparent;
+            this.gbMonitoramento.Controls.Add(this.btnRestaurarMonitoramento);
             this.gbMonitoramento.Controls.Add(this.groupBox2);
             this.gbMonitoramento.Controls.Add(this.btAtualizaMonitoramento);
             this.gbMonitoramento.Controls.Add(this.lbTipoRajada);
@@ -144,6 +146,7 @@
             this.dgvMonitoramentoNovo.CellEndEdit += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvMonitoramentoNovo_CellEndEdit);
             this.dgvMonitoramentoNovo.CellValidated += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvMonitoramentoNovo_CellValidated);
             this.dgvMonitoramentoNovo.CellValidating += new System.Windows.Forms.DataGridViewCellValidatingEventHandler(this.dgvMonitoramentoNovo_CellValidating);
+            this.dgvMonitoramentoNovo.RowValidating += new System.Windows.Forms.DataGridViewCellCancelEventHandler(this.dgvMonitoramentoNovo_RowValidating);
             this.dgvMonitoramentoNovo.Validating += new System.ComponentModel.CancelEventHandler(this.dgvMonitoramentoNovo_Validating);
             // 
             // horario
@@ -162,7 +165,7 @@
             // 
             // btAtualizaMonitoramento
             // 
-            this.btAtualizaMonitoramento.Location = new System.Drawing.Point(244, 381);
+            this.btAtualizaMonitoramento.Location = new System.Drawing.Point(346, 381);
             this.btAtualizaMonitoramento.Name = "btAtualizaMonitoramento";
             this.btAtualizaMonitoramento.Size = new System.Drawing.Size(136, 25);
             this.btAtualizaMonitoramento.TabIndex = 6;
@@ -218,6 +221,16 @@
             this.clbMonitoramentoAtual.Size = new System.Drawing.Size(78, 109);
             this.clbMonitoramentoAtual.TabIndex = 7;
             // 
+            // btnRestaurarMonitoramento
+            // 
+            this.btnRestaurarMonitoramento.Location = new System.Drawing.Point(133, 381);
+            this.btnRestaurarMonitoramento.Name = "btnRestaurarMonitoramento";
+            this.btnRestaurarMonitoramento.Size = new System.Drawing.Size(136, 25);
+            this.btnRestaurarMonitoramento.TabIndex = 10;
+            this.btnRestaurarMonitoramento.Text = "Restaurar Monitoramento";
+            this.btnRestaurarMonitoramento.UseVisualStyleBackColor = true;
+            this.btnRestaurarMonitoramento.Click += new System.EventHandler(this.btnRestaurarMonitoramento_Click);
+            // 
             // FormMonitoramento
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -263,5 +276,6 @@
         private System.Windows.Forms.GroupBox groupBox1;
         private System.Windows.Forms.GroupBox groupBox2;
         private System.Windows.Forms.CheckedListBox clbMonitoramentoNovo;
+        private System.Windows.Forms.Button btnRestaurarMonitoramento;
     }
 }

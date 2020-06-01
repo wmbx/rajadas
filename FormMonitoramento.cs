@@ -12,7 +12,7 @@ using System.Windows.Forms;
 
 namespace rajadas
 {
-    
+
 
     public partial class FormMonitoramento : Form
     {
@@ -23,9 +23,10 @@ namespace rajadas
         private String usuarioBD;
         private String senhaBD;
         private String nomeBD;
+        private string valorDaCelula;
 
         public string ParametroTipoRajada
-        { 
+        {
             set { this.tipoRajada = value; }
         }
 
@@ -70,7 +71,7 @@ namespace rajadas
         {
             // ** Cria objeto de Banco de Dados ** //
             BancoDeDados bancoDeDados = new BancoDeDados();
-            
+
             // ** Busca a lista de monitoramento atual e atribui ao gridview monitoramento atual **//
             dgvMonitoramentoAtual.DataSource = bancoDeDados.listaTodosMonitoramentos(this.enderecoBD, this.portaBD, this.usuarioBD, this.senhaBD, this.nomeBD, this.tipoRajada);
 
@@ -81,7 +82,7 @@ namespace rajadas
             // ** Limpa a lista de checkbox atual ** //
             for (int i = 0; i < clbMonitoramentoAtual.Items.Count; i++)
             {
-                    clbMonitoramentoAtual.SetItemChecked(i, false);                
+                clbMonitoramentoAtual.SetItemChecked(i, false);
             }
 
             // ** Seleciona os dias de monitoramento na lista de checkbox de acordo o retorno do banco de dados ** //
@@ -99,6 +100,7 @@ namespace rajadas
 
         protected void carregarGridViewMonitoramentoNovo()
         {
+            dgvMonitoramentoNovo.Rows.Clear();
             for (int i = 0; i < dgvMonitoramentoAtual.Rows.Count; i++)
             {
                 dgvMonitoramentoNovo.Rows.Add();
@@ -162,14 +164,14 @@ namespace rajadas
                         monitoramento.codigoRajada = this.tipoRajada;
                         monitoramento.horarioMonitoramento = dgvMonitoramentoNovo.Rows[i].Cells["horario"].Value.ToString();
                         monitoramento.qtdArquivos = dgvMonitoramentoNovo.Rows[i].Cells["arquivos"].Value.ToString();
-                        
+
                         listaMonitoramento.Add(monitoramento);
                     }
 
                     // ** Recupera os dias da semana marcados na lista de checkbox ** //
                     DiaMonitoramento diasMonitoramento = new DiaMonitoramento();
                     diasMonitoramento.codigoRajada = this.tipoRajada;
-                    
+
                     foreach (var dia in clbMonitoramentoNovo.CheckedItems)
                     {
                         diasMonitoramento.diaMonitoramento.Add(dia.ToString());
@@ -181,6 +183,7 @@ namespace rajadas
                     {
                         MessageBox.Show("Alterações realizadas com sucesso !!!");
                         carregarGridViewMonitoramentoAtual();
+                        carregarGridViewMonitoramentoNovo();
                     }
                     else
                     {
@@ -196,14 +199,14 @@ namespace rajadas
 
         private void dgvMonitoramentoNovo_Validating(object sender, CancelEventArgs e)
         {
-            
+
         }
 
         private void dgvMonitoramentoNovo_CellValidating(object sender, DataGridViewCellValidatingEventArgs e)
-        {            
+        {
             dgvMonitoramentoNovo.Rows[e.RowIndex].ErrorText = "";
 
-            String valorCelula = e.FormattedValue.ToString();
+            this.valorDaCelula = e.FormattedValue.ToString();
 
             string coluna = "";
 
@@ -214,17 +217,17 @@ namespace rajadas
             if (numeroDaColunaGridView == 0)
             {
                 coluna = "horario";
-                if (valorCelula != null)
+                if (valorDaCelula != null)
                 {
-                    monitoramento.horarioMonitoramento = valorCelula;
+                    monitoramento.horarioMonitoramento = valorDaCelula;
                 }
             }
             if (numeroDaColunaGridView == 1)
             {
                 coluna = "arquivos";
-                if (valorCelula != null)
+                if (valorDaCelula != null)
                 {
-                    monitoramento.qtdArquivos = valorCelula;
+                    monitoramento.qtdArquivos = valorDaCelula;
                 }
             }
 
@@ -245,7 +248,7 @@ namespace rajadas
                 {
                     if (e.RowIndex != i)
                     {
-                        if (dgvMonitoramentoNovo.Rows[i].Cells["horario"].Value.ToString() == valorCelula)
+                        if (dgvMonitoramentoNovo.Rows[i].Cells["horario"].Value.ToString() == valorDaCelula)
                         {
                             e.Cancel = true;
                             dgvMonitoramentoNovo.Rows[e.RowIndex].ErrorText = "Não são permitidos horários repetidos na tabela de monitoramento.";
@@ -253,14 +256,65 @@ namespace rajadas
                     }
                 }
             }
+
+            // ** Percorre o gridview monitoramento novo para validar se existem células vazias ** //
+            for (int i = 0; i < dgvMonitoramentoNovo.Rows.Count - 1; i++)
+            {
+                if (valorDaCelula == "")
+                {
+                    e.Cancel = true;
+                    dgvMonitoramentoNovo.Rows[e.RowIndex].ErrorText = "Não são permitidas células vazias na tabela de monitoramento.";
+                }
+            }
         }
 
         private void dgvMonitoramentoNovo_CellEndEdit(object sender, DataGridViewCellEventArgs e)
-        {}
+        { }
 
         private void dgvMonitoramentoNovo_CellValidated(object sender, DataGridViewCellEventArgs e)
         {
 
+        }
+
+        private void dgvMonitoramentoNovo_RowValidating(object sender, DataGridViewCellCancelEventArgs e)
+        {
+            // ** Valida se a coluna Horário está vazia ao mudar de linha ** //
+            int linha = e.RowIndex;
+            int ultimaLinhaGridView = dgvMonitoramentoNovo.Rows.Count - 1;
+            if (linha != ultimaLinhaGridView)
+            {
+                if (dgvMonitoramentoNovo.Rows[linha].Cells["horario"].Value == null)
+                {
+                    e.Cancel = true;
+                    dgvMonitoramentoNovo.Rows[e.RowIndex].ErrorText = "Não são permitidas células vazias na tabela de monitoramento.";
+                }
+            }            
+        }
+
+        private void btnRestaurarMonitoramento_Click(object sender, EventArgs e)
+        {
+            if (DialogResult.Yes == MessageBox.Show("Deseja prosseguir com as alterações ?", "Confirmação", MessageBoxButtons.YesNo, MessageBoxIcon.Question, MessageBoxDefaultButton.Button2))
+            {
+                try
+                {
+                    BancoDeDados bancoDeDados = new BancoDeDados();
+                    Boolean retorno = bancoDeDados.RestaurarTabelaDeMonitoramentoAtual(this.enderecoBD, this.portaBD, this.usuarioBD, this.senhaBD, this.nomeBD, this.tipoRajada);
+                    if (retorno.Equals(true))
+                    {
+                        MessageBox.Show("Tabela de monitoramento restaurada com sucesso !!!");
+                        carregarGridViewMonitoramentoAtual();
+                        carregarGridViewMonitoramentoNovo();
+                    }
+                    else
+                    {
+                        MessageBox.Show("Erro ao restaurar a tabela de monitoramento, tente novamente !!!");
+                    }
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.Message);
+                }
+            }
         }
     }
 }

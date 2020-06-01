@@ -132,9 +132,13 @@ namespace rajadas
                                 email.enviarEmail(this.destinatariosRajadaTijolo, "Monitoramento RAJADA TIJOLO - " + horaFormatada, "Estava prevista a recepção de " + monitoramento.qtdArquivos +
                                     " arquivo(s), porém foram localizados " + listaDeArquivosEncontrados.Count + " arquivo(s) na pasta de origem." + "\n \n " + "Segue(m) arquivo(s) localizado(s): " + "\n \n" + arquivosEncontrados);
 
-                                // ** Atualizada a data de processamento do objeto monitoramento para evitar duplicidades ** //
+                                // ** Atualiza a data de processamento do objeto monitoramento para evitar duplicidades ** //
                                 BancoDeDados bancoDeDados = new BancoDeDados();
                                 bancoDeDados.atualizaDataMonitoramentoExecutado(this.enderecoBD, this.portaBD, this.usuarioBD, this.senhaBD, this.nomeBD, monitoramento, "1");
+
+                                // ** Atualiza a tabela de MONITORAMENTO subtraindo 1 da quantidade arquivos em cada horário para evitar notificações desnecessárias ** //
+                                BancoDeDados bd = new BancoDeDados();
+                                bd.AtualizarTabelaDeMonitoramentoAposNotificarPorEmail(this.enderecoBD, this.portaBD, this.usuarioBD, this.senhaBD, this.nomeBD, "1");
 
                                 // ** Atualiza os objetos de monitoramento
                                 carregaObjetosMonitoramento();
@@ -195,6 +199,10 @@ namespace rajadas
                                 BancoDeDados bancoDeDados = new BancoDeDados();
                                 bancoDeDados.atualizaDataMonitoramentoExecutado(this.enderecoBD, this.portaBD, this.usuarioBD, this.senhaBD, this.nomeBD, monitoramento, "2");
 
+                                // ** Atualiza a tabela de MONITORAMENTO subtraindo 1 da quantidade arquivos em cada horário para evitar notificações desnecessárias ** //
+                                BancoDeDados bd = new BancoDeDados();
+                                bd.AtualizarTabelaDeMonitoramentoAposNotificarPorEmail(this.enderecoBD, this.portaBD, this.usuarioBD, this.senhaBD, this.nomeBD, "2");
+
                                 // ** Atualiza os objetos de monitoramento
                                 carregaObjetosMonitoramento();
                             }
@@ -253,6 +261,10 @@ namespace rajadas
                                 // ** Atualizada a data de processamento do objeto monitoramento para evitar duplicidades ** //
                                 BancoDeDados bancoDeDados = new BancoDeDados();
                                 bancoDeDados.atualizaDataMonitoramentoExecutado(this.enderecoBD, this.portaBD, this.usuarioBD, this.senhaBD, this.nomeBD, monitoramento, "3");
+
+                                // ** Atualiza a tabela de MONITORAMENTO subtraindo 1 da quantidade arquivos em cada horário para evitar notificações desnecessárias ** //
+                                BancoDeDados bd = new BancoDeDados();
+                                bd.AtualizarTabelaDeMonitoramentoAposNotificarPorEmail(this.enderecoBD, this.portaBD, this.usuarioBD, this.senhaBD, this.nomeBD, "3");
 
                                 // ** Atualiza os objetos de monitoramento
                                 carregaObjetosMonitoramento();
@@ -896,15 +908,10 @@ namespace rajadas
 
                 if (retorno == true)
                 {
-                    MessageBox.Show("As configurações foram salvas !!!", "Mensagem do sistema");
-
-                    carregaParametrosRajadaTijolo();
+                    MessageBox.Show("As configurações foram salvas !!!", "Mensagem do sistema");  
                 }
-                else
-                {
 
-                }
-                
+                carregaParametrosRajadaTijolo();
             }
         }
 
@@ -949,14 +956,9 @@ namespace rajadas
 
                 if (retorno == true)
                 {
-                    MessageBox.Show("As configurações foram salvas !!!", "Mensagem do sistema");
-
-                    carregaParametrosRajadaDigital();
+                    MessageBox.Show("As configurações foram salvas !!!", "Mensagem do sistema");                    
                 }
-                else
-                {
-
-                }
+                carregaParametrosRajadaDigital();
             }
         }
 
@@ -1002,13 +1004,9 @@ namespace rajadas
                 if (retorno == true)
                 {
                     MessageBox.Show("As configurações foram salvas !!!", "Mensagem do sistema");
-
-                    carregaParemetrosRajadaInvertida();
                 }
-                else
-                {
 
-                }
+                carregaParemetrosRajadaInvertida();
             }
         }
 

@@ -164,6 +164,11 @@ namespace rajadas
                 // ** Acrescenta 0 ao mês ** //
                 String dia = DateTime.Now.Day.ToString();
 
+                // ** Acrescenta 0 ao dia ** //
+                if (Convert.ToInt32(dia) < 10)
+                {
+                    dia = "0" + dia;
+                }
                 String dataAtual = ano + mes + dia;
 
                 foreach (var diretorio in listaDeDiretorios)
@@ -398,8 +403,14 @@ namespace rajadas
                 {
                     mes = "0" + mes;
                 }
-                // ** Acrescenta 0 ao mês ** //
+
                 String dia = DateTime.Now.Day.ToString();
+
+                // ** Acrescenta 0 ao dia ** //
+                if (Convert.ToInt32(dia) < 10)
+                {
+                    dia = "0" + dia;
+                }
 
                 String dataAtual = ano + mes + dia;
 
@@ -636,8 +647,14 @@ namespace rajadas
                 {
                     mes = "0" + mes;
                 }
-                // ** Acrescenta 0 ao mês ** //
+
                 String dia = DateTime.Now.Day.ToString();
+
+                // ** Acrescenta 0 ao dia ** //
+                if (Convert.ToInt32(dia) < 10)
+                {
+                    dia = "0" + dia;
+                }
 
                 String dataAtual = ano + mes + dia;
 
@@ -663,7 +680,7 @@ namespace rajadas
                 }
 
                 foreach (var arquivoTxtRajada in listaDeArquivosTxtRajadas)
-            {
+                {
                 FileInfo informacaoDoArquivo = new FileInfo(arquivoTxtRajada);
                 String nomeArquivoRajadaTxt = informacaoDoArquivo.Name;
 
@@ -944,8 +961,14 @@ namespace rajadas
                 {
                     mes = "0" + mes;
                 }
-                // ** Acrescenta 0 ao mês ** //
+
                 String dia = DateTime.Now.Day.ToString();
+
+                // ** Acrescenta 0 ao dia ** //
+                if (Convert.ToInt32(dia) < 10)
+                {
+                    dia = "0" + dia;
+                }
 
                 String dataAtual = ano + mes + dia;
 
@@ -1027,8 +1050,14 @@ namespace rajadas
                 {
                     mes = "0" + mes;
                 }
-                // ** Acrescenta 0 ao mês ** //
+
                 String dia = DateTime.Now.Day.ToString();
+
+                // ** Acrescenta 0 ao dia ** //
+                if (Convert.ToInt32(dia) < 10)
+                {
+                    dia = "0" + dia;
+                }
 
                 String dataAtual = ano + mes + dia;
 
