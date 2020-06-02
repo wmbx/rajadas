@@ -119,6 +119,7 @@
             this.tmMonitoramentoDigital = new System.Windows.Forms.Timer(this.components);
             this.tmMonitoramentoInvertida = new System.Windows.Forms.Timer(this.components);
             this.tmRotinaExpurgo = new System.Windows.Forms.Timer(this.components);
+            this.tmRotinaRestauracaoMonitoramento = new System.Windows.Forms.Timer(this.components);
             this.groupBox1.SuspendLayout();
             this.gbMonitoramentoTijolo.SuspendLayout();
             this.groupBox2.SuspendLayout();
@@ -1011,6 +1012,12 @@
             this.tmRotinaExpurgo.Interval = 36000000;
             this.tmRotinaExpurgo.Tick += new System.EventHandler(this.tmRotinaExpurgo_Tick);
             // 
+            // tmRotinaRestauracaoMonitoramento
+            // 
+            this.tmRotinaRestauracaoMonitoramento.Enabled = true;
+            this.tmRotinaRestauracaoMonitoramento.Interval = 30000;
+            this.tmRotinaRestauracaoMonitoramento.Tick += new System.EventHandler(this.tmRotinaRestauracaoMonitoramento_Tick);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -1150,6 +1157,7 @@
         private System.Windows.Forms.Timer tmMonitoramentoDigital;
         private System.Windows.Forms.Timer tmMonitoramentoInvertida;
         private System.Windows.Forms.Timer tmRotinaExpurgo;
+        private System.Windows.Forms.Timer tmRotinaRestauracaoMonitoramento;
     }
 }
 

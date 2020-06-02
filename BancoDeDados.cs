@@ -324,6 +324,7 @@ namespace rajadas
                     monitoramento.codigoRajada = dataReader["codigoRajada"].ToString();
                     monitoramento.horarioMonitoramento = dataReader["horarioMonitoramento"].ToString();
                     monitoramento.qtdArquivos = dataReader["qtdArquivos"].ToString();
+                    monitoramento.dataProcessamento = dataReader["dataProcessamento"].ToString();
 
                     listaDeMonitoramento.Add(monitoramento);
                 }
@@ -375,6 +376,7 @@ namespace rajadas
                     monitoramento.codigoRajada = dataReader["codigoRajada"].ToString();
                     monitoramento.horarioMonitoramento = dataReader["horarioMonitoramento"].ToString();
                     monitoramento.qtdArquivos = dataReader["qtdArquivos"].ToString();
+                    monitoramento.dataProcessamento = dataReader["dataProcessamento"].ToString();
 
                     listaDeMonitoramento.Add(monitoramento);
                 }
@@ -480,7 +482,7 @@ namespace rajadas
                     comando.Parameters.AddWithValue("@CODIGO", monitoramento.codigoRajada);
                     comando.Parameters.AddWithValue("@HORARIO", monitoramento.horarioMonitoramento);
                     comando.Parameters.AddWithValue("@QTD", monitoramento.qtdArquivos);
-                    comando.Parameters.AddWithValue("@DATAPROCESSAMENTO", "vazio");
+                    comando.Parameters.AddWithValue("@DATAPROCESSAMENTO", monitoramento.dataProcessamento);
 
                     // ** Executa o comando de inserção no banco ** //
                     comando.ExecuteNonQuery();
@@ -493,9 +495,7 @@ namespace rajadas
                 String stringComandoLimparTabelaMonitoramentoTMP = "DELETE FROM monitoramento_tmp WHERE codigoRajada = " + tipoRajada;
 
                 // ** String para inserção de registros no banco ** //
-                String stringComandoMonitoramentoTMP = "INSERT INTO monitoramento_tmp (codigoRajada, horarioMonitoramento, qtdArquivos, dataProcessamento) VALUES (@CODIGO, @HORARIO, @QTD, @DATAPROCESSAMENTO)";
-
-                
+                String stringComandoMonitoramentoTMP = "INSERT INTO monitoramento_tmp (codigoRajada, horarioMonitoramento, qtdArquivos, dataProcessamento) VALUES (@CODIGO, @HORARIO, @QTD, @DATAPROCESSAMENTO)";               
                 
                 // ** Cria e inicia a conexão com o banco ** //
                 conexao = new MySqlConnection(stringConexao);
@@ -516,7 +516,7 @@ namespace rajadas
                     comando.Parameters.AddWithValue("@CODIGO", monitoramento.codigoRajada);
                     comando.Parameters.AddWithValue("@HORARIO", monitoramento.horarioMonitoramento);
                     comando.Parameters.AddWithValue("@QTD", monitoramento.qtdArquivos);
-                    comando.Parameters.AddWithValue("@DATAPROCESSAMENTO", "vazio");
+                    comando.Parameters.AddWithValue("@DATAPROCESSAMENTO", monitoramento.dataProcessamento);
 
                     // ** Executa o comando de inserção no banco ** //
                     comando.ExecuteNonQuery();
@@ -587,10 +587,68 @@ namespace rajadas
                 }
                 String ano = DateTime.Now.Year.ToString();
                 String dataFormatada = ano + "-" + mes + "-" + dia;
-                //String dataFormatada = "'" + ano + "-" + mes + "-" + dia + "'";
 
                 // ** Adiciona os parâmetros ao objeto de comando
                 comando.Parameters.AddWithValue("@DATA", dataFormatada);
+                comando.Parameters.AddWithValue("@CODIGO", tipoRajada);
+                comando.Parameters.AddWithValue("@HORARIO", monitoramento.horarioMonitoramento);
+
+                // ** Executa o comando de inserção no banco ** //
+                comando.ExecuteNonQuery();
+
+                return true;
+            }
+            catch (Exception e)
+            {
+                System.Windows.Forms.MessageBox.Show(e.ToString());
+                return false;
+                throw;
+            }
+            finally
+            {
+                conexao.Close();
+                conexao = null;
+                comando = null;
+            }
+        }
+
+        // ** Esse método atualizada a data do processamento da rajada de acordo com os registros recuperados da tabela de MONITORAMENTO e MONITORAMENTO TEMPORÁRIO antes da sua atualização ** //
+        public Boolean atualizaDataMonitoramentoExecutadoAposAtualizacaoDaTabelaMonitoramento(String endereco, String porta, String usuario, String senha, String nomeBD, Monitoramento monitoramento, String tipoRajada)
+        {
+            // ** String de conexão com o banco ** //
+            String stringConexao = "server=" + endereco + ";port=" + porta + ";User Id=" + usuario + ";database=" + nomeBD + ";password=" + senha;
+
+            // ** String para atualização da data do monitoramento executado // **
+            String stringComandoMonitoramento = "UPDATE monitoramento SET dataProcessamento = @DATA WHERE codigoRajada = @CODIGO AND horarioMonitoramento = @HORARIO";
+
+            // ** String para atualização da data do monitoramento executado // **
+            String stringComandoMonitoramentoTemporario = "UPDATE monitoramento_tmp SET dataProcessamento = @DATA WHERE codigoRajada = @CODIGO AND horarioMonitoramento = @HORARIO";
+
+            try
+            {
+                // ** Cria e inicia a conexão com o banco ** //
+                conexao = new MySqlConnection(stringConexao);
+                conexao.Open();
+
+                // ** Cria o objeto de comando ** //
+                comando = new MySqlCommand(stringComandoMonitoramento, conexao);                
+
+                // ** Adiciona os parâmetros ao objeto de comando
+                comando.Parameters.AddWithValue("@DATA", monitoramento.dataProcessamento);
+                comando.Parameters.AddWithValue("@CODIGO", tipoRajada);
+                comando.Parameters.AddWithValue("@HORARIO", monitoramento.horarioMonitoramento);
+
+                // ** Executa o comando de inserção no banco ** //
+                comando.ExecuteNonQuery();
+
+                // ** Limpa objeto de comando ** //
+                comando = null;
+
+                // ** Cria o objeto de comando ** //
+                comando = new MySqlCommand(stringComandoMonitoramentoTemporario, conexao);
+
+                // ** Adiciona os parâmetros ao objeto de comando
+                comando.Parameters.AddWithValue("@DATA", monitoramento.dataProcessamento);
                 comando.Parameters.AddWithValue("@CODIGO", tipoRajada);
                 comando.Parameters.AddWithValue("@HORARIO", monitoramento.horarioMonitoramento);
 
@@ -622,10 +680,13 @@ namespace rajadas
             String stringComandoLimparTabelaMonitoramento = "DELETE FROM monitoramento WHERE codigoRajada = " + tipoRajada;
 
             // ** String para inserção de registros na tabela MONITORAMENTO ** //
-            String stringInserirMonitoramento = "INSERT INTO monitoramento (codigoRajada, horarioMonitoramento, qtdArquivos, dataProcessamento) VALUES (@CODIGO, @HORARIO, @QTD)";
+            String stringInserirMonitoramento = "INSERT INTO monitoramento (codigoRajada, horarioMonitoramento, qtdArquivos, dataProcessamento) VALUES (@CODIGO, @HORARIO, @QTD, @DATAPROCESSAMENTO)";
 
             // ** String para buscar os registros referentes a tabela de MONITORAMENTO // **
             String stringBuscarMonitoramento = "SELECT * FROM monitoramento WHERE codigoRajada = " + tipoRajada + " ORDER BY horarioMonitoramento";
+
+            // ** Criação do objeto Agendamento ** //
+            Agendamento agendamento = new Agendamento();
 
             try
             {
@@ -648,6 +709,7 @@ namespace rajadas
                     monitoramento.codigoRajada = dataReader["codigoRajada"].ToString();
                     monitoramento.horarioMonitoramento = dataReader["horarioMonitoramento"].ToString();
                     monitoramento.qtdArquivos = dataReader["qtdArquivos"].ToString();
+                    monitoramento.dataProcessamento = dataReader["dataProcessamento"].ToString();
 
                     listaDeMonitoramento.Add(monitoramento);
                 }
@@ -671,7 +733,20 @@ namespace rajadas
                     // ** Adiciona os parâmetros para a tabela MONITORAMENTO ** //
                     comando.Parameters.AddWithValue("@CODIGO", monitoramentoAtualizado.codigoRajada);
                     comando.Parameters.AddWithValue("@HORARIO", monitoramentoAtualizado.horarioMonitoramento);
-                    comando.Parameters.AddWithValue("@QTD", Convert.ToInt32(monitoramentoAtualizado.qtdArquivos) - 1);
+
+                    // ** Valida o se o horário da rajada é maior ou igual ao horário atual para subtrair 1 do número de arquivos esperados ** //
+                    string horarioAtualFormatado = agendamento.RetornarHorarioAtualFormatado();
+                    bool retornoValidacaoHorario = agendamento.CompararMaiorHorario(monitoramentoAtualizado.horarioMonitoramento, horarioAtualFormatado);
+                    if (retornoValidacaoHorario.Equals(true))
+                    {
+                        comando.Parameters.AddWithValue("@QTD", Convert.ToInt32(monitoramentoAtualizado.qtdArquivos) - 1);
+                    }
+                    else
+                    {
+                        comando.Parameters.AddWithValue("@QTD", monitoramentoAtualizado.qtdArquivos);
+                    }
+                    
+                    comando.Parameters.AddWithValue("@DATAPROCESSAMENTO", monitoramentoAtualizado.dataProcessamento);
 
                     // ** Executa o comando de inserção no banco ** //
                     comando.ExecuteNonQuery();
@@ -704,9 +779,9 @@ namespace rajadas
             String stringComandoLimparTabelaMonitoramento = "DELETE FROM monitoramento WHERE codigoRajada = " + tipoRajada;
 
             // ** String para inserção de registros na tabela MONITORAMENTO ** //
-            String stringInserirMonitoramento = "INSERT INTO monitoramento (codigoRajada, horarioMonitoramento, qtdArquivos, dataProcessamento) VALUES (@CODIGO, @HORARIO, @QTD)";
+            String stringInserirMonitoramento = "INSERT INTO monitoramento (codigoRajada, horarioMonitoramento, qtdArquivos, dataProcessamento) VALUES (@CODIGO, @HORARIO, @QTD, @DATAPROCESSAMENTO)";
 
-            // ** String para buscar os registros referentes a tabela de MONITORAMENTO // **
+            // ** String para buscar os registros da tabela de MONITORAMENTO TEMPORÁRIO // **
             String stringBuscarMonitoramento = "SELECT * FROM monitoramento_tmp WHERE codigoRajada = " + tipoRajada + " ORDER BY horarioMonitoramento";
 
             try
@@ -715,10 +790,10 @@ namespace rajadas
                 conexao = new MySqlConnection(stringConexao);
                 conexao.Open();
 
-                // ** Cria o objeto de comando para buscar os registros dos monitoramentos no banco ** //
+                // ** Cria o objeto de comando para buscar os registros da tabela de MONITORAMENTO TEMPORÁRIO no banco ** //
                 comando = new MySqlCommand(stringBuscarMonitoramento, conexao);
 
-                // ** Executa o comando de pesquisa no banco e retorna para um objeto Data Reader ** //
+                // ** Executa o comando de pesquisa no banco e retorna os registros da tabela de MONITORAMENTO TEMPORÁRIO para um objeto Data Reader ** //
                 dataReader = comando.ExecuteReader();
 
                 // ** Cria lista de objetos Monitoramento para armazenar retorno do banco ** //
@@ -730,6 +805,7 @@ namespace rajadas
                     monitoramento.codigoRajada = dataReader["codigoRajada"].ToString();
                     monitoramento.horarioMonitoramento = dataReader["horarioMonitoramento"].ToString();
                     monitoramento.qtdArquivos = dataReader["qtdArquivos"].ToString();
+                    monitoramento.dataProcessamento = dataReader["dataProcessamento"].ToString();
 
                     listaDeMonitoramento.Add(monitoramento);
                 }
@@ -754,6 +830,7 @@ namespace rajadas
                     comando.Parameters.AddWithValue("@CODIGO", monitoramentoAtualizado.codigoRajada);
                     comando.Parameters.AddWithValue("@HORARIO", monitoramentoAtualizado.horarioMonitoramento);
                     comando.Parameters.AddWithValue("@QTD", Convert.ToInt32(monitoramentoAtualizado.qtdArquivos));
+                    comando.Parameters.AddWithValue("@DATAPROCESSAMENTO", monitoramentoAtualizado.dataProcessamento);
 
                     // ** Executa o comando de inserção no banco ** //
                     comando.ExecuteNonQuery();

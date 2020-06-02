@@ -143,6 +143,8 @@ namespace rajadas
 
         private void button1_Click(object sender, EventArgs e)
         {
+            List<Monitoramento> listaMonitoramentoAtual = new List<Monitoramento>();
+
             List<Monitoramento> listaMonitoramento = new List<Monitoramento>();
 
             BancoDeDados bancoDeDados = new BancoDeDados();
@@ -151,6 +153,9 @@ namespace rajadas
             {
                 try
                 {
+                    // ** Busca todos os registros da tabela MONITORAMENTO para guardar o horário do processamento das rajadas ** //
+                    listaMonitoramentoAtual = bancoDeDados.listaTodosMonitoramentos(this.enderecoBD, this.portaBD, this.usuarioBD, this.senhaBD, this.nomeBD, this.tipoRajada);
+
                     for (int i = 0; i < dgvMonitoramentoNovo.Rows.Count - 1; i++)
                     {
                         if (dgvMonitoramentoNovo.Rows[i].Cells["horario"].Value == null || dgvMonitoramentoNovo.Rows[i].Cells["arquivos"].Value == null)
@@ -164,6 +169,7 @@ namespace rajadas
                         monitoramento.codigoRajada = this.tipoRajada;
                         monitoramento.horarioMonitoramento = dgvMonitoramentoNovo.Rows[i].Cells["horario"].Value.ToString();
                         monitoramento.qtdArquivos = dgvMonitoramentoNovo.Rows[i].Cells["arquivos"].Value.ToString();
+                        monitoramento.dataProcessamento = "vazio";
 
                         listaMonitoramento.Add(monitoramento);
                     }
@@ -178,6 +184,25 @@ namespace rajadas
                     }
 
                     Boolean retorno = bancoDeDados.atualizaTabelaDeMonitoramento(this.enderecoBD, this.portaBD, this.usuarioBD, this.senhaBD, this.nomeBD, listaMonitoramento, diasMonitoramento, this.tipoRajada);
+
+
+                    // ** Percorre a lista de monitoramento atual para validar se existe algum horário igual ao da nova tabela de monitoramento, e em caso positivo copia a data do processamento e atualiza a tabela MONITORAMENTO ** //
+                    foreach (Monitoramento monitoramentoAtual in listaMonitoramentoAtual)
+                    {
+                        foreach (Monitoramento monitoramentoNovo in listaMonitoramento)
+                        {
+                            if (monitoramentoNovo.horarioMonitoramento == monitoramentoAtual.horarioMonitoramento)
+                            {
+                                monitoramentoNovo.dataProcessamento = monitoramentoAtual.dataProcessamento;
+                            }
+                        }
+                    }
+
+                    // ** Atualiza a tabela de MONITORAMENTO e MONITORAMENTO TEMPORÁRIO com os valores das datas de processamento
+                    foreach (Monitoramento monitoramentoNovo in listaMonitoramento)
+                    {
+                        bancoDeDados.atualizaDataMonitoramentoExecutadoAposAtualizacaoDaTabelaMonitoramento(this.enderecoBD, this.portaBD, this.usuarioBD, this.senhaBD, this.nomeBD, monitoramentoNovo, this.tipoRajada);
+                    }
 
                     if (retorno.Equals(true))
                     {

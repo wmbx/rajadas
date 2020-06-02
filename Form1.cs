@@ -104,13 +104,8 @@ namespace rajadas
                 {
                     foreach (Monitoramento monitoramento in this.listaMonitoramentoTijolo)
                     {
-                        String hora = DateTime.Now.Hour.ToString();
-                        String minuto = DateTime.Now.Minute.ToString();
-                        if (Convert.ToInt32(minuto) < 10)
-                        {
-                            minuto = "0" + minuto;
-                        }
-                        String horaFormatada = hora + ":" + minuto;
+                        // ** Pega o horário atual formatado como HH:MM ** //
+                        String horaFormatada = agendamento.RetornarHorarioAtualFormatado();
 
                         // ** Verifica se a horário atual está na lista de monitoramento ** //
                         if (horaFormatada == monitoramento.horarioMonitoramento)
@@ -143,6 +138,12 @@ namespace rajadas
                                 // ** Atualiza os objetos de monitoramento
                                 carregaObjetosMonitoramento();
                             }
+                            else
+                            {
+                                // ** Atualiza a data de processamento do objeto monitoramento para evitar duplicidades ** //
+                                BancoDeDados bancoDeDados = new BancoDeDados();
+                                bancoDeDados.atualizaDataMonitoramentoExecutado(this.enderecoBD, this.portaBD, this.usuarioBD, this.senhaBD, this.nomeBD, monitoramento, "1");
+                            }
                         }
                     }
                 }
@@ -168,13 +169,8 @@ namespace rajadas
                 {
                     foreach (Monitoramento monitoramento in this.listaMonitoramentoDigital)
                     {
-                        String hora = DateTime.Now.Hour.ToString();
-                        String minuto = DateTime.Now.Minute.ToString();
-                        if (Convert.ToInt32(minuto) < 10)
-                        {
-                            minuto = "0" + minuto;
-                        }
-                        String horaFormatada = hora + ":" + minuto;
+                        // ** Pega o horário atual formatado como HH:MM ** //
+                        String horaFormatada = agendamento.RetornarHorarioAtualFormatado();
 
                         if (horaFormatada == monitoramento.horarioMonitoramento)
                         {
@@ -206,6 +202,12 @@ namespace rajadas
                                 // ** Atualiza os objetos de monitoramento
                                 carregaObjetosMonitoramento();
                             }
+                            else
+                            {
+                                // ** Atualiza a data de processamento do objeto monitoramento para evitar duplicidades ** //
+                                BancoDeDados bancoDeDados = new BancoDeDados();
+                                bancoDeDados.atualizaDataMonitoramentoExecutado(this.enderecoBD, this.portaBD, this.usuarioBD, this.senhaBD, this.nomeBD, monitoramento, "2");
+                            }
                         }
                     }
                 }
@@ -231,13 +233,8 @@ namespace rajadas
                 {
                     foreach (Monitoramento monitoramento in this.listaMonitoramentoInvertida)
                     {
-                        String hora = DateTime.Now.Hour.ToString();
-                        String minuto = DateTime.Now.Minute.ToString();
-                        if (Convert.ToInt32(minuto) < 10)
-                        {
-                            minuto = "0" + minuto;
-                        }
-                        String horaFormatada = hora + ":" + minuto;
+                        // ** Pega o horário atual formatado como HH:MM ** //
+                        String horaFormatada = agendamento.RetornarHorarioAtualFormatado();
 
                         if (horaFormatada == monitoramento.horarioMonitoramento)
                         {
@@ -268,6 +265,12 @@ namespace rajadas
 
                                 // ** Atualiza os objetos de monitoramento
                                 carregaObjetosMonitoramento();
+                            }
+                            else
+                            {
+                                // ** Atualiza a data de processamento do objeto monitoramento para evitar duplicidades ** //
+                                BancoDeDados bancoDeDados = new BancoDeDados();
+                                bancoDeDados.atualizaDataMonitoramentoExecutado(this.enderecoBD, this.portaBD, this.usuarioBD, this.senhaBD, this.nomeBD, monitoramento, "3");
                             }
                         }
                     }
@@ -1190,6 +1193,29 @@ namespace rajadas
         private void tmRotinaExpurgo_Tick(object sender, EventArgs e)
         {
             expurgoArquivosAntigos();
+        }
+
+        private void tmRotinaRestauracaoMonitoramento_Tick(object sender, EventArgs e)
+        {
+            try
+            {
+                // ** Retorna o horário atual formatado como HH:MM ** //
+                Agendamento agendamento = new Agendamento();
+                string horaAtual = agendamento.RetornarHorarioAtualFormatado();
+
+                // ** Verifica se é o horário retornardo é igual à 00:00. Em caso positivo restaura a tabela de MONITORAMENTO copiando os valores da tabela MONITORAMENTO TEMPORÁRIO ** //
+                if (horaAtual == "16:30")
+                {
+                    BancoDeDados bancoDeDados = new BancoDeDados();
+                    bancoDeDados.RestaurarTabelaDeMonitoramentoAtual(this.enderecoBD, this.portaBD, this.usuarioBD, this.senhaBD, this.nomeBD, "1");
+                    bancoDeDados.RestaurarTabelaDeMonitoramentoAtual(this.enderecoBD, this.portaBD, this.usuarioBD, this.senhaBD, this.nomeBD, "2");
+                    bancoDeDados.RestaurarTabelaDeMonitoramentoAtual(this.enderecoBD, this.portaBD, this.usuarioBD, this.senhaBD, this.nomeBD, "3");
+                }
+            }
+            catch (Exception)
+            {
+                throw;
+            }
         }
     }
 }

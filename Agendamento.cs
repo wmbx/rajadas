@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
+using System.Net;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -85,6 +86,79 @@ namespace rajadas
             }
 
             return this.diaAtualFormatado;
+        }
+
+        // ** Método que retorna o horário atual no formato HH:MM ** //
+        public string RetornarHorarioAtualFormatado()
+        {
+            string hora = "";
+            string horarioFormatado = "";
+            try
+            {
+                hora = DateTime.Now.Hour.ToString();
+
+                if (Convert.ToInt32(hora) < 10)
+                {
+                    hora = "0" + hora;
+                }
+
+                string minuto = DateTime.Now.Minute.ToString();
+
+                if (Convert.ToInt32(minuto) < 10)
+                {
+                    minuto = "0" + minuto;
+                }
+
+                horarioFormatado = hora + ":" + minuto;
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+                        
+            return horarioFormatado;
+        }
+
+
+        // ** Método para verificar se o primeiro horário informado é maior que o segundo horário informado ** //
+        public bool CompararMaiorHorario(string primeiroHorario, string segundoHorario)
+        {
+            bool retorno = false;
+            try
+            {
+                // ** Retorna a HORA do primeiro horário ** //
+                string horaPrimeiroHorario = primeiroHorario.Substring(0, 2);
+
+                // ** Retorna os MINUTOS do primeiro horário ** //
+                string minutosPrimeiroHorario = primeiroHorario.Substring(3, 2);
+
+                // ** Converte o primeiro horário em minutos ** //
+                int primeiroHorarioEmMinutos = (Convert.ToInt32(horaPrimeiroHorario) * 60) + Convert.ToInt32(minutosPrimeiroHorario);
+
+                // ** Retorna a HORA do segundo horário ** //
+                string horaSegundoHorario = segundoHorario.Substring(0, 2);
+
+                // ** Retorna os MINUTOS do segundo horário ** //
+                string minutosSegundoHorario = segundoHorario.Substring(3, 2);
+
+                // ** Converte o segundo horário em minutos ** //
+                int segundoHorarioEmMinutos = (Convert.ToInt32(horaSegundoHorario) * 60) + Convert.ToInt32(minutosSegundoHorario);
+
+                if (primeiroHorarioEmMinutos > segundoHorarioEmMinutos)
+                {
+                    retorno = true;
+                }
+                else
+                {
+                    retorno = false;
+                }
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+
+            return retorno;
         }
     }
 }
