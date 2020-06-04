@@ -1034,7 +1034,7 @@
             this.MinimumSize = new System.Drawing.Size(1002, 519);
             this.Name = "Form1";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-            this.Text = "BotFlow Rajadas V.1.3";
+            this.Text = "BotFlow Rajadas 1.3.0";
             this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.Form1_FormClosed);
             this.Load += new System.EventHandler(this.Form1_Load);
             this.Resize += new System.EventHandler(this.Form1_Resize);

@@ -895,7 +895,7 @@ namespace rajadas
                 }
 
                 this.statusMonitoramentoRajadaTijolo = cbStatusMonitoramentoTijolo.SelectedItem.ToString();
-                this.destinatariosRajadaTijolo = tbDestinatariosTijolo.Text;
+                this.destinatariosRajadaTijolo = tbDestinatariosTijolo.Text.Trim();
 
                 listaDeParametrosParaSalvar.Add(this.caminhoArquivoTxtRajadaTijolo);
                 listaDeParametrosParaSalvar.Add(this.caminhoRajadaProcessadaTijolo);
@@ -943,7 +943,7 @@ namespace rajadas
                 }
 
                 this.statusMonitoramentoRajadaDigital = cbStatusMonitoramentoDigital.SelectedItem.ToString();
-                this.destinatariosRajadaDigital = tbDestinatariosDigital.Text;
+                this.destinatariosRajadaDigital = tbDestinatariosDigital.Text.Trim();
 
                 listaDeParametrosParaSalvar.Add(this.caminhoArquivoTxtRajadaDigital);
                 listaDeParametrosParaSalvar.Add(this.caminhoRajadaProcessadaDigital);
@@ -990,7 +990,7 @@ namespace rajadas
                 }
 
                 this.statusMonitoramentoRajadaInvertida = cbStatusMonitoramentoInvertida.SelectedItem.ToString();
-                this.destinatariosRajadaInvertida = tbDestinatariosInvertida.Text;
+                this.destinatariosRajadaInvertida = tbDestinatariosInvertida.Text.Trim();
 
                 listaDeParametrosParaSalvar.Add(this.caminhoArquivoTxtRajadaInvertida);
                 listaDeParametrosParaSalvar.Add(this.caminhoRajadaProcessadaInvertida);
