@@ -160,5 +160,31 @@ namespace rajadas
 
             return retorno;
         }
+
+        public string RetornarDataAtualFormatadaAAAAMMDD()
+        {
+            string dataFormatada;
+            try
+            {
+                // ** Pega a data atual e formata para para AAAA-MM-DD
+                String dia = DateTime.Now.Day.ToString();
+                if (Convert.ToInt32(dia) < 10)
+                {
+                    dia = "0" + dia;
+                }
+                String mes = DateTime.Now.Month.ToString();
+                if (Convert.ToInt32(mes) < 10)
+                {
+                    mes = "0" + mes;
+                }
+                String ano = DateTime.Now.Year.ToString();
+                dataFormatada = ano + "-" + mes + "-" + dia;
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+            return dataFormatada;
+        }
     }
 }

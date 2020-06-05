@@ -450,7 +450,7 @@ namespace rajadas
             // ** String para limpar os registros da tabela DIA MONITORAMENTO ** //
             String stringComandoLimparTabelaDiaMonitoramento = "DELETE FROM dia_monitoramento WHERE codigoRajada = " + tipoRajada;
 
-            // ** String para inserção de registros no banco ** //
+            // ** String para inserção de registros na tabela MONITORAMENTO ** //
             String stringComando = "INSERT INTO monitoramento (codigoRajada, horarioMonitoramento, qtdArquivos, dataProcessamento) VALUES (@CODIGO, @HORARIO, @QTD, @DATAPROCESSAMENTO)";
 
             // ** String para inserção de registros na tabela DIA MONITORAMENTO ** //
@@ -475,6 +475,15 @@ namespace rajadas
                 // ** Adiciona os parâmetros ao objeto de comando
                 foreach (Monitoramento monitoramento in listaMonitoramento)
                 {
+                    // ** Valida se a data de processamento do objeto monitoramento é vazia e o horário do monitoramento é menor que o horário atual, em caso positivo atribui a data atual à propriedade dataProcessamento do objeto monitoramento ** //
+                    Agendamento agendamento = new Agendamento();
+                    string horarioAtual = agendamento.RetornarHorarioAtualFormatado();
+                    bool retorno = agendamento.CompararMaiorHorario(horarioAtual, monitoramento.horarioMonitoramento);
+                    if (retorno.Equals(true))
+                    {
+                        monitoramento.dataProcessamento = agendamento.RetornarDataAtualFormatadaAAAAMMDD();
+                    }
+
                     // ** Cria o objeto de comando MONITORAMENTO ** //
                     comando = new MySqlCommand(stringComando, conexao);
 
@@ -491,17 +500,17 @@ namespace rajadas
                     comando = null;
                 }
 
-                // ** String para limpar os registros da tabela MONITORAMENTO ** //
+                // ** String para limpar os registros da tabela MONITORAMENTO TEMPORÁRIO ** //
                 String stringComandoLimparTabelaMonitoramentoTMP = "DELETE FROM monitoramento_tmp WHERE codigoRajada = " + tipoRajada;
 
-                // ** String para inserção de registros no banco ** //
+                // ** String para inserção de registros na tabela MONITORAMENTO TEMPORÁRIO ** //
                 String stringComandoMonitoramentoTMP = "INSERT INTO monitoramento_tmp (codigoRajada, horarioMonitoramento, qtdArquivos, dataProcessamento) VALUES (@CODIGO, @HORARIO, @QTD, @DATAPROCESSAMENTO)";               
                 
                 // ** Cria e inicia a conexão com o banco ** //
                 conexao = new MySqlConnection(stringConexao);
                 conexao.Open();
 
-                // ** Cria o objeto de comando para limpeza da tabela MONITORAMENTO ** //
+                // ** Cria o objeto de comando para limpeza da tabela MONITORAMENTO TEMPORÁRIO ** //
                 comando = new MySqlCommand(stringComandoLimparTabelaMonitoramentoTMP, conexao);
                 comando.ExecuteNonQuery();
                 comando = null;
@@ -509,7 +518,16 @@ namespace rajadas
                 // ** Adiciona os parâmetros ao objeto de comando
                 foreach (Monitoramento monitoramento in listaMonitoramento)
                 {
-                    // ** Cria o objeto de comando MONITORAMENTO ** //
+                    // ** Valida se a data de processamento do objeto monitoramento é vazia e o horário do monitoramento é menor que o horário atual, em caso positivo atribui a data atual à propriedade dataProcessamento do objeto monitoramento ** //
+                    Agendamento agendamento = new Agendamento();
+                    string horarioAtual = agendamento.RetornarHorarioAtualFormatado();
+                    bool retorno = agendamento.CompararMaiorHorario(horarioAtual, monitoramento.horarioMonitoramento);
+                    if (retorno.Equals(true))
+                    {
+                        monitoramento.dataProcessamento = agendamento.RetornarDataAtualFormatadaAAAAMMDD();
+                    }
+
+                    // ** Cria o objeto de comando MONITORAMENTO TEMPORÁRIO ** //
                     comando = new MySqlCommand(stringComandoMonitoramentoTMP, conexao);
 
                     // ** Adiciona os parâmetros para a tabela MONITORAMENTO TEMPORÁRIO ** //
@@ -574,19 +592,23 @@ namespace rajadas
                 // ** Cria o objeto de comando ** //
                 comando = new MySqlCommand(stringComando, conexao);
 
-                // ** Pega a data atual e formata para para AAAA-MM-DD
-                String dia = DateTime.Now.Day.ToString();
-                if (Convert.ToInt32(dia) < 10)
-                {
-                    dia = "0" + dia;
-                }
-                String mes = DateTime.Now.Month.ToString();
-                if (Convert.ToInt32(mes) < 10)
-                {
-                    mes = "0" + mes;
-                }
-                String ano = DateTime.Now.Year.ToString();
-                String dataFormatada = ano + "-" + mes + "-" + dia;
+                //// ** Pega a data atual e formata para para AAAA-MM-DD
+                //String dia = DateTime.Now.Day.ToString();
+                //if (Convert.ToInt32(dia) < 10)
+                //{
+                //    dia = "0" + dia;
+                //}
+                //String mes = DateTime.Now.Month.ToString();
+                //if (Convert.ToInt32(mes) < 10)
+                //{
+                //    mes = "0" + mes;
+                //}
+                //String ano = DateTime.Now.Year.ToString();
+                //String dataFormatada = ano + "-" + mes + "-" + dia;
+
+                // ** Retorna a data formatada no padrão AAAA-MM-DD ** //
+                Agendamento agendamento = new Agendamento();
+                string dataFormatada = agendamento.RetornarDataAtualFormatadaAAAAMMDD();
 
                 // ** Adiciona os parâmetros ao objeto de comando
                 comando.Parameters.AddWithValue("@DATA", dataFormatada);
