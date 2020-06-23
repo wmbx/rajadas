@@ -51,5 +51,22 @@ namespace rajadas
             }
             return retorno;
         }
+
+        //// ** Faz a verificação e leitura do arquivo CSV e retorna uma lista do tipo DetalhadoRegistro ** //
+        //public List<DetalhadoRegistro> LerArquivoDetalhadoDeRegistro(String caminhoArquivoExcel)
+        //{
+        //    List<DetalhadoRegistro> listaDetalhadoRegistro = new List<DetalhadoRegistro>();
+        //    try
+        //    {
+                
+        //    }
+        //    catch (Exception)
+        //    {
+                
+        //        throw;
+        //    }
+
+        //    return listaDetalhadoRegistro;
+        //}
     }
 }

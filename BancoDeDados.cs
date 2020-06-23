@@ -876,5 +876,65 @@ namespace rajadas
             }
         }
 
+        // ** Método para inserir o Detalhado do Registro do BD ** //
+        public Boolean InserirDetalhadoDoRegistro(String endereco, String porta, String usuario, String senha, String nomeBD, DetalhadoRegistro detalhadoRegistro, String sistema)
+        {
+            // ** String de conexão com o banco ** //
+            String stringConexao = "server=" + endereco + ";port=" + porta + ";User Id=" + usuario + ";database=" + nomeBD + ";password=" + senha;
+
+            // ** String para inserção de registros no banco // **
+            String stringComando = "INSERT INTO detalhado_registros (protocolo, sistema, workflow, cpf_cnpj, data_cadastro, data_conclusao, status_registro, resultado, " +
+                "usuario, nh, contrato_proposta, prioridade, data_analise, tempo_analise, tipo_conclusao, agencia, conta, dac, matricula ) " +
+                "VALUES (@PROTOCOLO, @SISTEMA, @WORKFLOW, @CPF_CNPJ, @DATA_CADASTRO, @DATA_CONCLUSAO, @STATUS_REGISTRO, @RESULTADO, @USUARIO, @NH, @CONTRATO_PROPOSTA, " +
+                "@PRIORIDADE, @DATA_ANALISE, @TEMPO_ANALISE, @TIPO_CONCLUSAO, @AGENCIA, @CONTA, @DAC, @MATRICULA)";
+
+            try
+            {
+                // ** Cria e inicia a conexão com o banco ** //
+                conexao = new MySqlConnection(stringConexao);
+                conexao.Open();
+
+                // ** Cria o objeto de comando ** //
+                comando = new MySqlCommand(stringComando, conexao);
+
+                // ** Adiciona os parâmetros ao objeto de comando
+                comando.Parameters.AddWithValue("@PROTOCOLO", detalhadoRegistro.protocolo);
+                comando.Parameters.AddWithValue("@SISTEMA", sistema);
+                comando.Parameters.AddWithValue("@WORKFLOW", detalhadoRegistro.workflow);
+                comando.Parameters.AddWithValue("@CPF_CNPJ", detalhadoRegistro.cpfCnpj);
+                comando.Parameters.AddWithValue("@DATA_CADASTRO", detalhadoRegistro.dataCadastro);
+                comando.Parameters.AddWithValue("@DATA_CONCLUSAO", detalhadoRegistro.dataConclusao);
+                comando.Parameters.AddWithValue("@STATUS_REGISTRO", detalhadoRegistro.statusRegistro);
+                comando.Parameters.AddWithValue("@RESULTADO", detalhadoRegistro.resultado);
+                comando.Parameters.AddWithValue("@USUARIO", detalhadoRegistro.usuario);
+                comando.Parameters.AddWithValue("@NH", detalhadoRegistro.nh);
+                comando.Parameters.AddWithValue("@CONTRATO_PROPOSTA", detalhadoRegistro.contratoProposta);
+                comando.Parameters.AddWithValue("@PRIORIDADE", detalhadoRegistro.prioridade);
+                comando.Parameters.AddWithValue("@DATA_ANALISE", detalhadoRegistro.dataAnalise);
+                comando.Parameters.AddWithValue("@TEMPO_ANALISE", detalhadoRegistro.tempoAnalise);
+                comando.Parameters.AddWithValue("@TIPO_CONCLUSAO", detalhadoRegistro.tipoConclusao);
+                comando.Parameters.AddWithValue("@AGENCIA", detalhadoRegistro.agencia);
+                comando.Parameters.AddWithValue("@CONTA", detalhadoRegistro.conta);
+                comando.Parameters.AddWithValue("@DAC", detalhadoRegistro.dac);
+                comando.Parameters.AddWithValue("@MATRICULA", detalhadoRegistro.matricula);
+
+                // ** Executa o comando de inserção no banco ** //
+                comando.ExecuteNonQuery();
+
+                return true;
+            }
+            catch (Exception e)
+            {
+                return false;
+                throw;
+            }
+            finally
+            {
+                conexao.Close();
+                conexao = null;
+                comando = null;
+            }
+        }
+
     }
 }

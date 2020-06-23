@@ -68,8 +68,20 @@ namespace rajadas
         }
 
         private void Form1_Load(object sender, EventArgs e)
-        {  
+        {
             carregarParametrosBD();
+
+            List<DetalhadoRegistro> listaDetalhadoRegistros = new List<DetalhadoRegistro>();
+            DetalhadoRegistro detalhadoRegistro = new DetalhadoRegistro();
+            listaDetalhadoRegistros = detalhadoRegistro.LerArquivoDetalhadoDeRegistro("C:\\Arquivos CSV\\planilha.csv");
+
+            foreach (var objetoDetalhadoRegistro in listaDetalhadoRegistros)
+            {
+                BancoDeDados bancoDeDados = new BancoDeDados();
+                bancoDeDados.InserirDetalhadoDoRegistro(this.enderecoBD, this.portaBD, this.usuarioBD, this.senhaBD, this.nomeBD, objetoDetalhadoRegistro, "FDI");
+            }
+
+            
             carregaParametrosRajadaTijolo();
             carregaParametrosRajadaDigital();
             carregaParemetrosRajadaInvertida();
