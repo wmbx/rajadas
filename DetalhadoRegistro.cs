@@ -32,39 +32,72 @@ namespace rajadas
 
 
         // ** Faz a verificação e leitura do arquivo CSV e retorna uma lista do tipo DetalhadoRegistro ** //
-        public List<DetalhadoRegistro> LerArquivoDetalhadoDeRegistro(string arquivoCSV)
+        public List<DetalhadoRegistro> LerArquivoDetalhadoDeRegistro(string arquivoCSV, string sistema)
         {
             List<DetalhadoRegistro> listaDetalhadoRegistro = new List<DetalhadoRegistro>();
 
             try
-            {    
-                listaDetalhadoRegistro = File.ReadAllLines(arquivoCSV, Encoding.Default)
+            {   
+                // ** Valida se o arquivo CSV é do FDI ** //
+                if (sistema == "FDI")
+                {
+                    listaDetalhadoRegistro = File.ReadAllLines(arquivoCSV, Encoding.Default)
                     .Select(a => a.Split(';'))
                     .Select(c => new DetalhadoRegistro()
                     {
-                        protocolo = c[0],
-                        workflow = c[1],
-                        cpfCnpj = c[2],
-                        dataCadastro = c[3],
-                        dataConclusao = c[4],
-                        statusRegistro = c[5],
-                        resultado = c[6],
-                        usuario = c[7],
-                        nh = c[8],
-                        contratoProposta= c[9],
-                        prioridade = c[10],
-                        dataAnalise = c[11],
-                        tempoAnalise = c[12],
-                        tipoConclusao = c[13],
-                        agencia = c[14],
-                        conta = c[15],
-                        dac = c[16],
-                        matricula = c[17]
+                        protocolo = c[0].Replace("\"", ""),
+                        workflow = c[1].Replace("\"", ""),
+                        cpfCnpj = c[2].Replace("\"", ""),
+                        dataCadastro = c[3].Replace("\"", ""),
+                        dataConclusao = c[4].Replace("\"", ""),
+                        statusRegistro = c[5].Replace("\"", ""),
+                        resultado = c[6].Replace("\"", ""),
+                        usuario = c[7].Replace("\"", ""),
+                        nh = c[8].Replace("\"", ""),
+                        contratoProposta = c[9].Replace("\"", ""),
+                        prioridade = c[10].Replace("\"", ""),
+                        dataAnalise = c[11].Replace("\"", ""),
+                        tempoAnalise = c[12].Replace("\"", ""),
+                        tipoConclusao = c[13].Replace("\"", ""),
+                        agencia = c[14].Replace("\"", ""),
+                        conta = c[15].Replace("\"", ""),
+                        dac = c[16].Replace("\"", ""),
+                        matricula = c[17].Replace("\"", "")
                     })
                     .ToList();
+                }
+
+                // ** Valida se o arquivo CSV é do BrFlow ** //
+                if (sistema == "BrFlow")
+                {
+                    listaDetalhadoRegistro = File.ReadAllLines(arquivoCSV, Encoding.Default)
+                    .Select(a => a.Split(';'))
+                    .Select(c => new DetalhadoRegistro()
+                    {
+                        protocolo = c[0].Replace("\"", ""),
+                        workflow = c[1].Replace("\"", ""),
+                        cpfCnpj = c[2].Replace("\"", ""),
+                        dataCadastro = c[3].Replace("\"", ""),
+                        dataConclusao = c[4].Replace("\"", ""),
+                        statusRegistro = c[5].Replace("\"", ""),
+                        resultado = c[6].Replace("\"", ""),
+                        usuario = c[7].Replace("\"", ""),
+                        nh = c[8].Replace("\"", ""),
+                        contratoProposta = c[9].Replace("\"", ""),
+                        prioridade = c[10].Replace("\"", ""),
+                        dataAnalise = c[11].Replace("\"", ""),
+                        tempoAnalise = c[12].Replace("\"", ""),                        
+                        agencia = c[13].Replace("\"", ""),
+                        conta = c[14].Replace("\"", ""),                       
+                        matricula = c[15].Replace("\"", "")
+                    })
+                    .ToList();
+                }
 
                 if (listaDetalhadoRegistro.Count() > 0)
                 {
+                    // ** Remove o cabeçalho do arquivo CSV ** //
+                    listaDetalhadoRegistro.RemoveAt(0);
                     return listaDetalhadoRegistro;
                 }
                 else
@@ -173,6 +206,34 @@ namespace rajadas
             finally
             { }
         }
+
+        // ** Mover arquivo processado para outro diretório ** //
+        public bool MoverArquivoProcessado(string arquivoProcessado, string diretorioArquivoProcessado)
+        {
+            bool retorno = false;
+            try
+            {
+                // ** Recupera o nome do arquivo ** //
+                FileInfo informacaoDoArquivo = new FileInfo(arquivoProcessado);
+                string destinoArquivoProcessado = diretorioArquivoProcessado + @"\" + informacaoDoArquivo.Name;
+
+                // ----------- ** Move o arquivo para o diretório de arquivos processados ** -----------//
+                File.Move(arquivoProcessado, destinoArquivoProcessado);
+                retorno = true;
+            }
+            catch (Exception e)
+            {
+                // ** Se o erro for que o arquivo já existe no diretório de destino o sistema exclui o arquivo no diretório de origem ** //
+                string erro = e.Message;
+                if (erro.Equals("Não é possível criar um arquivo já existente.\r\n"))
+                {
+                    File.Delete(arquivoProcessado);
+                }                
+            }
+
+            return retorno;
+        }
+
 
     }
 }

@@ -62,6 +62,9 @@ namespace rajadas
         private DiaMonitoramento listaDiaMonitoramentoDigital;
         private DiaMonitoramento listaDiaMonitoramentoInvertida;
 
+        private string diretorioArquivosCSV = @"C:\Arquivos CSV";
+        private string diretorioArquivosCSVProcessados = @"C:\BotFlow\Arquivos Processados\Detalhado de Registro";
+
         public Form1()
         {
             InitializeComponent();
@@ -76,7 +79,7 @@ namespace rajadas
             List<string> listaDeArquivosCSV = new List<string>();
 
             // ** Recupera os arquivos CSV encontrados no diretório especificado **//
-            listaDeArquivosCSV = detalhadoRegistro.LocalizarArquivosCSV("C:\\Arquivos CSV");
+            listaDeArquivosCSV = detalhadoRegistro.LocalizarArquivosCSV(this.diretorioArquivosCSV);
 
             foreach (var arquivoEncontrado in listaDeArquivosCSV)
             {
@@ -88,8 +91,8 @@ namespace rajadas
 
                 List<DetalhadoRegistro> listaDetalhadoRegistroInserir = new List<DetalhadoRegistro>();
 
-                listaDetalhadoRegistroInserir = detalhadoRegistro.LerArquivoDetalhadoDeRegistro(arquivoEncontrado);
-
+                listaDetalhadoRegistroInserir = detalhadoRegistro.LerArquivoDetalhadoDeRegistro(arquivoEncontrado, "BrFlow");
+               
                 List<DetalhadoRegistro> listaDetalhadoRegistroNovos = detalhadoRegistro.CompararListasDetalhadoRegistroObjetosNovos(listaDetalhadoRegistroInserir, listaDetalhadoRegistroBD);
                 
                 List<DetalhadoRegistro> listaDetalhadoRegistroAtualizar = detalhadoRegistro.CompararListasDetalhadoRegistroObjetosCadastrados(listaDetalhadoRegistroInserir, listaDetalhadoRegistroBD);
@@ -109,20 +112,12 @@ namespace rajadas
                         bancoDeDados.InserirDetalhadoDoRegistro(this.enderecoBD, this.portaBD, this.usuarioBD, this.senhaBD, this.nomeBD, objetoDetalhadoRegistro, "FDI");
                     }
                 }
-                           
+
+                detalhadoRegistro.MoverArquivoProcessado(arquivoEncontrado, this.diretorioArquivosCSVProcessados);
+
             }
 
-            //List <DetalhadoRegistro> listaDetalhadoRegistros = new List<DetalhadoRegistro>();
-
-            //listaDetalhadoRegistros = detalhadoRegistro.LerArquivoDetalhadoDeRegistro("C:\\Arquivos CSV\\planilha.csv");
-
-            //foreach (var objetoDetalhadoRegistro in listaDetalhadoRegistros)
-            //{
-            //    BancoDeDados bancoDeDados = new BancoDeDados();
-            //    bancoDeDados.InserirDetalhadoDoRegistro(this.enderecoBD, this.portaBD, this.usuarioBD, this.senhaBD, this.nomeBD, objetoDetalhadoRegistro, "FDI");
-            //}
-
-
+            
 
 
             carregaParametrosRajadaTijolo();
