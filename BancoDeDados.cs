@@ -937,14 +937,14 @@ namespace rajadas
         }
 
         // ** Método para atualizar objeto Detalhado do Registro do BD ** //
-        public Boolean AtualizarDetalhadoDoRegistro(String endereco, String porta, String usuario, String senha, String nomeBD, DetalhadoRegistro detalhadoRegistro, string sistema)
+        public Boolean AtualizarDetalhadoDoRegistro(String endereco, String porta, String usuario, String senha, String nomeBD, DetalhadoRegistro detalhadoRegistro)
         {
             // ** String de conexão com o banco ** //
             String stringConexao = "server=" + endereco + ";port=" + porta + ";User Id=" + usuario + ";database=" + nomeBD + ";password=" + senha;
 
             String stringComando = "UPDATE detalhado_registros SET data_conclusao = @DATA_CONCLUSAO, status_registro = @STATUS_REGISTRO, " +
                                         "resultado = @RESULTADO, prioridade = @PRIORIDADE, data_analise = @DATA_ANALISE, " +
-                                        "tempo_analise = @TEMPO_ANALISE, tipo_conclusao = @TIPO_CONCLUSAO, agencia = @AGENCIA, conta = @CONTA, dac = @DAC WHERE protocolo = " + detalhadoRegistro.protocolo + " AND sistema = '" + sistema + "'";
+                                        "tempo_analise = @TEMPO_ANALISE, tipo_conclusao = @TIPO_CONCLUSAO, agencia = @AGENCIA, conta = @CONTA, dac = @DAC WHERE protocolo = " + detalhadoRegistro.protocolo + " AND sistema = '" + detalhadoRegistro.sistema + "'";
 
             try
             {
@@ -986,14 +986,14 @@ namespace rajadas
             }
         }
 
-        // ** Método para retornar os registros da tabela detalhado_registros filtrando pelo campo sistema ** //
-        public List<DetalhadoRegistro> ListarDetalhadoRegistro(String endereco, String porta, String usuario, String senha, String nomeBD, String sistema)
+        // ** Método para retornar os registros da tabela ** //
+        public List<DetalhadoRegistro> ListarDetalhadoRegistro(String endereco, String porta, String usuario, String senha, String nomeBD)
         {
             // ** String de conexão com o banco ** //
             String stringConexao = "server=" + endereco + ";port=" + porta + ";User Id=" + usuario + ";database=" + nomeBD + ";password=" + senha;
 
             // ** String para buscar os registros no banco // **
-            String stringComando = "SELECT * FROM detalhado_registros WHERE sistema = '" + sistema + "' ORDER BY protocolo";
+            String stringComando = "SELECT * FROM detalhado_registros ORDER BY protocolo";
 
             // ** Cria a lista de parâmetros ** //
             List<DetalhadoRegistro> listaDetalhadoRegistro = new List<DetalhadoRegistro>();
@@ -1015,7 +1015,7 @@ namespace rajadas
                     DetalhadoRegistro detalhadoRegistro = new DetalhadoRegistro();
 
                     detalhadoRegistro.protocolo = dataReader["protocolo"].ToString();
-                    detalhadoRegistro.sistema = null;
+                    detalhadoRegistro.sistema = dataReader["sistema"].ToString();
                     detalhadoRegistro.workflow = dataReader["workflow"].ToString();
                     detalhadoRegistro.cpfCnpj = dataReader["cpf_cnpj"].ToString();
                     detalhadoRegistro.dataCadastro = dataReader["data_cadastro"].ToString();

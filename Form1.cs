@@ -73,53 +73,6 @@ namespace rajadas
         private void Form1_Load(object sender, EventArgs e)
         {
             carregarParametrosBD();
-
-            DetalhadoRegistro detalhadoRegistro = new DetalhadoRegistro();
-
-            List<string> listaDeArquivosCSV = new List<string>();
-
-            // ** Recupera os arquivos CSV encontrados no diretório especificado **//
-            listaDeArquivosCSV = detalhadoRegistro.LocalizarArquivosCSV(this.diretorioArquivosCSV);
-
-            foreach (var arquivoEncontrado in listaDeArquivosCSV)
-            {
-                BancoDeDados bancoDeDados = new BancoDeDados();
-
-                List<DetalhadoRegistro> listaDetalhadoRegistroBD = new List<DetalhadoRegistro>();
-
-                listaDetalhadoRegistroBD = bancoDeDados.ListarDetalhadoRegistro(this.enderecoBD, this.portaBD, this.usuarioBD, this.senhaBD, this.nomeBD,"FDI");
-
-                List<DetalhadoRegistro> listaDetalhadoRegistroInserir = new List<DetalhadoRegistro>();
-
-                listaDetalhadoRegistroInserir = detalhadoRegistro.LerArquivoDetalhadoDeRegistro(arquivoEncontrado, "BrFlow");
-               
-                List<DetalhadoRegistro> listaDetalhadoRegistroNovos = detalhadoRegistro.CompararListasDetalhadoRegistroObjetosNovos(listaDetalhadoRegistroInserir, listaDetalhadoRegistroBD);
-                
-                List<DetalhadoRegistro> listaDetalhadoRegistroAtualizar = detalhadoRegistro.CompararListasDetalhadoRegistroObjetosCadastrados(listaDetalhadoRegistroInserir, listaDetalhadoRegistroBD);
-
-                if (listaDetalhadoRegistroAtualizar != null)
-                {
-                    foreach (var objetoDetalhadoRegistro in listaDetalhadoRegistroAtualizar)
-                    {
-                        bancoDeDados.AtualizarDetalhadoDoRegistro(this.enderecoBD, this.portaBD, this.usuarioBD, this.senhaBD, this.nomeBD, objetoDetalhadoRegistro, "FDI");
-                    }
-                }
-
-                if (listaDetalhadoRegistroNovos != null)
-                {
-                    foreach (var objetoDetalhadoRegistro in listaDetalhadoRegistroNovos)
-                    {
-                        bancoDeDados.InserirDetalhadoDoRegistro(this.enderecoBD, this.portaBD, this.usuarioBD, this.senhaBD, this.nomeBD, objetoDetalhadoRegistro, "FDI");
-                    }
-                }
-
-                detalhadoRegistro.MoverArquivoProcessado(arquivoEncontrado, this.diretorioArquivosCSVProcessados);
-
-            }
-
-            
-
-
             carregaParametrosRajadaTijolo();
             carregaParametrosRajadaDigital();
             carregaParemetrosRajadaInvertida();
@@ -1266,6 +1219,95 @@ namespace rajadas
             {
                 throw;
             }
+        }
+
+        // ** Faz a leitura manual dos arquivos .CSV ** //
+        private void button2_Click(object sender, EventArgs e)
+        {
+            button2.Visible = false;
+
+            pbLeituraDR.Visible = true;
+
+            int contadorRegistrosImportados = 0;
+
+            int contadorRegistrosAtualizados = 0;
+
+            DetalhadoRegistro detalhadoRegistro = new DetalhadoRegistro();
+
+            List<string> listaDeArquivosCSV = new List<string>();
+
+            // ** Recupera os arquivos CSV encontrados no diretório especificado **//
+            listaDeArquivosCSV = detalhadoRegistro.LocalizarArquivosCSV(this.diretorioArquivosCSV);
+
+            foreach (var arquivoEncontrado in listaDeArquivosCSV)
+            {
+                pbLeituraDR.Value = 0;
+
+                BancoDeDados bancoDeDados = new BancoDeDados();
+
+                List<DetalhadoRegistro> listaDetalhadoRegistroBD = new List<DetalhadoRegistro>();
+
+                listaDetalhadoRegistroBD = bancoDeDados.ListarDetalhadoRegistro(this.enderecoBD, this.portaBD, this.usuarioBD, this.senhaBD, this.nomeBD);
+
+                List<DetalhadoRegistro> listaDetalhadoRegistroInserir = new List<DetalhadoRegistro>();
+
+                listaDetalhadoRegistroInserir = detalhadoRegistro.LerArquivoDetalhadoDeRegistro(arquivoEncontrado);
+
+                List<DetalhadoRegistro> listaDetalhadoRegistroNovos = detalhadoRegistro.CompararListasDetalhadoRegistroObjetosNovos(listaDetalhadoRegistroInserir, listaDetalhadoRegistroBD);
+
+                List<DetalhadoRegistro> listaDetalhadoRegistroAtualizar = detalhadoRegistro.CompararListasDetalhadoRegistroObjetosCadastrados(listaDetalhadoRegistroInserir, listaDetalhadoRegistroBD);
+
+                if (listaDetalhadoRegistroNovos != null)
+                {
+                    contadorRegistrosImportados = contadorRegistrosImportados + listaDetalhadoRegistroNovos.Count();
+                }
+
+                if (listaDetalhadoRegistroAtualizar != null)
+                {
+                    contadorRegistrosAtualizados = contadorRegistrosAtualizados + listaDetalhadoRegistroAtualizar.Count();                    
+                }
+
+                pbLeituraDR.Maximum = contadorRegistrosImportados + contadorRegistrosAtualizados;
+
+                if (listaDetalhadoRegistroAtualizar != null)
+                {
+                    for (int i = 0; i < listaDetalhadoRegistroAtualizar.Count(); i++)
+                    {
+                        bancoDeDados.AtualizarDetalhadoDoRegistro(this.enderecoBD, this.portaBD, this.usuarioBD, this.senhaBD, this.nomeBD, listaDetalhadoRegistroAtualizar[i]);
+                        pbLeituraDR.Value = i;
+                    }
+
+                    //    foreach (var objetoDetalhadoRegistro in listaDetalhadoRegistroAtualizar)
+                    //{
+                        
+                    //}
+                }
+
+                if (listaDetalhadoRegistroNovos != null)
+                {
+
+                    for (int i = 0; i < listaDetalhadoRegistroNovos.Count(); i++)
+                    {
+                        bancoDeDados.InserirDetalhadoDoRegistro(this.enderecoBD, this.portaBD, this.usuarioBD, this.senhaBD, this.nomeBD, listaDetalhadoRegistroNovos[i], listaDetalhadoRegistroNovos[i].sistema);
+                        pbLeituraDR.Value = i;
+                    }
+
+                    //    foreach (var objetoDetalhadoRegistro in listaDetalhadoRegistroNovos)
+                    //{
+
+                    //}
+                }
+
+                detalhadoRegistro.MoverArquivoProcessado(arquivoEncontrado, this.diretorioArquivosCSVProcessados);
+
+            }
+
+            pbLeituraDR.Visible = false;
+            button2.Visible = true;
+
+            // -------------------------** Mensagem ao fim da leitura manual -----------------------------------//
+            MessageBox.Show("Processamento Concluído !!!" + "\n" + "Total de Protocolos Importados: " + contadorRegistrosImportados + "\n" + "Total de Protocolos Atualizados: " + contadorRegistrosAtualizados, "Mensagem do sistema");
+
         }
     }
 }

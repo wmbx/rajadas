@@ -32,20 +32,21 @@ namespace rajadas
 
 
         // ** Faz a verificação e leitura do arquivo CSV e retorna uma lista do tipo DetalhadoRegistro ** //
-        public List<DetalhadoRegistro> LerArquivoDetalhadoDeRegistro(string arquivoCSV, string sistema)
+        public List<DetalhadoRegistro> LerArquivoDetalhadoDeRegistro(string arquivoCSV)
         {
             List<DetalhadoRegistro> listaDetalhadoRegistro = new List<DetalhadoRegistro>();
 
             try
-            {   
-                // ** Valida se o arquivo CSV é do FDI ** //
-                if (sistema == "FDI")
+            {
+                // ** Valida se o arquivo CSV é do FDI ou do BrFlow, primeiro trata como FDI e se der erro de índice vai para o catch que tratará com BrFlow ** //
+                try
                 {
                     listaDetalhadoRegistro = File.ReadAllLines(arquivoCSV, Encoding.Default)
                     .Select(a => a.Split(';'))
                     .Select(c => new DetalhadoRegistro()
                     {
                         protocolo = c[0].Replace("\"", ""),
+                        sistema = "FDI",
                         workflow = c[1].Replace("\"", ""),
                         cpfCnpj = c[2].Replace("\"", ""),
                         dataCadastro = c[3].Replace("\"", ""),
@@ -66,15 +67,16 @@ namespace rajadas
                     })
                     .ToList();
                 }
-
-                // ** Valida se o arquivo CSV é do BrFlow ** //
-                if (sistema == "BrFlow")
+                catch (Exception erro)
                 {
-                    listaDetalhadoRegistro = File.ReadAllLines(arquivoCSV, Encoding.Default)
+                    if (erro.Message.Equals("O índice estava fora dos limites da matriz."))
+                    {
+                        listaDetalhadoRegistro = File.ReadAllLines(arquivoCSV, Encoding.Default)
                     .Select(a => a.Split(';'))
                     .Select(c => new DetalhadoRegistro()
                     {
                         protocolo = c[0].Replace("\"", ""),
+                        sistema = "BrFlow",
                         workflow = c[1].Replace("\"", ""),
                         cpfCnpj = c[2].Replace("\"", ""),
                         dataCadastro = c[3].Replace("\"", ""),
@@ -86,12 +88,14 @@ namespace rajadas
                         contratoProposta = c[9].Replace("\"", ""),
                         prioridade = c[10].Replace("\"", ""),
                         dataAnalise = c[11].Replace("\"", ""),
-                        tempoAnalise = c[12].Replace("\"", ""),                        
+                        tempoAnalise = c[12].Replace("\"", ""),
                         agencia = c[13].Replace("\"", ""),
-                        conta = c[14].Replace("\"", ""),                       
+                        conta = c[14].Replace("\"", ""),
                         matricula = c[15].Replace("\"", "")
                     })
                     .ToList();
+                    }
+                    
                 }
 
                 if (listaDetalhadoRegistro.Count() > 0)

@@ -120,6 +120,25 @@
             this.tmMonitoramentoInvertida = new System.Windows.Forms.Timer(this.components);
             this.tmRotinaExpurgo = new System.Windows.Forms.Timer(this.components);
             this.tmRotinaRestauracaoMonitoramento = new System.Windows.Forms.Timer(this.components);
+            this.tabControl1 = new System.Windows.Forms.TabControl();
+            this.tabRajadas = new System.Windows.Forms.TabPage();
+            this.tabDetalhadoRegistro = new System.Windows.Forms.TabPage();
+            this.groupBox11 = new System.Windows.Forms.GroupBox();
+            this.pbLeituraDR = new System.Windows.Forms.ProgressBar();
+            this.button2 = new System.Windows.Forms.Button();
+            this.button3 = new System.Windows.Forms.Button();
+            this.tbDestinoCSV = new System.Windows.Forms.TextBox();
+            this.label9 = new System.Windows.Forms.Label();
+            this.button4 = new System.Windows.Forms.Button();
+            this.tbOrigemCSV = new System.Windows.Forms.TextBox();
+            this.label18 = new System.Windows.Forms.Label();
+            this.cbStatusLeituraDR = new System.Windows.Forms.ComboBox();
+            this.btnSalvarConfiguracoesDR = new System.Windows.Forms.Button();
+            this.label19 = new System.Windows.Forms.Label();
+            this.cbFrequenciaLeituraDR = new System.Windows.Forms.ComboBox();
+            this.label23 = new System.Windows.Forms.Label();
+            this.btIntervaloLeituraDR = new System.Windows.Forms.TextBox();
+            this.label24 = new System.Windows.Forms.Label();
             this.groupBox1.SuspendLayout();
             this.gbMonitoramentoTijolo.SuspendLayout();
             this.groupBox2.SuspendLayout();
@@ -133,6 +152,10 @@
             this.groupBox7.SuspendLayout();
             this.groupBox10.SuspendLayout();
             this.groupBox5.SuspendLayout();
+            this.tabControl1.SuspendLayout();
+            this.tabRajadas.SuspendLayout();
+            this.tabDetalhadoRegistro.SuspendLayout();
+            this.groupBox11.SuspendLayout();
             this.SuspendLayout();
             // 
             // apontaCaminhoPasta
@@ -331,6 +354,7 @@
             // groupBox8
             // 
             this.groupBox8.Controls.Add(this.cbStatusLeituraTijolo);
+            this.groupBox8.Controls.Add(this.btSalvarArquivoTijolo);
             this.groupBox8.Controls.Add(this.lbStatusLeituraTijolo);
             this.groupBox8.Controls.Add(this.cbFrequenciaRajadaTijolo);
             this.groupBox8.Controls.Add(this.label11);
@@ -953,12 +977,12 @@
             this.groupBox5.Controls.Add(this.groupBox4);
             this.groupBox5.Controls.Add(this.groupBox3);
             this.groupBox5.Controls.Add(this.groupBox1);
-            this.groupBox5.Location = new System.Drawing.Point(3, 6);
+            this.groupBox5.Location = new System.Drawing.Point(9, 6);
             this.groupBox5.Name = "groupBox5";
             this.groupBox5.Size = new System.Drawing.Size(979, 468);
             this.groupBox5.TabIndex = 1;
             this.groupBox5.TabStop = false;
-            this.groupBox5.Text = "Configuração das Rajadas";
+            this.groupBox5.Text = "Configurações";
             // 
             // tmRajadaTijolo
             // 
@@ -983,7 +1007,7 @@
             // 
             // btSalvarArquivoTijolo
             // 
-            this.btSalvarArquivoTijolo.Location = new System.Drawing.Point(535, 129);
+            this.btSalvarArquivoTijolo.Location = new System.Drawing.Point(148, 93);
             this.btSalvarArquivoTijolo.Name = "btSalvarArquivoTijolo";
             this.btSalvarArquivoTijolo.Size = new System.Drawing.Size(159, 21);
             this.btSalvarArquivoTijolo.TabIndex = 16;
@@ -1018,23 +1042,220 @@
             this.tmRotinaRestauracaoMonitoramento.Interval = 30000;
             this.tmRotinaRestauracaoMonitoramento.Tick += new System.EventHandler(this.tmRotinaRestauracaoMonitoramento_Tick);
             // 
+            // tabControl1
+            // 
+            this.tabControl1.Controls.Add(this.tabRajadas);
+            this.tabControl1.Controls.Add(this.tabDetalhadoRegistro);
+            this.tabControl1.Location = new System.Drawing.Point(5, 6);
+            this.tabControl1.Name = "tabControl1";
+            this.tabControl1.SelectedIndex = 0;
+            this.tabControl1.Size = new System.Drawing.Size(1005, 507);
+            this.tabControl1.TabIndex = 17;
+            // 
+            // tabRajadas
+            // 
+            this.tabRajadas.BackColor = System.Drawing.Color.Transparent;
+            this.tabRajadas.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("tabRajadas.BackgroundImage")));
+            this.tabRajadas.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.tabRajadas.Controls.Add(this.groupBox5);
+            this.tabRajadas.Location = new System.Drawing.Point(4, 22);
+            this.tabRajadas.Name = "tabRajadas";
+            this.tabRajadas.Padding = new System.Windows.Forms.Padding(3);
+            this.tabRajadas.Size = new System.Drawing.Size(997, 481);
+            this.tabRajadas.TabIndex = 0;
+            this.tabRajadas.Text = "Rajadas";
+            // 
+            // tabDetalhadoRegistro
+            // 
+            this.tabDetalhadoRegistro.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("tabDetalhadoRegistro.BackgroundImage")));
+            this.tabDetalhadoRegistro.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.tabDetalhadoRegistro.Controls.Add(this.groupBox11);
+            this.tabDetalhadoRegistro.Location = new System.Drawing.Point(4, 22);
+            this.tabDetalhadoRegistro.Name = "tabDetalhadoRegistro";
+            this.tabDetalhadoRegistro.Padding = new System.Windows.Forms.Padding(3);
+            this.tabDetalhadoRegistro.Size = new System.Drawing.Size(997, 481);
+            this.tabDetalhadoRegistro.TabIndex = 1;
+            this.tabDetalhadoRegistro.Text = "Detalhado de Registro";
+            this.tabDetalhadoRegistro.UseVisualStyleBackColor = true;
+            // 
+            // groupBox11
+            // 
+            this.groupBox11.Controls.Add(this.cbStatusLeituraDR);
+            this.groupBox11.Controls.Add(this.pbLeituraDR);
+            this.groupBox11.Controls.Add(this.btnSalvarConfiguracoesDR);
+            this.groupBox11.Controls.Add(this.button2);
+            this.groupBox11.Controls.Add(this.label19);
+            this.groupBox11.Controls.Add(this.cbFrequenciaLeituraDR);
+            this.groupBox11.Controls.Add(this.button3);
+            this.groupBox11.Controls.Add(this.label23);
+            this.groupBox11.Controls.Add(this.tbDestinoCSV);
+            this.groupBox11.Controls.Add(this.btIntervaloLeituraDR);
+            this.groupBox11.Controls.Add(this.label9);
+            this.groupBox11.Controls.Add(this.label24);
+            this.groupBox11.Controls.Add(this.button4);
+            this.groupBox11.Controls.Add(this.tbOrigemCSV);
+            this.groupBox11.Controls.Add(this.label18);
+            this.groupBox11.Location = new System.Drawing.Point(151, 155);
+            this.groupBox11.Name = "groupBox11";
+            this.groupBox11.Size = new System.Drawing.Size(663, 113);
+            this.groupBox11.TabIndex = 11;
+            this.groupBox11.TabStop = false;
+            this.groupBox11.Text = "Configurações";
+            // 
+            // pbLeituraDR
+            // 
+            this.pbLeituraDR.Location = new System.Drawing.Point(494, 37);
+            this.pbLeituraDR.Name = "pbLeituraDR";
+            this.pbLeituraDR.Size = new System.Drawing.Size(159, 21);
+            this.pbLeituraDR.TabIndex = 15;
+            this.pbLeituraDR.Visible = false;
+            // 
+            // button2
+            // 
+            this.button2.Location = new System.Drawing.Point(494, 38);
+            this.button2.Name = "button2";
+            this.button2.Size = new System.Drawing.Size(159, 21);
+            this.button2.TabIndex = 1;
+            this.button2.Text = "Ler Arquivo";
+            this.button2.UseVisualStyleBackColor = true;
+            this.button2.Click += new System.EventHandler(this.button2_Click);
+            // 
+            // button3
+            // 
+            this.button3.Location = new System.Drawing.Point(316, 78);
+            this.button3.Name = "button3";
+            this.button3.Size = new System.Drawing.Size(26, 22);
+            this.button3.TabIndex = 9;
+            this.button3.Text = "...";
+            this.button3.UseVisualStyleBackColor = true;
+            // 
+            // tbDestinoCSV
+            // 
+            this.tbDestinoCSV.Location = new System.Drawing.Point(10, 79);
+            this.tbDestinoCSV.Name = "tbDestinoCSV";
+            this.tbDestinoCSV.Size = new System.Drawing.Size(304, 20);
+            this.tbDestinoCSV.TabIndex = 8;
+            // 
+            // label9
+            // 
+            this.label9.AutoSize = true;
+            this.label9.Location = new System.Drawing.Point(7, 64);
+            this.label9.Name = "label9";
+            this.label9.Size = new System.Drawing.Size(154, 13);
+            this.label9.TabIndex = 7;
+            this.label9.Text = "Destino do arquivo processado";
+            // 
+            // button4
+            // 
+            this.button4.Location = new System.Drawing.Point(315, 37);
+            this.button4.Name = "button4";
+            this.button4.Size = new System.Drawing.Size(26, 22);
+            this.button4.TabIndex = 5;
+            this.button4.Text = "...";
+            this.button4.UseVisualStyleBackColor = true;
+            // 
+            // tbOrigemCSV
+            // 
+            this.tbOrigemCSV.Location = new System.Drawing.Point(9, 38);
+            this.tbOrigemCSV.Name = "tbOrigemCSV";
+            this.tbOrigemCSV.Size = new System.Drawing.Size(304, 20);
+            this.tbOrigemCSV.TabIndex = 3;
+            // 
+            // label18
+            // 
+            this.label18.AutoSize = true;
+            this.label18.Location = new System.Drawing.Point(7, 23);
+            this.label18.Name = "label18";
+            this.label18.Size = new System.Drawing.Size(79, 13);
+            this.label18.TabIndex = 1;
+            this.label18.Text = "Origem do CSV";
+            // 
+            // cbStatusLeituraDR
+            // 
+            this.cbStatusLeituraDR.DisplayMember = "Segundo";
+            this.cbStatusLeituraDR.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cbStatusLeituraDR.FormattingEnabled = true;
+            this.cbStatusLeituraDR.Items.AddRange(new object[] {
+            "Ativada",
+            "Desativada"});
+            this.cbStatusLeituraDR.Location = new System.Drawing.Point(356, 38);
+            this.cbStatusLeituraDR.Name = "cbStatusLeituraDR";
+            this.cbStatusLeituraDR.Size = new System.Drawing.Size(122, 21);
+            this.cbStatusLeituraDR.TabIndex = 8;
+            // 
+            // btnSalvarConfiguracoesDR
+            // 
+            this.btnSalvarConfiguracoesDR.Location = new System.Drawing.Point(494, 78);
+            this.btnSalvarConfiguracoesDR.Name = "btnSalvarConfiguracoesDR";
+            this.btnSalvarConfiguracoesDR.Size = new System.Drawing.Size(159, 22);
+            this.btnSalvarConfiguracoesDR.TabIndex = 16;
+            this.btnSalvarConfiguracoesDR.Text = "Salvar Configurações";
+            this.btnSalvarConfiguracoesDR.UseVisualStyleBackColor = true;
+            // 
+            // label19
+            // 
+            this.label19.AutoSize = true;
+            this.label19.Location = new System.Drawing.Point(353, 23);
+            this.label19.Name = "label19";
+            this.label19.Size = new System.Drawing.Size(94, 13);
+            this.label19.TabIndex = 7;
+            this.label19.Text = "Leitura automática";
+            // 
+            // cbFrequenciaLeituraDR
+            // 
+            this.cbFrequenciaLeituraDR.DisplayMember = "Segundo";
+            this.cbFrequenciaLeituraDR.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cbFrequenciaLeituraDR.FormattingEnabled = true;
+            this.cbFrequenciaLeituraDR.Items.AddRange(new object[] {
+            "Segundos",
+            "Minutos",
+            "Horas"});
+            this.cbFrequenciaLeituraDR.Location = new System.Drawing.Point(406, 79);
+            this.cbFrequenciaLeituraDR.Name = "cbFrequenciaLeituraDR";
+            this.cbFrequenciaLeituraDR.Size = new System.Drawing.Size(72, 21);
+            this.cbFrequenciaLeituraDR.TabIndex = 6;
+            // 
+            // label23
+            // 
+            this.label23.AutoSize = true;
+            this.label23.Location = new System.Drawing.Point(403, 64);
+            this.label23.Name = "label23";
+            this.label23.Size = new System.Drawing.Size(60, 13);
+            this.label23.TabIndex = 5;
+            this.label23.Text = "Frequência";
+            // 
+            // btIntervaloLeituraDR
+            // 
+            this.btIntervaloLeituraDR.Location = new System.Drawing.Point(356, 80);
+            this.btIntervaloLeituraDR.Name = "btIntervaloLeituraDR";
+            this.btIntervaloLeituraDR.Size = new System.Drawing.Size(31, 20);
+            this.btIntervaloLeituraDR.TabIndex = 4;
+            // 
+            // label24
+            // 
+            this.label24.AutoSize = true;
+            this.label24.Location = new System.Drawing.Point(354, 64);
+            this.label24.Name = "label24";
+            this.label24.Size = new System.Drawing.Size(48, 13);
+            this.label24.TabIndex = 2;
+            this.label24.Text = "Intervalo";
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("$this.BackgroundImage")));
             this.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.ClientSize = new System.Drawing.Size(986, 480);
-            this.Controls.Add(this.btSalvarArquivoTijolo);
-            this.Controls.Add(this.groupBox5);
+            this.ClientSize = new System.Drawing.Size(1016, 518);
+            this.Controls.Add(this.tabControl1);
             this.DoubleBuffered = true;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MaximizeBox = false;
-            this.MaximumSize = new System.Drawing.Size(1002, 519);
+            this.MaximumSize = new System.Drawing.Size(2000, 2000);
             this.MinimumSize = new System.Drawing.Size(1002, 519);
             this.Name = "Form1";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-            this.Text = "BotFlow Rajadas 1.3.1";
+            this.Text = "BotFlow 2.0.0";
             this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.Form1_FormClosed);
             this.Load += new System.EventHandler(this.Form1_Load);
             this.Resize += new System.EventHandler(this.Form1_Resize);
@@ -1063,6 +1284,11 @@
             this.groupBox10.ResumeLayout(false);
             this.groupBox10.PerformLayout();
             this.groupBox5.ResumeLayout(false);
+            this.tabControl1.ResumeLayout(false);
+            this.tabRajadas.ResumeLayout(false);
+            this.tabDetalhadoRegistro.ResumeLayout(false);
+            this.groupBox11.ResumeLayout(false);
+            this.groupBox11.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -1158,6 +1384,25 @@
         private System.Windows.Forms.Timer tmMonitoramentoInvertida;
         private System.Windows.Forms.Timer tmRotinaExpurgo;
         private System.Windows.Forms.Timer tmRotinaRestauracaoMonitoramento;
+        private System.Windows.Forms.TabControl tabControl1;
+        private System.Windows.Forms.TabPage tabDetalhadoRegistro;
+        private System.Windows.Forms.TabPage tabRajadas;
+        private System.Windows.Forms.GroupBox groupBox11;
+        private System.Windows.Forms.ProgressBar pbLeituraDR;
+        private System.Windows.Forms.Button button2;
+        private System.Windows.Forms.Button button3;
+        private System.Windows.Forms.TextBox tbDestinoCSV;
+        private System.Windows.Forms.Label label9;
+        private System.Windows.Forms.Button button4;
+        private System.Windows.Forms.TextBox tbOrigemCSV;
+        private System.Windows.Forms.Label label18;
+        private System.Windows.Forms.ComboBox cbStatusLeituraDR;
+        private System.Windows.Forms.Button btnSalvarConfiguracoesDR;
+        private System.Windows.Forms.Label label19;
+        private System.Windows.Forms.ComboBox cbFrequenciaLeituraDR;
+        private System.Windows.Forms.Label label23;
+        private System.Windows.Forms.TextBox btIntervaloLeituraDR;
+        private System.Windows.Forms.Label label24;
     }
 }
 
