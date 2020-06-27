@@ -71,17 +71,60 @@ namespace rajadas
         {
             carregarParametrosBD();
 
-            List<DetalhadoRegistro> listaDetalhadoRegistros = new List<DetalhadoRegistro>();
             DetalhadoRegistro detalhadoRegistro = new DetalhadoRegistro();
-            listaDetalhadoRegistros = detalhadoRegistro.LerArquivoDetalhadoDeRegistro("C:\\Arquivos CSV\\planilha.csv");
 
-            foreach (var objetoDetalhadoRegistro in listaDetalhadoRegistros)
+            List<string> listaDeArquivosCSV = new List<string>();
+
+            // ** Recupera os arquivos CSV encontrados no diretório especificado **//
+            listaDeArquivosCSV = detalhadoRegistro.LocalizarArquivosCSV("C:\\Arquivos CSV");
+
+            foreach (var arquivoEncontrado in listaDeArquivosCSV)
             {
                 BancoDeDados bancoDeDados = new BancoDeDados();
-                bancoDeDados.InserirDetalhadoDoRegistro(this.enderecoBD, this.portaBD, this.usuarioBD, this.senhaBD, this.nomeBD, objetoDetalhadoRegistro, "FDI");
+
+                List<DetalhadoRegistro> listaDetalhadoRegistroBD = new List<DetalhadoRegistro>();
+
+                listaDetalhadoRegistroBD = bancoDeDados.ListarDetalhadoRegistro(this.enderecoBD, this.portaBD, this.usuarioBD, this.senhaBD, this.nomeBD,"FDI");
+
+                List<DetalhadoRegistro> listaDetalhadoRegistroInserir = new List<DetalhadoRegistro>();
+
+                listaDetalhadoRegistroInserir = detalhadoRegistro.LerArquivoDetalhadoDeRegistro(arquivoEncontrado);
+
+                List<DetalhadoRegistro> listaDetalhadoRegistroNovos = detalhadoRegistro.CompararListasDetalhadoRegistroObjetosNovos(listaDetalhadoRegistroInserir, listaDetalhadoRegistroBD);
+                
+                List<DetalhadoRegistro> listaDetalhadoRegistroAtualizar = detalhadoRegistro.CompararListasDetalhadoRegistroObjetosCadastrados(listaDetalhadoRegistroInserir, listaDetalhadoRegistroBD);
+
+                if (listaDetalhadoRegistroAtualizar != null)
+                {
+                    foreach (var objetoDetalhadoRegistro in listaDetalhadoRegistroAtualizar)
+                    {
+                        bancoDeDados.AtualizarDetalhadoDoRegistro(this.enderecoBD, this.portaBD, this.usuarioBD, this.senhaBD, this.nomeBD, objetoDetalhadoRegistro, "FDI");
+                    }
+                }
+
+                if (listaDetalhadoRegistroNovos != null)
+                {
+                    foreach (var objetoDetalhadoRegistro in listaDetalhadoRegistroNovos)
+                    {
+                        bancoDeDados.InserirDetalhadoDoRegistro(this.enderecoBD, this.portaBD, this.usuarioBD, this.senhaBD, this.nomeBD, objetoDetalhadoRegistro, "FDI");
+                    }
+                }
+                           
             }
 
-            
+            //List <DetalhadoRegistro> listaDetalhadoRegistros = new List<DetalhadoRegistro>();
+
+            //listaDetalhadoRegistros = detalhadoRegistro.LerArquivoDetalhadoDeRegistro("C:\\Arquivos CSV\\planilha.csv");
+
+            //foreach (var objetoDetalhadoRegistro in listaDetalhadoRegistros)
+            //{
+            //    BancoDeDados bancoDeDados = new BancoDeDados();
+            //    bancoDeDados.InserirDetalhadoDoRegistro(this.enderecoBD, this.portaBD, this.usuarioBD, this.senhaBD, this.nomeBD, objetoDetalhadoRegistro, "FDI");
+            //}
+
+
+
+
             carregaParametrosRajadaTijolo();
             carregaParametrosRajadaDigital();
             carregaParemetrosRajadaInvertida();

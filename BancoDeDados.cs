@@ -936,5 +936,120 @@ namespace rajadas
             }
         }
 
+        // ** Método para atualizar objeto Detalhado do Registro do BD ** //
+        public Boolean AtualizarDetalhadoDoRegistro(String endereco, String porta, String usuario, String senha, String nomeBD, DetalhadoRegistro detalhadoRegistro, string sistema)
+        {
+            // ** String de conexão com o banco ** //
+            String stringConexao = "server=" + endereco + ";port=" + porta + ";User Id=" + usuario + ";database=" + nomeBD + ";password=" + senha;
+
+            String stringComando = "UPDATE detalhado_registros SET data_conclusao = @DATA_CONCLUSAO, status_registro = @STATUS_REGISTRO, " +
+                                        "resultado = @RESULTADO, prioridade = @PRIORIDADE, data_analise = @DATA_ANALISE, " +
+                                        "tempo_analise = @TEMPO_ANALISE, tipo_conclusao = @TIPO_CONCLUSAO, agencia = @AGENCIA, conta = @CONTA, dac = @DAC WHERE protocolo = " + detalhadoRegistro.protocolo + " AND sistema = '" + sistema + "'";
+
+            try
+            {
+                // ** Cria e inicia a conexão com o banco ** //
+                conexao = new MySqlConnection(stringConexao);
+                conexao.Open();
+
+                // ** Cria o objeto de comando ** //
+                comando = new MySqlCommand(stringComando, conexao);
+
+                // ** Adiciona os parâmetros ao objeto de comando
+               
+                comando.Parameters.AddWithValue("@DATA_CONCLUSAO", detalhadoRegistro.dataConclusao);
+                comando.Parameters.AddWithValue("@STATUS_REGISTRO", detalhadoRegistro.statusRegistro);
+                comando.Parameters.AddWithValue("@RESULTADO", detalhadoRegistro.resultado);
+                comando.Parameters.AddWithValue("@PRIORIDADE", detalhadoRegistro.prioridade);
+                comando.Parameters.AddWithValue("@DATA_ANALISE", detalhadoRegistro.dataAnalise);
+                comando.Parameters.AddWithValue("@TEMPO_ANALISE", detalhadoRegistro.tempoAnalise);
+                comando.Parameters.AddWithValue("@TIPO_CONCLUSAO", detalhadoRegistro.tipoConclusao);
+                comando.Parameters.AddWithValue("@AGENCIA", detalhadoRegistro.agencia);
+                comando.Parameters.AddWithValue("@CONTA", detalhadoRegistro.conta);
+                comando.Parameters.AddWithValue("@DAC", detalhadoRegistro.dac);
+
+                // ** Executa o comando de inserção no banco ** //
+                comando.ExecuteNonQuery();
+
+                return true;
+            }
+            catch (Exception e)
+            {
+                return false;
+                throw;
+            }
+            finally
+            {
+                conexao.Close();
+                conexao = null;
+                comando = null;
+            }
+        }
+
+        // ** Método para retornar os registros da tabela detalhado_registros filtrando pelo campo sistema ** //
+        public List<DetalhadoRegistro> ListarDetalhadoRegistro(String endereco, String porta, String usuario, String senha, String nomeBD, String sistema)
+        {
+            // ** String de conexão com o banco ** //
+            String stringConexao = "server=" + endereco + ";port=" + porta + ";User Id=" + usuario + ";database=" + nomeBD + ";password=" + senha;
+
+            // ** String para buscar os registros no banco // **
+            String stringComando = "SELECT * FROM detalhado_registros WHERE sistema = '" + sistema + "' ORDER BY protocolo";
+
+            // ** Cria a lista de parâmetros ** //
+            List<DetalhadoRegistro> listaDetalhadoRegistro = new List<DetalhadoRegistro>();
+
+            try
+            {
+                // ** Cria e inicia a conexão com o banco ** //
+                conexao = new MySqlConnection(stringConexao);
+                conexao.Open();
+
+                // ** Cria o objeto de comando ** //
+                comando = new MySqlCommand(stringComando, conexao);
+
+                // ** Executa o comando de pesquisa no banco e retorna para um objeto Data Reader ** //
+                dataReader = comando.ExecuteReader();
+
+                while (dataReader.Read())
+                {
+                    DetalhadoRegistro detalhadoRegistro = new DetalhadoRegistro();
+
+                    detalhadoRegistro.protocolo = dataReader["protocolo"].ToString();
+                    detalhadoRegistro.sistema = null;
+                    detalhadoRegistro.workflow = dataReader["workflow"].ToString();
+                    detalhadoRegistro.cpfCnpj = dataReader["cpf_cnpj"].ToString();
+                    detalhadoRegistro.dataCadastro = dataReader["data_cadastro"].ToString();
+                    detalhadoRegistro.dataConclusao = dataReader["data_conclusao"].ToString();
+                    detalhadoRegistro.statusRegistro = dataReader["status_registro"].ToString();
+                    detalhadoRegistro.resultado = dataReader["resultado"].ToString();
+                    detalhadoRegistro.usuario = dataReader["usuario"].ToString();
+                    detalhadoRegistro.nh = dataReader["nh"].ToString();
+                    detalhadoRegistro.contratoProposta = dataReader["contrato_proposta"].ToString();
+                    detalhadoRegistro.prioridade = dataReader["prioridade"].ToString();
+                    detalhadoRegistro.dataAnalise = dataReader["data_analise"].ToString();
+                    detalhadoRegistro.tempoAnalise = dataReader["tempo_analise"].ToString();
+                    detalhadoRegistro.tipoConclusao = dataReader["tipo_conclusao"].ToString();
+                    detalhadoRegistro.agencia = dataReader["agencia"].ToString();
+                    detalhadoRegistro.conta = dataReader["conta"].ToString();
+                    detalhadoRegistro.dac = dataReader["dac"].ToString();
+                    detalhadoRegistro.matricula = dataReader["matricula"].ToString();
+
+                    listaDetalhadoRegistro.Add(detalhadoRegistro);
+                }
+            }
+            catch (Exception e)
+            {
+                System.Windows.Forms.MessageBox.Show(e.ToString());
+                throw;
+            }
+            finally
+            {
+                conexao.Close();
+                conexao = null;
+                comando = null;
+            }
+            return listaDetalhadoRegistro;
+        }
+
     }
 }

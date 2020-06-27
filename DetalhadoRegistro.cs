@@ -32,13 +32,13 @@ namespace rajadas
 
 
         // ** Faz a verificação e leitura do arquivo CSV e retorna uma lista do tipo DetalhadoRegistro ** //
-        public List<DetalhadoRegistro> LerArquivoDetalhadoDeRegistro(string caminhoArquivoExcel)
+        public List<DetalhadoRegistro> LerArquivoDetalhadoDeRegistro(string arquivoCSV)
         {
             List<DetalhadoRegistro> listaDetalhadoRegistro = new List<DetalhadoRegistro>();
-            
+
             try
-            {
-                listaDetalhadoRegistro = File.ReadAllLines(caminhoArquivoExcel)
+            {    
+                listaDetalhadoRegistro = File.ReadAllLines(arquivoCSV, Encoding.Default)
                     .Select(a => a.Split(';'))
                     .Select(c => new DetalhadoRegistro()
                     {
@@ -77,7 +77,101 @@ namespace rajadas
                 throw;
             }
             finally
-            {            }
+            { }
+        }
+
+        // ** Faz a verificação da pasta apontada e retorna uma lista com todos arquivos CSV encontrados ** //
+        public List<string> LocalizarArquivosCSV(string diretorioCSV)
+        {
+            List<string> listaDetalhadoRegistro = new List<string>();
+
+            // ** Variável que irá receber os arquivos localizados no diretório informado através do parâmetro caminhoCSV **//
+            var listaDeArquivosNoDiretorio = new List<String>();
+
+            try
+            {
+                // ** Localiza todos arquivos no diretório apontado **//
+                listaDeArquivosNoDiretorio = Directory.GetFiles(diretorioCSV).ToList();
+
+                // ** Retorna a lista contendo os arquivos CSV encontrados **//
+                return listaDeArquivosNoDiretorio;
+            }
+            catch (Exception)
+            {
+                throw;
+            }            
+        }
+
+        // ** Compara duas listas e retorna uma lista com os objetos novos, ou seja, que não estão no banco de dados ** //
+        public List<DetalhadoRegistro> CompararListasDetalhadoRegistroObjetosNovos(List<DetalhadoRegistro> listaInserir, List<DetalhadoRegistro> listaBD)
+        {
+            List<DetalhadoRegistro> listaDetalhadoRegistro = new List<DetalhadoRegistro>();
+
+            try
+            {
+                foreach (var detalhadoRegistroListaInserir in listaInserir)
+                {
+                        if (listaBD.Any(l => l.protocolo == detalhadoRegistroListaInserir.protocolo))
+                        {}
+                        else
+                        {
+                            listaDetalhadoRegistro.Add(detalhadoRegistroListaInserir);
+                        }
+                }
+
+                if (listaDetalhadoRegistro.Count() > 0)
+                {
+                    return listaDetalhadoRegistro;
+                }
+                else
+                {
+                    return null;
+                }
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+            finally
+            { }
+        }
+
+        // ** Compara duas listas e retorna uma lista com os objetos que já estão no banco de dados e precisam ser atualizados ** //
+        public List<DetalhadoRegistro> CompararListasDetalhadoRegistroObjetosCadastrados(List<DetalhadoRegistro> listaAtualizar, List<DetalhadoRegistro> listaBD)
+        {
+            List<DetalhadoRegistro> listaDetalhadoRegistro = new List<DetalhadoRegistro>();
+
+            try
+            {
+                foreach (var detalhadoRegistroListaAtualizar in listaAtualizar)
+                {
+                    // ** Valida se o objeto da lista já está na lista que veio do banco de dados ** //
+                    if (listaBD.Any(l => l.protocolo == detalhadoRegistroListaAtualizar.protocolo))
+                    {
+                        //// ** Valida se o status do objeto que veio da lista do banco de dados é diferente de Concluído e Cancelado ** //
+                        //if (detalhadoRegistroListaAtualizar.statusRegistro != "Concluído" && detalhadoRegistroListaAtualizar.statusRegistro != "Cancelado")
+                        //{
+                            listaDetalhadoRegistro.Add(detalhadoRegistroListaAtualizar);
+                        //}
+                        
+                    }
+                }
+
+                if (listaDetalhadoRegistro.Count() > 0)
+                {
+                    return listaDetalhadoRegistro;
+                }
+                else
+                {
+                    return null;
+                }
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+            finally
+            { }
         }
 
     }
