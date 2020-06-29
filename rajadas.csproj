@@ -120,6 +120,7 @@
     <Compile Include="DiaMonitoramento.cs" />
     <Compile Include="Email.cs" />
     <Compile Include="Excel.cs" />
+    <Compile Include="Expurgo.cs" />
     <Compile Include="Form1.cs">
       <SubType>Form</SubType>
     </Compile>

@@ -62,8 +62,11 @@ namespace rajadas
         private DiaMonitoramento listaDiaMonitoramentoDigital;
         private DiaMonitoramento listaDiaMonitoramentoInvertida;
 
-        private string diretorioArquivosCSV = @"C:\Arquivos CSV";
-        private string diretorioArquivosCSVProcessados = @"C:\BotFlow\Arquivos Processados\Detalhado de Registro";
+        private string diretorioOrigemCSV;
+        private string diretorioDestinoCSV;
+        private string parametroIntervaloLeituraCSV;
+        private string parametroFrequenciaLeituraCSV;
+        private string statusLeituraCSV;
 
         public Form1()
         {
@@ -77,6 +80,7 @@ namespace rajadas
             carregaParametrosRajadaDigital();
             carregaParemetrosRajadaInvertida();
             carregaObjetosMonitoramento();
+            CarregarParametrosDetalhadoRegistro();
             expurgoArquivosAntigos();
         }
 
@@ -86,6 +90,9 @@ namespace rajadas
             rajada.ExcluirArquivosProcessadosAntigos(this.caminhoRajadaProcessadaTijolo);
             rajada.ExcluirArquivosProcessadosAntigos(this.caminhoRajadaProcessadaDigital);
             rajada.ExcluirArquivosProcessadosAntigos(this.caminhoRajadaProcessadaInvertida);
+
+            Expurgo expurgo = new Expurgo();
+            expurgo.ExcluirArquivosCSVAntigos(this.diretorioDestinoCSV);
         }
 
         protected void monitoramentoTijolo()
@@ -320,7 +327,7 @@ namespace rajadas
             // ---------------------------------- Carrega parâmetros da Rajada Tijolo -------------------------------------------------------//
             List<String> listaDeParametrosRajadaTijolo = new List<String>();
 
-            listaDeParametrosRajadaTijolo = bancoDeDados.carregarParametrosDoSistema(this.enderecoBD, this.portaBD, this.usuarioBD, this.senhaBD, this.nomeBD, "1");
+            listaDeParametrosRajadaTijolo = bancoDeDados.carregarParametrosRajadas(this.enderecoBD, this.portaBD, this.usuarioBD, this.senhaBD, this.nomeBD, "1");
 
             this.caminhoArquivoTxtRajadaTijolo = listaDeParametrosRajadaTijolo[1];
             this.caminhoRajadaProcessadaTijolo = listaDeParametrosRajadaTijolo[2];
@@ -412,7 +419,7 @@ namespace rajadas
 
             List<String> listaDeParametrosRajadaDigital = new List<String>();
 
-            listaDeParametrosRajadaDigital = bancoDeDados.carregarParametrosDoSistema(this.enderecoBD, this.portaBD, this.usuarioBD, this.senhaBD, this.nomeBD, "2");
+            listaDeParametrosRajadaDigital = bancoDeDados.carregarParametrosRajadas(this.enderecoBD, this.portaBD, this.usuarioBD, this.senhaBD, this.nomeBD, "2");
 
             this.caminhoArquivoTxtRajadaDigital = listaDeParametrosRajadaDigital[1];
             this.caminhoRajadaProcessadaDigital = listaDeParametrosRajadaDigital[2];
@@ -501,7 +508,7 @@ namespace rajadas
 
             List<String> listaDeParametrosRajadaInvertida = new List<String>();
 
-            listaDeParametrosRajadaInvertida = bancoDeDados.carregarParametrosDoSistema(this.enderecoBD, this.portaBD, this.usuarioBD, this.senhaBD, this.nomeBD, "3");
+            listaDeParametrosRajadaInvertida = bancoDeDados.carregarParametrosRajadas(this.enderecoBD, this.portaBD, this.usuarioBD, this.senhaBD, this.nomeBD, "3");
 
             this.caminhoArquivoTxtRajadaInvertida = listaDeParametrosRajadaInvertida[1];
             this.caminhoRajadaProcessadaInvertida = listaDeParametrosRajadaInvertida[2];
@@ -580,6 +587,68 @@ namespace rajadas
 
         }
         // ---------------------------------- Carrega parâmetros da Rajada Invertida ----------------------------------------------------//
+
+        // ---------------------------------- Carrega parâmetros da leitura do CSV Detalhado de Registro --------------------------------------------------//
+        protected void CarregarParametrosDetalhadoRegistro()
+        {
+            Agendamento agendamento = new Agendamento();
+
+            BancoDeDados bancoDeDados = new BancoDeDados();
+
+            List<String> listaDeParametrosDetalhadoRegistro = new List<String>();
+
+            listaDeParametrosDetalhadoRegistro = bancoDeDados.CarregarParametrosLeituraDetalhadoRegistro(this.enderecoBD, this.portaBD, this.usuarioBD, this.senhaBD, this.nomeBD);
+
+            if (listaDeParametrosDetalhadoRegistro.Count == 5)
+            {
+                this.diretorioOrigemCSV = listaDeParametrosDetalhadoRegistro[0];
+                this.diretorioDestinoCSV = listaDeParametrosDetalhadoRegistro[1];
+                this.statusLeituraCSV = listaDeParametrosDetalhadoRegistro[2];
+                this.parametroIntervaloLeituraCSV = listaDeParametrosDetalhadoRegistro[3];
+                this.parametroFrequenciaLeituraCSV = listaDeParametrosDetalhadoRegistro[4];
+
+                tbOrigemCSV.Text = this.diretorioOrigemCSV;
+                tbDestinoCSV.Text = this.diretorioDestinoCSV;
+                cbStatusLeituraDR.SelectedItem = this.statusLeituraCSV;
+                tbIntervaloLeituraDR.Text = this.parametroIntervaloLeituraCSV;
+                cbFrequenciaLeituraDR.SelectedItem = this.parametroFrequenciaLeituraCSV;
+
+                // ---------------------------------- ** Seta os agendamentos das leituras no timerda Rajada Invertida ** --------------------------------//
+                tmLeituraCSVDetalhadoRegistro.Interval = agendamento.retornaAgendamentoExecucao(parametroIntervaloLeituraCSV, parametroFrequenciaLeituraCSV);
+                // ---------------------------------- ** Seta os agendamentos das leituras no timer da Rajada Invertida ** --------------------------------//
+
+
+                // ------------------ ** Ativa ou Desativa os Timers das leituras automáticas de acordo com o parâmetro ** --------------------//
+                if (this.statusLeituraCSV == "Ativada")
+                {
+                    tmLeituraCSVDetalhadoRegistro.Enabled = true;
+                }
+                else
+                {
+                    tmLeituraCSVDetalhadoRegistro.Enabled = false;
+                }
+                // ------------------ ** Ativa ou Desativa os Timers das leituras automáticas de acordo com o parâmetro ** --------------------//
+
+
+
+                // ------------------ ** Ativa ou Desativa os Parâmetros das Leituras Automáticas de acordo com o parâmetro ** -----------------------------//
+                if (this.statusLeituraCSV == "Ativada")
+                {
+                    tbIntervaloLeituraDR.Enabled = true;
+                    cbFrequenciaLeituraDR.Enabled = true;
+                }
+                else
+                {
+                    tbIntervaloLeituraDR.Enabled = false;
+                    cbFrequenciaLeituraDR.Enabled = false;
+                }
+            }
+
+            
+            // ------------------ ** Ativa ou Desativa os Parâmetros das Leituras Automáticas de acordo com o parâmetro ** -----------------------------//
+
+        }
+        // ---------------------------------- Carrega parâmetros da leitura do CSV Detalhado de Registro ----------------------------------------------------//
 
         private void button1_Click(object sender, EventArgs e)
         {
@@ -735,7 +804,7 @@ namespace rajadas
             }
             catch (Exception)
             {
-                MessageBox.Show("O Arquivo 'Parametros.xml' não foi localizado na pasta do sistema, o sistema será encerrado !");
+                MessageBox.Show("Erro ao tentar realizar a leitura da Rajada Tijolo!");
                 Application.Exit();
             }
         }
@@ -877,7 +946,7 @@ namespace rajadas
             // ----- ** Validação dos campos Intervalo para não permitir a digitação de zero ou em branco ** -------- //
             if (tbIntervaloRajadaTijolo.Text.Equals("") || tbIntervaloRajadaTijolo.Text.Equals("0") || tbDestinatariosTijolo.Text.Equals(""))
             {
-                MessageBox.Show("Não é permitido campos em branco ou iguais a zero !!!");
+                MessageBox.Show("Não são permitidos campos em branco ou iguais a zero !!!");
             }
             else
             {
@@ -910,7 +979,7 @@ namespace rajadas
                 listaDeParametrosParaSalvar.Add(this.destinatariosRajadaTijolo);
 
                 BancoDeDados bancoDeDados = new BancoDeDados();
-                Boolean retorno = bancoDeDados.atualizaParametrosDoSistemaNoBD(this.enderecoBD, this.portaBD, this.usuarioBD, this.senhaBD, this.nomeBD, listaDeParametrosParaSalvar, "1");
+                Boolean retorno = bancoDeDados.atualizaParametrosRajadas(this.enderecoBD, this.portaBD, this.usuarioBD, this.senhaBD, this.nomeBD, listaDeParametrosParaSalvar, "1");
 
                 if (retorno == true)
                 {
@@ -926,7 +995,7 @@ namespace rajadas
             // ----- ** Validação dos campos Intervalo para não permitir a digitação de zero ou em branco ** -------- //
             if (tbIntervaloRajadaDigital.Text.Equals("") || tbIntervaloRajadaDigital.Text.Equals("0") || tbDestinatariosDigital.Text.Equals(""))
             {
-                MessageBox.Show("Não é permitido campos em branco ou iguais a zero !!!");
+                MessageBox.Show("Não são permitidos campos em branco ou iguais a zero !!!");
             }
             else
             {
@@ -958,7 +1027,7 @@ namespace rajadas
                 listaDeParametrosParaSalvar.Add(this.destinatariosRajadaDigital);
 
                 BancoDeDados bancoDeDados = new BancoDeDados();
-                Boolean retorno = bancoDeDados.atualizaParametrosDoSistemaNoBD(this.enderecoBD, this.portaBD, this.usuarioBD, this.senhaBD, this.nomeBD, listaDeParametrosParaSalvar, "2");
+                Boolean retorno = bancoDeDados.atualizaParametrosRajadas(this.enderecoBD, this.portaBD, this.usuarioBD, this.senhaBD, this.nomeBD, listaDeParametrosParaSalvar, "2");
 
                 if (retorno == true)
                 {
@@ -973,7 +1042,7 @@ namespace rajadas
             // ----- ** Validação dos campos Intervalo para não permitir a digitação de zero ou em branco ** -------- //
             if (tbIntervaloRajadaInvertida.Text.Equals("") || tbIntervaloRajadaInvertida.Text.Equals("0") || tbDestinatariosInvertida.Text.Equals(""))
             {
-                MessageBox.Show("Não é permitido campos em branco ou iguais a zero !!!");
+                MessageBox.Show("Não são permitidos campos em branco ou iguais a zero !!!");
             }
             else
             {
@@ -1005,7 +1074,7 @@ namespace rajadas
                 listaDeParametrosParaSalvar.Add(this.destinatariosRajadaInvertida);
 
                 BancoDeDados bancoDeDados = new BancoDeDados();
-                Boolean retorno = bancoDeDados.atualizaParametrosDoSistemaNoBD(this.enderecoBD, this.portaBD, this.usuarioBD, this.senhaBD, this.nomeBD, listaDeParametrosParaSalvar, "3");
+                Boolean retorno = bancoDeDados.atualizaParametrosRajadas(this.enderecoBD, this.portaBD, this.usuarioBD, this.senhaBD, this.nomeBD, listaDeParametrosParaSalvar, "3");
 
                 if (retorno == true)
                 {
@@ -1237,7 +1306,7 @@ namespace rajadas
             List<string> listaDeArquivosCSV = new List<string>();
 
             // ** Recupera os arquivos CSV encontrados no diretório especificado **//
-            listaDeArquivosCSV = detalhadoRegistro.LocalizarArquivosCSV(this.diretorioArquivosCSV);
+            listaDeArquivosCSV = detalhadoRegistro.LocalizarArquivosCSV(this.diretorioOrigemCSV);
 
             foreach (var arquivoEncontrado in listaDeArquivosCSV)
             {
@@ -1253,52 +1322,45 @@ namespace rajadas
 
                 listaDetalhadoRegistroInserir = detalhadoRegistro.LerArquivoDetalhadoDeRegistro(arquivoEncontrado);
 
-                List<DetalhadoRegistro> listaDetalhadoRegistroNovos = detalhadoRegistro.CompararListasDetalhadoRegistroObjetosNovos(listaDetalhadoRegistroInserir, listaDetalhadoRegistroBD);
-
-                List<DetalhadoRegistro> listaDetalhadoRegistroAtualizar = detalhadoRegistro.CompararListasDetalhadoRegistroObjetosCadastrados(listaDetalhadoRegistroInserir, listaDetalhadoRegistroBD);
-
-                if (listaDetalhadoRegistroNovos != null)
+                if (listaDetalhadoRegistroInserir != null)
                 {
-                    contadorRegistrosImportados = contadorRegistrosImportados + listaDetalhadoRegistroNovos.Count();
-                }
 
-                if (listaDetalhadoRegistroAtualizar != null)
-                {
-                    contadorRegistrosAtualizados = contadorRegistrosAtualizados + listaDetalhadoRegistroAtualizar.Count();                    
-                }
+                    List<DetalhadoRegistro> listaDetalhadoRegistroNovos = detalhadoRegistro.CompararListasDetalhadoRegistroObjetosNovos(listaDetalhadoRegistroInserir, listaDetalhadoRegistroBD);
 
-                pbLeituraDR.Maximum = contadorRegistrosImportados + contadorRegistrosAtualizados;
+                    List<DetalhadoRegistro> listaDetalhadoRegistroAtualizar = detalhadoRegistro.CompararListasDetalhadoRegistroObjetosCadastrados(listaDetalhadoRegistroInserir, listaDetalhadoRegistroBD);
 
-                if (listaDetalhadoRegistroAtualizar != null)
-                {
-                    for (int i = 0; i < listaDetalhadoRegistroAtualizar.Count(); i++)
+                    if (listaDetalhadoRegistroNovos != null)
                     {
-                        bancoDeDados.AtualizarDetalhadoDoRegistro(this.enderecoBD, this.portaBD, this.usuarioBD, this.senhaBD, this.nomeBD, listaDetalhadoRegistroAtualizar[i]);
-                        pbLeituraDR.Value = i;
+                        contadorRegistrosImportados = contadorRegistrosImportados + listaDetalhadoRegistroNovos.Count();
                     }
 
-                    //    foreach (var objetoDetalhadoRegistro in listaDetalhadoRegistroAtualizar)
-                    //{
-                        
-                    //}
-                }
-
-                if (listaDetalhadoRegistroNovos != null)
-                {
-
-                    for (int i = 0; i < listaDetalhadoRegistroNovos.Count(); i++)
+                    if (listaDetalhadoRegistroAtualizar != null)
                     {
-                        bancoDeDados.InserirDetalhadoDoRegistro(this.enderecoBD, this.portaBD, this.usuarioBD, this.senhaBD, this.nomeBD, listaDetalhadoRegistroNovos[i], listaDetalhadoRegistroNovos[i].sistema);
-                        pbLeituraDR.Value = i;
+                        contadorRegistrosAtualizados = contadorRegistrosAtualizados + listaDetalhadoRegistroAtualizar.Count();
                     }
 
-                    //    foreach (var objetoDetalhadoRegistro in listaDetalhadoRegistroNovos)
-                    //{
+                    pbLeituraDR.Maximum = contadorRegistrosImportados + contadorRegistrosAtualizados;
 
-                    //}
+                    if (listaDetalhadoRegistroAtualizar != null)
+                    {
+                        for (int i = 0; i < listaDetalhadoRegistroAtualizar.Count(); i++)
+                        {
+                            bancoDeDados.AtualizarDetalhadoDoRegistro(this.enderecoBD, this.portaBD, this.usuarioBD, this.senhaBD, this.nomeBD, listaDetalhadoRegistroAtualizar[i]);
+                            pbLeituraDR.Value = i;
+                        }
+                    }
+
+                    if (listaDetalhadoRegistroNovos != null)
+                    {
+                        for (int i = 0; i < listaDetalhadoRegistroNovos.Count(); i++)
+                        {
+                            bancoDeDados.InserirDetalhadoDoRegistro(this.enderecoBD, this.portaBD, this.usuarioBD, this.senhaBD, this.nomeBD, listaDetalhadoRegistroNovos[i], listaDetalhadoRegistroNovos[i].sistema);
+                            pbLeituraDR.Value = i;
+                        }
+                    }
+
+                    detalhadoRegistro.MoverArquivoProcessado(arquivoEncontrado, this.diretorioDestinoCSV);
                 }
-
-                detalhadoRegistro.MoverArquivoProcessado(arquivoEncontrado, this.diretorioArquivosCSVProcessados);
 
             }
 
@@ -1307,6 +1369,141 @@ namespace rajadas
 
             // -------------------------** Mensagem ao fim da leitura manual -----------------------------------//
             MessageBox.Show("Processamento Concluído !!!" + "\n" + "Total de Protocolos Importados: " + contadorRegistrosImportados + "\n" + "Total de Protocolos Atualizados: " + contadorRegistrosAtualizados, "Mensagem do sistema");
+
+        }
+
+        private void btnOrigemCSV_Click(object sender, EventArgs e)
+        {
+            FolderBrowserDialog indicarOrigemCSV = new FolderBrowserDialog();
+            if (indicarOrigemCSV.ShowDialog() == DialogResult.OK)
+            {
+                this.diretorioOrigemCSV = indicarOrigemCSV.SelectedPath;
+                tbOrigemCSV.Text = this.diretorioOrigemCSV;
+            }
+        }
+
+        private void btnDestinoCSV_Click(object sender, EventArgs e)
+        {
+            FolderBrowserDialog indicarDestinoCSV = new FolderBrowserDialog();
+            if (indicarDestinoCSV.ShowDialog() == DialogResult.OK)
+            {
+                this.diretorioDestinoCSV = indicarDestinoCSV.SelectedPath;
+                tbDestinoCSV.Text = this.diretorioDestinoCSV;
+            }
+        }
+
+        private void btnSalvarConfiguracoesDR_Click(object sender, EventArgs e)
+        {
+            // ----- ** Validação dos campos Intervalo para não permitir a digitação de zero ou em branco ** -------- //
+            if (tbIntervaloLeituraDR.Text.Equals("") || tbIntervaloLeituraDR.Text.Equals("0"))
+            {
+                MessageBox.Show("Não são permitidos campos em branco ou iguais a zero !!!");
+            }
+            else
+            {
+                List<String> listaDeParametrosParaSalvar = new List<String>();
+
+                this.statusLeituraCSV = cbStatusLeituraDR.SelectedItem.ToString();
+                this.parametroIntervaloLeituraCSV = tbIntervaloLeituraDR.Text;
+                this.parametroFrequenciaLeituraCSV = cbFrequenciaLeituraDR.SelectedItem.ToString();                
+                
+                listaDeParametrosParaSalvar.Add(this.diretorioOrigemCSV);
+                listaDeParametrosParaSalvar.Add(this.diretorioDestinoCSV);
+                listaDeParametrosParaSalvar.Add(this.statusLeituraCSV);
+                listaDeParametrosParaSalvar.Add(this.parametroIntervaloLeituraCSV);
+                listaDeParametrosParaSalvar.Add(this.parametroFrequenciaLeituraCSV);
+
+                BancoDeDados bancoDeDados = new BancoDeDados();
+                Boolean retorno = bancoDeDados.AtualizaParametrosLeituraDetalhadoRegistro(this.enderecoBD, this.portaBD, this.usuarioBD, this.senhaBD, this.nomeBD, listaDeParametrosParaSalvar);
+
+                if (retorno == true)
+                {
+                    MessageBox.Show("As configurações foram salvas !!!", "Mensagem do sistema");
+                }
+
+                CarregarParametrosDetalhadoRegistro();
+            }
+        }
+
+        // ** Timer que faz a leitura dos arquivos CSV do Detalhado de Registro de tempos em tempos ** //
+        private void tmLeituraCSVDetalhadoRegistro_Tick(object sender, EventArgs e)
+        {
+            button2.Visible = false;
+
+            pbLeituraDR.Visible = true;
+
+            int contadorRegistrosImportados = 0;
+
+            int contadorRegistrosAtualizados = 0;
+
+            DetalhadoRegistro detalhadoRegistro = new DetalhadoRegistro();
+
+            List<string> listaDeArquivosCSV = new List<string>();
+
+            // ** Recupera os arquivos CSV encontrados no diretório especificado **//
+            listaDeArquivosCSV = detalhadoRegistro.LocalizarArquivosCSV(this.diretorioOrigemCSV);
+
+            foreach (var arquivoEncontrado in listaDeArquivosCSV)
+            {
+                pbLeituraDR.Value = 0;
+
+                BancoDeDados bancoDeDados = new BancoDeDados();
+
+                List<DetalhadoRegistro> listaDetalhadoRegistroBD = new List<DetalhadoRegistro>();
+
+                listaDetalhadoRegistroBD = bancoDeDados.ListarDetalhadoRegistro(this.enderecoBD, this.portaBD, this.usuarioBD, this.senhaBD, this.nomeBD);
+
+                List<DetalhadoRegistro> listaDetalhadoRegistroInserir = new List<DetalhadoRegistro>();
+
+                listaDetalhadoRegistroInserir = detalhadoRegistro.LerArquivoDetalhadoDeRegistro(arquivoEncontrado);
+
+                if (listaDetalhadoRegistroInserir != null)
+                {
+
+                    List<DetalhadoRegistro> listaDetalhadoRegistroNovos = detalhadoRegistro.CompararListasDetalhadoRegistroObjetosNovos(listaDetalhadoRegistroInserir, listaDetalhadoRegistroBD);
+
+                    List<DetalhadoRegistro> listaDetalhadoRegistroAtualizar = detalhadoRegistro.CompararListasDetalhadoRegistroObjetosCadastrados(listaDetalhadoRegistroInserir, listaDetalhadoRegistroBD);
+
+                    if (listaDetalhadoRegistroNovos != null)
+                    {
+                        contadorRegistrosImportados = contadorRegistrosImportados + listaDetalhadoRegistroNovos.Count();
+                    }
+
+                    if (listaDetalhadoRegistroAtualizar != null)
+                    {
+                        contadorRegistrosAtualizados = contadorRegistrosAtualizados + listaDetalhadoRegistroAtualizar.Count();
+                    }
+
+                    pbLeituraDR.Maximum = contadorRegistrosImportados + contadorRegistrosAtualizados;
+
+                    if (listaDetalhadoRegistroAtualizar != null)
+                    {
+                        for (int i = 0; i < listaDetalhadoRegistroAtualizar.Count(); i++)
+                        {
+                            bancoDeDados.AtualizarDetalhadoDoRegistro(this.enderecoBD, this.portaBD, this.usuarioBD, this.senhaBD, this.nomeBD, listaDetalhadoRegistroAtualizar[i]);
+                            pbLeituraDR.Value = i;
+                        }
+                    }
+
+                    if (listaDetalhadoRegistroNovos != null)
+                    {
+                        for (int i = 0; i < listaDetalhadoRegistroNovos.Count(); i++)
+                        {
+                            bancoDeDados.InserirDetalhadoDoRegistro(this.enderecoBD, this.portaBD, this.usuarioBD, this.senhaBD, this.nomeBD, listaDetalhadoRegistroNovos[i], listaDetalhadoRegistroNovos[i].sistema);
+                            pbLeituraDR.Value = i;
+                        }
+                    }
+
+                    detalhadoRegistro.MoverArquivoProcessado(arquivoEncontrado, this.diretorioDestinoCSV);
+                }
+
+            }
+
+            pbLeituraDR.Visible = false;
+            button2.Visible = true;
+
+            //// -------------------------** Mensagem ao fim da leitura manual -----------------------------------//
+            //MessageBox.Show("Processamento Concluído !!!" + "\n" + "Total de Protocolos Importados: " + contadorRegistrosImportados + "\n" + "Total de Protocolos Atualizados: " + contadorRegistrosAtualizados, "Mensagem do sistema");
 
         }
     }

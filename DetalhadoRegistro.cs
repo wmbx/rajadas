@@ -111,7 +111,7 @@ namespace rajadas
             }
             catch (Exception)
             {
-                throw;
+                return null;
             }
             finally
             { }
@@ -135,7 +135,7 @@ namespace rajadas
             }
             catch (Exception)
             {
-                throw;
+                return null;
             }            
         }
 
@@ -167,7 +167,7 @@ namespace rajadas
             }
             catch (Exception)
             {
-                throw;
+                return null;
             }
             finally
             { }
@@ -205,7 +205,7 @@ namespace rajadas
             }
             catch (Exception)
             {
-                throw;
+                return null;
             }
             finally
             { }

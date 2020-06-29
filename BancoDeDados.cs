@@ -15,7 +15,7 @@ namespace rajadas
     {
         private MySqlConnection conexao;
         private MySqlCommand comando;
-        private MySqlCommand comandoMonitoramento;
+        //private MySqlCommand comandoMonitoramento;
         private MySqlCommand comandoDiaMonitoramento;
         private MySqlDataReader dataReader;
 
@@ -194,7 +194,7 @@ namespace rajadas
         }
    
 
-        public Boolean atualizaParametrosDoSistemaNoBD(String endereco, String porta, String usuario, String senha, String nomeBD, List<String> listaDeParametros, String tipoRajada)
+        public Boolean atualizaParametrosRajadas(String endereco, String porta, String usuario, String senha, String nomeBD, List<String> listaDeParametros, String tipoRajada)
         {
             // ** String de conexão com o banco ** //
             String stringConexao = "server=" + endereco + ";port=" + porta + ";User Id=" + usuario + ";database=" + nomeBD + ";password=" + senha;
@@ -202,7 +202,7 @@ namespace rajadas
             // ** String para inserção de registros no banco // **
             //String stringComando = "INSERT INTO parametros_sistema (codigoRajada, origemRajada, destinoRajada, copiarMover, intervaloLeitura, frequenciaLeitura, statusLeitura, statusMonitoramento, destinatariosMonitoramento) VALUES (@CODIGORAJADA, @ORIGEMRAJADA, @DESTINORAJADA, @COPIARMOVER, @INTERVALOLEITURA, @FREQUENCIALEITURA, @STATUSLEITURA, @STATUSMONITORAMENTO, @DESTINATARIOS)";
 
-            String stringComando = "UPDATE parametros_sistema SET origemRajada = @ORIGEMRAJADA, destinoRajada = @DESTINORAJADA, " +
+            String stringComando = "UPDATE parametros_rajadas SET origemRajada = @ORIGEMRAJADA, destinoRajada = @DESTINORAJADA, " +
                                         "copiarMover = @COPIARMOVER, intervaloLeitura = @INTERVALOLEITURA, frequenciaLeitura = @FREQUENCIALEITURA, " +
                                         "statusLeitura = @STATUSLEITURA, statusMonitoramento = @STATUSMONITORAMENTO, destinatariosMonitoramento = @DESTINATARIOS WHERE codigoRajada = " + tipoRajada;
             try
@@ -244,13 +244,13 @@ namespace rajadas
             }
         }
 
-        public List<string> carregarParametrosDoSistema(String endereco, String porta, String usuario, String senha, String nomeBD, String tipoRajada)
+        public List<string> carregarParametrosRajadas(String endereco, String porta, String usuario, String senha, String nomeBD, String tipoRajada)
         {
             // ** String de conexão com o banco ** //
             String stringConexao = "server=" + endereco + ";port=" + porta + ";User Id=" + usuario + ";database=" + nomeBD + ";password=" + senha;
 
             // ** String para busar os registros no banco // **
-            String stringComando = "SELECT * FROM parametros_sistema WHERE codigoRajada = " + tipoRajada;
+            String stringComando = "SELECT * FROM parametros_rajadas WHERE codigoRajada = " + tipoRajada;
 
             // ** Cria a lista de parâmetros ** //
             List<string> listaDeParametros = new List<string>();
@@ -278,6 +278,96 @@ namespace rajadas
                     listaDeParametros.Add(dataReader["statusLeitura"].ToString());
                     listaDeParametros.Add(dataReader["statusMonitoramento"].ToString());
                     listaDeParametros.Add(dataReader["destinatariosMonitoramento"].ToString());
+                }
+            }
+            catch (Exception e)
+            {
+                System.Windows.Forms.MessageBox.Show(e.ToString());
+                throw;
+            }
+            finally
+            {
+                conexao.Close();
+                conexao = null;
+                comando = null;
+            }
+            return listaDeParametros;
+        }
+
+        // ** Método que atualiza os parâmetros de leitura do arquivo CSV do Detalhado de Registro ** //
+        public Boolean AtualizaParametrosLeituraDetalhadoRegistro(String endereco, String porta, String usuario, String senha, String nomeBD, List<String> listaDeParametros)
+        {
+            // ** String de conexão com o banco ** //
+            String stringConexao = "server=" + endereco + ";port=" + porta + ";User Id=" + usuario + ";database=" + nomeBD + ";password=" + senha;
+
+            String stringComando = "UPDATE parametros_detalhado_registros SET origemCSV = @ORIGEM, destinoCSV = @DESTINO, " +
+                                        "statusLeitura = @STATUS, intervaloLeitura = @INTERVALO, frequenciaLeitura = @FREQUENCIA ";
+            try
+            {
+                // ** Cria e inicia a conexão com o banco ** //
+                conexao = new MySqlConnection(stringConexao);
+                conexao.Open();
+
+                // ** Cria o objeto de comando ** //
+                comando = new MySqlCommand(stringComando, conexao);
+
+                // ** Adiciona os parâmetros ao objeto de comando
+                comando.Parameters.AddWithValue("@ORIGEM", listaDeParametros[0]);
+                comando.Parameters.AddWithValue("@DESTINO", listaDeParametros[1]);
+                comando.Parameters.AddWithValue("@STATUS", listaDeParametros[2]);
+                comando.Parameters.AddWithValue("@INTERVALO", listaDeParametros[3]);
+                comando.Parameters.AddWithValue("@FREQUENCIA", listaDeParametros[4]);
+                
+                // ** Executa o comando de inserção no banco ** //
+                comando.ExecuteNonQuery();
+
+                return true;
+            }
+            catch (Exception e)
+            {
+                System.Windows.Forms.MessageBox.Show(e.ToString());
+                return false;
+                throw;
+            }
+            finally
+            {
+                conexao.Close();
+                conexao = null;
+                comando = null;
+            }
+        }
+
+        // ** Método que carrega os parâmetros de leitura do arquivo CSV do Detalhado de Registro salvos no banco de dados** //
+        public List<string> CarregarParametrosLeituraDetalhadoRegistro(String endereco, String porta, String usuario, String senha, String nomeBD)
+        {
+            // ** String de conexão com o banco ** //
+            String stringConexao = "server=" + endereco + ";port=" + porta + ";User Id=" + usuario + ";database=" + nomeBD + ";password=" + senha;
+
+            // ** String para busar os registros no banco // **
+            String stringComando = "SELECT * FROM parametros_detalhado_registros ";
+
+            // ** Cria a lista de parâmetros ** //
+            List<string> listaDeParametros = new List<string>();
+
+            try
+            {
+                // ** Cria e inicia a conexão com o banco ** //
+                conexao = new MySqlConnection(stringConexao);
+                conexao.Open();
+
+                // ** Cria o objeto de comando ** //
+                comando = new MySqlCommand(stringComando, conexao);
+
+                // ** Executa o comando de pesquisa no banco e retorna para um objeto Data Reader ** //
+                dataReader = comando.ExecuteReader();
+
+                while (dataReader.Read())
+                {
+                    listaDeParametros.Add(dataReader["origemCSV"].ToString());
+                    listaDeParametros.Add(dataReader["destinoCSV"].ToString());
+                    listaDeParametros.Add(dataReader["statusLeitura"].ToString());
+                    listaDeParametros.Add(dataReader["intervaloLeitura"].ToString());
+                    listaDeParametros.Add(dataReader["frequenciaLeitura"].ToString());
                 }
             }
             catch (Exception e)

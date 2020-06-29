@@ -52,6 +52,7 @@
             this.rbMoverArquivoProcessadoRajadaTijolo = new System.Windows.Forms.RadioButton();
             this.groupBox8 = new System.Windows.Forms.GroupBox();
             this.cbStatusLeituraTijolo = new System.Windows.Forms.ComboBox();
+            this.btSalvarArquivoTijolo = new System.Windows.Forms.Button();
             this.lbStatusLeituraTijolo = new System.Windows.Forms.Label();
             this.cbFrequenciaRajadaTijolo = new System.Windows.Forms.ComboBox();
             this.label11 = new System.Windows.Forms.Label();
@@ -114,7 +115,6 @@
             this.tmRajadaDigital = new System.Windows.Forms.Timer(this.components);
             this.tmRajadaInvertida = new System.Windows.Forms.Timer(this.components);
             this.niBandeja = new System.Windows.Forms.NotifyIcon(this.components);
-            this.btSalvarArquivoTijolo = new System.Windows.Forms.Button();
             this.tmMonitoramentoTijolo = new System.Windows.Forms.Timer(this.components);
             this.tmMonitoramentoDigital = new System.Windows.Forms.Timer(this.components);
             this.tmMonitoramentoInvertida = new System.Windows.Forms.Timer(this.components);
@@ -124,21 +124,22 @@
             this.tabRajadas = new System.Windows.Forms.TabPage();
             this.tabDetalhadoRegistro = new System.Windows.Forms.TabPage();
             this.groupBox11 = new System.Windows.Forms.GroupBox();
-            this.pbLeituraDR = new System.Windows.Forms.ProgressBar();
-            this.button2 = new System.Windows.Forms.Button();
-            this.button3 = new System.Windows.Forms.Button();
-            this.tbDestinoCSV = new System.Windows.Forms.TextBox();
-            this.label9 = new System.Windows.Forms.Label();
-            this.button4 = new System.Windows.Forms.Button();
-            this.tbOrigemCSV = new System.Windows.Forms.TextBox();
-            this.label18 = new System.Windows.Forms.Label();
             this.cbStatusLeituraDR = new System.Windows.Forms.ComboBox();
+            this.pbLeituraDR = new System.Windows.Forms.ProgressBar();
             this.btnSalvarConfiguracoesDR = new System.Windows.Forms.Button();
+            this.button2 = new System.Windows.Forms.Button();
             this.label19 = new System.Windows.Forms.Label();
             this.cbFrequenciaLeituraDR = new System.Windows.Forms.ComboBox();
+            this.btnDestinoCSV = new System.Windows.Forms.Button();
             this.label23 = new System.Windows.Forms.Label();
-            this.btIntervaloLeituraDR = new System.Windows.Forms.TextBox();
+            this.tbDestinoCSV = new System.Windows.Forms.TextBox();
+            this.tbIntervaloLeituraDR = new System.Windows.Forms.TextBox();
+            this.label9 = new System.Windows.Forms.Label();
             this.label24 = new System.Windows.Forms.Label();
+            this.btnOrigemCSV = new System.Windows.Forms.Button();
+            this.tbOrigemCSV = new System.Windows.Forms.TextBox();
+            this.label18 = new System.Windows.Forms.Label();
+            this.tmLeituraCSVDetalhadoRegistro = new System.Windows.Forms.Timer(this.components);
             this.groupBox1.SuspendLayout();
             this.gbMonitoramentoTijolo.SuspendLayout();
             this.groupBox2.SuspendLayout();
@@ -379,6 +380,16 @@
             this.cbStatusLeituraTijolo.Name = "cbStatusLeituraTijolo";
             this.cbStatusLeituraTijolo.Size = new System.Drawing.Size(125, 21);
             this.cbStatusLeituraTijolo.TabIndex = 8;
+            // 
+            // btSalvarArquivoTijolo
+            // 
+            this.btSalvarArquivoTijolo.Location = new System.Drawing.Point(148, 93);
+            this.btSalvarArquivoTijolo.Name = "btSalvarArquivoTijolo";
+            this.btSalvarArquivoTijolo.Size = new System.Drawing.Size(159, 21);
+            this.btSalvarArquivoTijolo.TabIndex = 16;
+            this.btSalvarArquivoTijolo.Text = "Salvar Configurações";
+            this.btSalvarArquivoTijolo.UseVisualStyleBackColor = true;
+            this.btSalvarArquivoTijolo.Click += new System.EventHandler(this.btSalvarArquivoTijolo_Click);
             // 
             // lbStatusLeituraTijolo
             // 
@@ -1005,16 +1016,6 @@
             this.niBandeja.Text = "BotFlow Rajadas";
             this.niBandeja.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.niBandeja_MouseDoubleClick);
             // 
-            // btSalvarArquivoTijolo
-            // 
-            this.btSalvarArquivoTijolo.Location = new System.Drawing.Point(148, 93);
-            this.btSalvarArquivoTijolo.Name = "btSalvarArquivoTijolo";
-            this.btSalvarArquivoTijolo.Size = new System.Drawing.Size(159, 21);
-            this.btSalvarArquivoTijolo.TabIndex = 16;
-            this.btSalvarArquivoTijolo.Text = "Salvar Configurações";
-            this.btSalvarArquivoTijolo.UseVisualStyleBackColor = true;
-            this.btSalvarArquivoTijolo.Click += new System.EventHandler(this.btSalvarArquivoTijolo_Click);
-            // 
             // tmMonitoramentoTijolo
             // 
             this.tmMonitoramentoTijolo.Interval = 30000;
@@ -1086,13 +1087,13 @@
             this.groupBox11.Controls.Add(this.button2);
             this.groupBox11.Controls.Add(this.label19);
             this.groupBox11.Controls.Add(this.cbFrequenciaLeituraDR);
-            this.groupBox11.Controls.Add(this.button3);
+            this.groupBox11.Controls.Add(this.btnDestinoCSV);
             this.groupBox11.Controls.Add(this.label23);
             this.groupBox11.Controls.Add(this.tbDestinoCSV);
-            this.groupBox11.Controls.Add(this.btIntervaloLeituraDR);
+            this.groupBox11.Controls.Add(this.tbIntervaloLeituraDR);
             this.groupBox11.Controls.Add(this.label9);
             this.groupBox11.Controls.Add(this.label24);
-            this.groupBox11.Controls.Add(this.button4);
+            this.groupBox11.Controls.Add(this.btnOrigemCSV);
             this.groupBox11.Controls.Add(this.tbOrigemCSV);
             this.groupBox11.Controls.Add(this.label18);
             this.groupBox11.Location = new System.Drawing.Point(151, 155);
@@ -1101,74 +1102,6 @@
             this.groupBox11.TabIndex = 11;
             this.groupBox11.TabStop = false;
             this.groupBox11.Text = "Configurações";
-            // 
-            // pbLeituraDR
-            // 
-            this.pbLeituraDR.Location = new System.Drawing.Point(494, 37);
-            this.pbLeituraDR.Name = "pbLeituraDR";
-            this.pbLeituraDR.Size = new System.Drawing.Size(159, 21);
-            this.pbLeituraDR.TabIndex = 15;
-            this.pbLeituraDR.Visible = false;
-            // 
-            // button2
-            // 
-            this.button2.Location = new System.Drawing.Point(494, 38);
-            this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(159, 21);
-            this.button2.TabIndex = 1;
-            this.button2.Text = "Ler Arquivo";
-            this.button2.UseVisualStyleBackColor = true;
-            this.button2.Click += new System.EventHandler(this.button2_Click);
-            // 
-            // button3
-            // 
-            this.button3.Location = new System.Drawing.Point(316, 78);
-            this.button3.Name = "button3";
-            this.button3.Size = new System.Drawing.Size(26, 22);
-            this.button3.TabIndex = 9;
-            this.button3.Text = "...";
-            this.button3.UseVisualStyleBackColor = true;
-            // 
-            // tbDestinoCSV
-            // 
-            this.tbDestinoCSV.Location = new System.Drawing.Point(10, 79);
-            this.tbDestinoCSV.Name = "tbDestinoCSV";
-            this.tbDestinoCSV.Size = new System.Drawing.Size(304, 20);
-            this.tbDestinoCSV.TabIndex = 8;
-            // 
-            // label9
-            // 
-            this.label9.AutoSize = true;
-            this.label9.Location = new System.Drawing.Point(7, 64);
-            this.label9.Name = "label9";
-            this.label9.Size = new System.Drawing.Size(154, 13);
-            this.label9.TabIndex = 7;
-            this.label9.Text = "Destino do arquivo processado";
-            // 
-            // button4
-            // 
-            this.button4.Location = new System.Drawing.Point(315, 37);
-            this.button4.Name = "button4";
-            this.button4.Size = new System.Drawing.Size(26, 22);
-            this.button4.TabIndex = 5;
-            this.button4.Text = "...";
-            this.button4.UseVisualStyleBackColor = true;
-            // 
-            // tbOrigemCSV
-            // 
-            this.tbOrigemCSV.Location = new System.Drawing.Point(9, 38);
-            this.tbOrigemCSV.Name = "tbOrigemCSV";
-            this.tbOrigemCSV.Size = new System.Drawing.Size(304, 20);
-            this.tbOrigemCSV.TabIndex = 3;
-            // 
-            // label18
-            // 
-            this.label18.AutoSize = true;
-            this.label18.Location = new System.Drawing.Point(7, 23);
-            this.label18.Name = "label18";
-            this.label18.Size = new System.Drawing.Size(79, 13);
-            this.label18.TabIndex = 1;
-            this.label18.Text = "Origem do CSV";
             // 
             // cbStatusLeituraDR
             // 
@@ -1183,6 +1116,14 @@
             this.cbStatusLeituraDR.Size = new System.Drawing.Size(122, 21);
             this.cbStatusLeituraDR.TabIndex = 8;
             // 
+            // pbLeituraDR
+            // 
+            this.pbLeituraDR.Location = new System.Drawing.Point(494, 37);
+            this.pbLeituraDR.Name = "pbLeituraDR";
+            this.pbLeituraDR.Size = new System.Drawing.Size(159, 21);
+            this.pbLeituraDR.TabIndex = 15;
+            this.pbLeituraDR.Visible = false;
+            // 
             // btnSalvarConfiguracoesDR
             // 
             this.btnSalvarConfiguracoesDR.Location = new System.Drawing.Point(494, 78);
@@ -1191,6 +1132,17 @@
             this.btnSalvarConfiguracoesDR.TabIndex = 16;
             this.btnSalvarConfiguracoesDR.Text = "Salvar Configurações";
             this.btnSalvarConfiguracoesDR.UseVisualStyleBackColor = true;
+            this.btnSalvarConfiguracoesDR.Click += new System.EventHandler(this.btnSalvarConfiguracoesDR_Click);
+            // 
+            // button2
+            // 
+            this.button2.Location = new System.Drawing.Point(494, 38);
+            this.button2.Name = "button2";
+            this.button2.Size = new System.Drawing.Size(159, 21);
+            this.button2.TabIndex = 1;
+            this.button2.Text = "Ler Arquivo";
+            this.button2.UseVisualStyleBackColor = true;
+            this.button2.Click += new System.EventHandler(this.button2_Click);
             // 
             // label19
             // 
@@ -1215,6 +1167,16 @@
             this.cbFrequenciaLeituraDR.Size = new System.Drawing.Size(72, 21);
             this.cbFrequenciaLeituraDR.TabIndex = 6;
             // 
+            // btnDestinoCSV
+            // 
+            this.btnDestinoCSV.Location = new System.Drawing.Point(316, 78);
+            this.btnDestinoCSV.Name = "btnDestinoCSV";
+            this.btnDestinoCSV.Size = new System.Drawing.Size(26, 22);
+            this.btnDestinoCSV.TabIndex = 9;
+            this.btnDestinoCSV.Text = "...";
+            this.btnDestinoCSV.UseVisualStyleBackColor = true;
+            this.btnDestinoCSV.Click += new System.EventHandler(this.btnDestinoCSV_Click);
+            // 
             // label23
             // 
             this.label23.AutoSize = true;
@@ -1224,12 +1186,28 @@
             this.label23.TabIndex = 5;
             this.label23.Text = "Frequência";
             // 
-            // btIntervaloLeituraDR
+            // tbDestinoCSV
             // 
-            this.btIntervaloLeituraDR.Location = new System.Drawing.Point(356, 80);
-            this.btIntervaloLeituraDR.Name = "btIntervaloLeituraDR";
-            this.btIntervaloLeituraDR.Size = new System.Drawing.Size(31, 20);
-            this.btIntervaloLeituraDR.TabIndex = 4;
+            this.tbDestinoCSV.Location = new System.Drawing.Point(10, 79);
+            this.tbDestinoCSV.Name = "tbDestinoCSV";
+            this.tbDestinoCSV.Size = new System.Drawing.Size(304, 20);
+            this.tbDestinoCSV.TabIndex = 8;
+            // 
+            // tbIntervaloLeituraDR
+            // 
+            this.tbIntervaloLeituraDR.Location = new System.Drawing.Point(356, 80);
+            this.tbIntervaloLeituraDR.Name = "tbIntervaloLeituraDR";
+            this.tbIntervaloLeituraDR.Size = new System.Drawing.Size(31, 20);
+            this.tbIntervaloLeituraDR.TabIndex = 4;
+            // 
+            // label9
+            // 
+            this.label9.AutoSize = true;
+            this.label9.Location = new System.Drawing.Point(7, 64);
+            this.label9.Name = "label9";
+            this.label9.Size = new System.Drawing.Size(154, 13);
+            this.label9.TabIndex = 7;
+            this.label9.Text = "Destino do arquivo processado";
             // 
             // label24
             // 
@@ -1239,6 +1217,37 @@
             this.label24.Size = new System.Drawing.Size(48, 13);
             this.label24.TabIndex = 2;
             this.label24.Text = "Intervalo";
+            // 
+            // btnOrigemCSV
+            // 
+            this.btnOrigemCSV.Location = new System.Drawing.Point(315, 37);
+            this.btnOrigemCSV.Name = "btnOrigemCSV";
+            this.btnOrigemCSV.Size = new System.Drawing.Size(26, 22);
+            this.btnOrigemCSV.TabIndex = 5;
+            this.btnOrigemCSV.Text = "...";
+            this.btnOrigemCSV.UseVisualStyleBackColor = true;
+            this.btnOrigemCSV.Click += new System.EventHandler(this.btnOrigemCSV_Click);
+            // 
+            // tbOrigemCSV
+            // 
+            this.tbOrigemCSV.Location = new System.Drawing.Point(9, 38);
+            this.tbOrigemCSV.Name = "tbOrigemCSV";
+            this.tbOrigemCSV.Size = new System.Drawing.Size(304, 20);
+            this.tbOrigemCSV.TabIndex = 3;
+            // 
+            // label18
+            // 
+            this.label18.AutoSize = true;
+            this.label18.Location = new System.Drawing.Point(7, 23);
+            this.label18.Name = "label18";
+            this.label18.Size = new System.Drawing.Size(79, 13);
+            this.label18.TabIndex = 1;
+            this.label18.Text = "Origem do CSV";
+            // 
+            // tmLeituraCSVDetalhadoRegistro
+            // 
+            this.tmLeituraCSVDetalhadoRegistro.Interval = 1000;
+            this.tmLeituraCSVDetalhadoRegistro.Tick += new System.EventHandler(this.tmLeituraCSVDetalhadoRegistro_Tick);
             // 
             // Form1
             // 
@@ -1390,10 +1399,10 @@
         private System.Windows.Forms.GroupBox groupBox11;
         private System.Windows.Forms.ProgressBar pbLeituraDR;
         private System.Windows.Forms.Button button2;
-        private System.Windows.Forms.Button button3;
+        private System.Windows.Forms.Button btnDestinoCSV;
         private System.Windows.Forms.TextBox tbDestinoCSV;
         private System.Windows.Forms.Label label9;
-        private System.Windows.Forms.Button button4;
+        private System.Windows.Forms.Button btnOrigemCSV;
         private System.Windows.Forms.TextBox tbOrigemCSV;
         private System.Windows.Forms.Label label18;
         private System.Windows.Forms.ComboBox cbStatusLeituraDR;
@@ -1401,8 +1410,9 @@
         private System.Windows.Forms.Label label19;
         private System.Windows.Forms.ComboBox cbFrequenciaLeituraDR;
         private System.Windows.Forms.Label label23;
-        private System.Windows.Forms.TextBox btIntervaloLeituraDR;
+        private System.Windows.Forms.TextBox tbIntervaloLeituraDR;
         private System.Windows.Forms.Label label24;
+        private System.Windows.Forms.Timer tmLeituraCSVDetalhadoRegistro;
     }
 }
 
