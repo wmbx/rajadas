@@ -295,13 +295,12 @@ namespace rajadas
         }
 
         // ** Método que atualiza os parâmetros de leitura do arquivo CSV do Detalhado de Registro ** //
-        public Boolean AtualizaParametrosLeituraDetalhadoRegistro(String endereco, String porta, String usuario, String senha, String nomeBD, List<String> listaDeParametros)
+        public Boolean AtualizaParametrosLeituraDetalhadoRegistro(String endereco, String porta, String usuario, String senha, String nomeBD, List<String> listaDeParametros, string cliente)
         {
             // ** String de conexão com o banco ** //
             String stringConexao = "server=" + endereco + ";port=" + porta + ";User Id=" + usuario + ";database=" + nomeBD + ";password=" + senha;
 
-            String stringComando = "UPDATE parametros_detalhado_registros SET origemCSV = @ORIGEM, destinoCSV = @DESTINO, " +
-                                        "statusLeitura = @STATUS, intervaloLeitura = @INTERVALO, frequenciaLeitura = @FREQUENCIA ";
+            String stringComando = "UPDATE parametros_detalhado_registros SET origemCSV = @ORIGEM, destinoCSV = @DESTINO WHERE cliente = '" + cliente + "'";
             try
             {
                 // ** Cria e inicia a conexão com o banco ** //
@@ -314,10 +313,47 @@ namespace rajadas
                 // ** Adiciona os parâmetros ao objeto de comando
                 comando.Parameters.AddWithValue("@ORIGEM", listaDeParametros[0]);
                 comando.Parameters.AddWithValue("@DESTINO", listaDeParametros[1]);
-                comando.Parameters.AddWithValue("@STATUS", listaDeParametros[2]);
-                comando.Parameters.AddWithValue("@INTERVALO", listaDeParametros[3]);
-                comando.Parameters.AddWithValue("@FREQUENCIA", listaDeParametros[4]);
-                
+                                
+                // ** Executa o comando de inserção no banco ** //
+                comando.ExecuteNonQuery();
+
+                return true;
+            }
+            catch (Exception e)
+            {
+                System.Windows.Forms.MessageBox.Show(e.ToString());
+                return false;
+                throw;
+            }
+            finally
+            {
+                conexao.Close();
+                conexao = null;
+                comando = null;
+            }
+        }
+
+        // ** Método que atualiza os parâmetros de leitura do arquivo CSV do Detalhado de Registro ** //
+        public Boolean AtualizaParametrosLeituraAutomaticaDetalhadoRegistro(String endereco, String porta, String usuario, String senha, String nomeBD, List<String> listaDeParametros)
+        {
+            // ** String de conexão com o banco ** //
+            String stringConexao = "server=" + endereco + ";port=" + porta + ";User Id=" + usuario + ";database=" + nomeBD + ";password=" + senha;
+
+            String stringComando = "UPDATE parametros_detalhado_registros SET statusLeitura = @STATUS, intervaloLeitura = @INTERVALO, frequenciaLeitura = @FREQUENCIA ";
+            try
+            {
+                // ** Cria e inicia a conexão com o banco ** //
+                conexao = new MySqlConnection(stringConexao);
+                conexao.Open();
+
+                // ** Cria o objeto de comando ** //
+                comando = new MySqlCommand(stringComando, conexao);
+
+                // ** Adiciona os parâmetros ao objeto de comando
+                comando.Parameters.AddWithValue("@STATUS", listaDeParametros[0]);
+                comando.Parameters.AddWithValue("@INTERVALO", listaDeParametros[1]);
+                comando.Parameters.AddWithValue("@FREQUENCIA", listaDeParametros[2]);
+
                 // ** Executa o comando de inserção no banco ** //
                 comando.ExecuteNonQuery();
 
@@ -363,6 +399,7 @@ namespace rajadas
 
                 while (dataReader.Read())
                 {
+                    listaDeParametros.Add(dataReader["cliente"].ToString());
                     listaDeParametros.Add(dataReader["origemCSV"].ToString());
                     listaDeParametros.Add(dataReader["destinoCSV"].ToString());
                     listaDeParametros.Add(dataReader["statusLeitura"].ToString());
@@ -967,15 +1004,15 @@ namespace rajadas
         }
 
         // ** Método para inserir o Detalhado do Registro do BD ** //
-        public Boolean InserirDetalhadoDoRegistro(String endereco, String porta, String usuario, String senha, String nomeBD, DetalhadoRegistro detalhadoRegistro, String sistema)
+        public Boolean InserirDetalhadoDoRegistro(String endereco, String porta, String usuario, String senha, String nomeBD, DetalhadoRegistro detalhadoRegistro, string tabela)
         {
             // ** String de conexão com o banco ** //
             String stringConexao = "server=" + endereco + ";port=" + porta + ";User Id=" + usuario + ";database=" + nomeBD + ";password=" + senha;
 
             // ** String para inserção de registros no banco // **
-            String stringComando = "INSERT INTO detalhado_registros (protocolo, sistema, workflow, cpf_cnpj, data_cadastro, data_conclusao, status_registro, resultado, " +
+            String stringComando = "INSERT INTO " + tabela + " (protocolo, workflow, cpf_cnpj, data_cadastro, data_conclusao, status_registro, resultado, " +
                 "usuario, nh, contrato_proposta, prioridade, data_analise, tempo_analise, tipo_conclusao, agencia, conta, dac, matricula ) " +
-                "VALUES (@PROTOCOLO, @SISTEMA, @WORKFLOW, @CPF_CNPJ, @DATA_CADASTRO, @DATA_CONCLUSAO, @STATUS_REGISTRO, @RESULTADO, @USUARIO, @NH, @CONTRATO_PROPOSTA, " +
+                "VALUES (@PROTOCOLO, @WORKFLOW, @CPF_CNPJ, @DATA_CADASTRO, @DATA_CONCLUSAO, @STATUS_REGISTRO, @RESULTADO, @USUARIO, @NH, @CONTRATO_PROPOSTA, " +
                 "@PRIORIDADE, @DATA_ANALISE, @TEMPO_ANALISE, @TIPO_CONCLUSAO, @AGENCIA, @CONTA, @DAC, @MATRICULA)";
 
             try
@@ -989,7 +1026,6 @@ namespace rajadas
 
                 // ** Adiciona os parâmetros ao objeto de comando
                 comando.Parameters.AddWithValue("@PROTOCOLO", detalhadoRegistro.protocolo);
-                comando.Parameters.AddWithValue("@SISTEMA", sistema);
                 comando.Parameters.AddWithValue("@WORKFLOW", detalhadoRegistro.workflow);
                 comando.Parameters.AddWithValue("@CPF_CNPJ", detalhadoRegistro.cpfCnpj);
                 comando.Parameters.AddWithValue("@DATA_CADASTRO", detalhadoRegistro.dataCadastro);
@@ -1027,14 +1063,14 @@ namespace rajadas
         }
 
         // ** Método para atualizar objeto Detalhado do Registro do BD ** //
-        public Boolean AtualizarDetalhadoDoRegistro(String endereco, String porta, String usuario, String senha, String nomeBD, DetalhadoRegistro detalhadoRegistro)
+        public Boolean AtualizarDetalhadoDoRegistro(String endereco, String porta, String usuario, String senha, String nomeBD, DetalhadoRegistro detalhadoRegistro, string tabela)
         {
             // ** String de conexão com o banco ** //
             String stringConexao = "server=" + endereco + ";port=" + porta + ";User Id=" + usuario + ";database=" + nomeBD + ";password=" + senha;
 
-            String stringComando = "UPDATE detalhado_registros SET data_conclusao = @DATA_CONCLUSAO, status_registro = @STATUS_REGISTRO, " +
+            String stringComando = "UPDATE " + tabela + " SET data_conclusao = @DATA_CONCLUSAO, status_registro = @STATUS_REGISTRO, " +
                                         "resultado = @RESULTADO, prioridade = @PRIORIDADE, data_analise = @DATA_ANALISE, " +
-                                        "tempo_analise = @TEMPO_ANALISE, tipo_conclusao = @TIPO_CONCLUSAO, agencia = @AGENCIA, conta = @CONTA, dac = @DAC WHERE protocolo = " + detalhadoRegistro.protocolo + " AND sistema = '" + detalhadoRegistro.sistema + "'";
+                                        "tempo_analise = @TEMPO_ANALISE, tipo_conclusao = @TIPO_CONCLUSAO, agencia = @AGENCIA, conta = @CONTA, dac = @DAC, matricula = @MATRICULA WHERE protocolo = " + detalhadoRegistro.protocolo;
 
             try
             {
@@ -1057,6 +1093,7 @@ namespace rajadas
                 comando.Parameters.AddWithValue("@AGENCIA", detalhadoRegistro.agencia);
                 comando.Parameters.AddWithValue("@CONTA", detalhadoRegistro.conta);
                 comando.Parameters.AddWithValue("@DAC", detalhadoRegistro.dac);
+                comando.Parameters.AddWithValue("@MATRICULA", detalhadoRegistro.matricula);
 
                 // ** Executa o comando de inserção no banco ** //
                 comando.ExecuteNonQuery();
@@ -1077,13 +1114,13 @@ namespace rajadas
         }
 
         // ** Método para retornar os registros da tabela ** //
-        public List<DetalhadoRegistro> ListarDetalhadoRegistro(String endereco, String porta, String usuario, String senha, String nomeBD)
+        public List<DetalhadoRegistro> ListarDetalhadoRegistro(String endereco, String porta, String usuario, String senha, String nomeBD, string tabela)
         {
             // ** String de conexão com o banco ** //
             String stringConexao = "server=" + endereco + ";port=" + porta + ";User Id=" + usuario + ";database=" + nomeBD + ";password=" + senha;
 
             // ** String para buscar os registros no banco // **
-            String stringComando = "SELECT * FROM detalhado_registros ORDER BY protocolo";
+            String stringComando = "SELECT * FROM " + tabela + " ORDER BY protocolo";
 
             // ** Cria a lista de parâmetros ** //
             List<DetalhadoRegistro> listaDetalhadoRegistro = new List<DetalhadoRegistro>();

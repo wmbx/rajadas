@@ -62,11 +62,22 @@ namespace rajadas
         private DiaMonitoramento listaDiaMonitoramentoDigital;
         private DiaMonitoramento listaDiaMonitoramentoInvertida;
 
-        private string diretorioOrigemCSV;
-        private string diretorioDestinoCSV;
+        private string statusLeituraCSV;
         private string parametroIntervaloLeituraCSV;
         private string parametroFrequenciaLeituraCSV;
-        private string statusLeituraCSV;
+
+        private string diretorioOrigemCSVBradesco;
+        private string diretorioDestinoCSVBradesco;
+
+        private string diretorioOrigemCSVItau;
+        private string diretorioDestinoCSVItau;
+
+        private string diretorioOrigemCSVDockTech;
+        private string diretorioDestinoCSVDockTech;
+
+        private string diretorioOrigemCSVBMG;
+        private string diretorioDestinoCSVBMG;
+
 
         public Form1()
         {
@@ -91,8 +102,8 @@ namespace rajadas
             rajada.ExcluirArquivosProcessadosAntigos(this.caminhoRajadaProcessadaDigital);
             rajada.ExcluirArquivosProcessadosAntigos(this.caminhoRajadaProcessadaInvertida);
 
-            Expurgo expurgo = new Expurgo();
-            expurgo.ExcluirArquivosCSVAntigos(this.diretorioDestinoCSV);
+            //Expurgo expurgo = new Expurgo();
+            //expurgo.ExcluirArquivosCSVAntigos(this.diretorioDestinoCSV);
         }
 
         protected void monitoramentoTijolo()
@@ -599,19 +610,40 @@ namespace rajadas
 
             listaDeParametrosDetalhadoRegistro = bancoDeDados.CarregarParametrosLeituraDetalhadoRegistro(this.enderecoBD, this.portaBD, this.usuarioBD, this.senhaBD, this.nomeBD);
 
-            if (listaDeParametrosDetalhadoRegistro.Count == 5)
+            if (listaDeParametrosDetalhadoRegistro.Count == 24)
             {
-                this.diretorioOrigemCSV = listaDeParametrosDetalhadoRegistro[0];
-                this.diretorioDestinoCSV = listaDeParametrosDetalhadoRegistro[1];
-                this.statusLeituraCSV = listaDeParametrosDetalhadoRegistro[2];
-                this.parametroIntervaloLeituraCSV = listaDeParametrosDetalhadoRegistro[3];
-                this.parametroFrequenciaLeituraCSV = listaDeParametrosDetalhadoRegistro[4];
+                this.statusLeituraCSV = listaDeParametrosDetalhadoRegistro[3];
+                this.parametroIntervaloLeituraCSV = listaDeParametrosDetalhadoRegistro[4];
+                this.parametroFrequenciaLeituraCSV = listaDeParametrosDetalhadoRegistro[5];
 
-                tbOrigemCSV.Text = this.diretorioOrigemCSV;
-                tbDestinoCSV.Text = this.diretorioDestinoCSV;
+                this.diretorioOrigemCSVBradesco = listaDeParametrosDetalhadoRegistro[1];
+                this.diretorioDestinoCSVBradesco = listaDeParametrosDetalhadoRegistro[2];
+
+                this.diretorioOrigemCSVItau = listaDeParametrosDetalhadoRegistro[7];
+                this.diretorioDestinoCSVItau = listaDeParametrosDetalhadoRegistro[8];
+
+                this.diretorioOrigemCSVDockTech = listaDeParametrosDetalhadoRegistro[13];
+                this.diretorioDestinoCSVDockTech = listaDeParametrosDetalhadoRegistro[14];
+
+                this.diretorioOrigemCSVBMG = listaDeParametrosDetalhadoRegistro[19];
+                this.diretorioDestinoCSVBMG = listaDeParametrosDetalhadoRegistro[20];
+
                 cbStatusLeituraDR.SelectedItem = this.statusLeituraCSV;
                 tbIntervaloLeituraDR.Text = this.parametroIntervaloLeituraCSV;
                 cbFrequenciaLeituraDR.SelectedItem = this.parametroFrequenciaLeituraCSV;
+
+                tbOrigemCSVBradesco.Text = this.diretorioOrigemCSVBradesco;
+                tbDestinoCSVBradesco.Text = this.diretorioDestinoCSVBradesco;
+
+                tbOrigemCSVItau.Text = this.diretorioOrigemCSVItau;
+                tbDestinoCSVItau.Text = this.diretorioDestinoCSVItau;
+
+                tbOrigemCSVDockTech.Text = this.diretorioOrigemCSVDockTech;
+                tbDestinoCSVDockTech.Text = this.diretorioDestinoCSVDockTech;
+
+                tbOrigemCSVBMG.Text = this.diretorioOrigemCSVBMG;
+                tbDestinoCSVBMG.Text = this.diretorioDestinoCSVBMG;
+
 
                 // ---------------------------------- ** Seta os agendamentos das leituras no timerda Rajada Invertida ** --------------------------------//
                 tmLeituraCSVDetalhadoRegistro.Interval = agendamento.retornaAgendamentoExecucao(parametroIntervaloLeituraCSV, parametroFrequenciaLeituraCSV);
@@ -644,7 +676,7 @@ namespace rajadas
                 }
             }
 
-            
+
             // ------------------ ** Ativa ou Desativa os Parâmetros das Leituras Automáticas de acordo com o parâmetro ** -----------------------------//
 
         }
@@ -673,7 +705,7 @@ namespace rajadas
 
         private void botaoApontaArquivoExcel_Click(object sender, EventArgs e)
         {
-            
+
         }
 
         private void btCaminhoRajadaProcessada_Click(object sender, EventArgs e)
@@ -732,12 +764,12 @@ namespace rajadas
 
         private void btCaminhoArquivoExcelRajadaDigital_Click(object sender, EventArgs e)
         {
-           
+
         }
 
         private void btCaminhoArquivoExcelRajadaTrintaTrinta_Click(object sender, EventArgs e)
         {
-            
+
         }
 
         private void btApontaCaminhoRajadaTrintaTrinta_Click(object sender, EventArgs e)
@@ -779,12 +811,12 @@ namespace rajadas
                 pbLeituraTijolo.Visible = true;
 
                 Rajada rajada = new Rajada();
-                
+
                 List<Rajada> listaDeObjetosRajada = new List<Rajada>();
 
                 BancoDeDados bancoDeDados = new BancoDeDados();
 
-                // ------------------------** Lê Rajada Tijolo e Insere no Excel ** -----------------------------//
+                // ------------------------** Lê Rajada Tijolo e Insere no BD ** -----------------------------//
                 listaDeObjetosRajada = rajada.lerArquivoTxtRajadaTijolo(caminhoArquivoTxtRajadaTijolo, caminhoRajadaProcessadaTijolo, parametroCopiarOuMoverRajadaTijolo);
 
                 pbLeituraTijolo.Maximum = listaDeObjetosRajada.Count();
@@ -794,13 +826,13 @@ namespace rajadas
 
                 for (int i = 0; i < listaDeObjetosRajada.Count(); i++)
                 {
-                    bancoDeDados.insereRajadaNoBD(this.enderecoBD, this.portaBD, this.usuarioBD, this.senhaBD, this.nomeBD, listaDeObjetosRajada[i], "1");
+                    //bancoDeDados.insereRajadaNoBD(this.enderecoBD, this.portaBD, this.usuarioBD, this.senhaBD, this.nomeBD, listaDeObjetosRajada[i], "1");
                     pbLeituraTijolo.Value = i;
                 }
-                // ------------------------** Lê Rajada Tijolo e Insere no Excel ** -----------------------------//
+                // ------------------------** Lê Rajada Tijolo e Insere no BD ** -----------------------------//
 
                 pbLeituraTijolo.Visible = false;
-                btLerArquivoTijolo.Visible = true; 
+                btLerArquivoTijolo.Visible = true;
             }
             catch (Exception)
             {
@@ -833,14 +865,14 @@ namespace rajadas
 
                 for (int i = 0; i < listaDeObjetosRajada.Count(); i++)
                 {
-                    bancoDeDados.insereRajadaNoBD("this.enderecoBD", this.portaBD, this.usuarioBD, this.senhaBD, this.nomeBD, listaDeObjetosRajada[i], "2");
+                    //bancoDeDados.insereRajadaNoBD("this.enderecoBD", this.portaBD, this.usuarioBD, this.senhaBD, this.nomeBD, listaDeObjetosRajada[i], "2");
                     pbLeituraDigital.Value = i;
                 }
                 // ------------------------** Lê Rajada Digital Mundo Velho e Insere no Excel ** -----------------------------//
 
                 pbLeituraDigital.Visible = false;
                 btLerArquivoDigital.Visible = true;
-                
+
                 // ------------------------** Lê Rajada Digital Mundo Velho e Insere no Excel ** -----------------------------//
             }
             catch (Exception)
@@ -874,14 +906,14 @@ namespace rajadas
 
                 for (int i = 0; i < listaDeObjetosRajada.Count(); i++)
                 {
-                    bancoDeDados.insereRajadaNoBD(this.enderecoBD, this.portaBD, this.usuarioBD, this.senhaBD, this.nomeBD, listaDeObjetosRajada[i], "3");
+                    //bancoDeDados.insereRajadaNoBD(this.enderecoBD, this.portaBD, this.usuarioBD, this.senhaBD, this.nomeBD, listaDeObjetosRajada[i], "3");
                     pbLeituraInvertida.Value = i;
                 }
                 // ------------------------** Lê Rajada Invertida e Insere no Excel ** -----------------------------//
 
                 pbLeituraInvertida.Visible = false;
                 btLerArquivoInvertida.Visible = true;
-                
+
                 // ------------------------** Lê Rajada Invertida e Insere no Excel ** -----------------------------//
             }
 
@@ -983,7 +1015,7 @@ namespace rajadas
 
                 if (retorno == true)
                 {
-                    MessageBox.Show("As configurações foram salvas !!!", "Mensagem do sistema");  
+                    MessageBox.Show("As configurações foram salvas !!!", "Mensagem do sistema");
                 }
 
                 carregaParametrosRajadaTijolo();
@@ -1031,7 +1063,7 @@ namespace rajadas
 
                 if (retorno == true)
                 {
-                    MessageBox.Show("As configurações foram salvas !!!", "Mensagem do sistema");                    
+                    MessageBox.Show("As configurações foram salvas !!!", "Mensagem do sistema");
                 }
                 carregaParametrosRajadaDigital();
             }
@@ -1087,36 +1119,36 @@ namespace rajadas
 
         private void btLerArquivoTijolo_Click(object sender, EventArgs e)
         {
-                btLerArquivoTijolo.Visible = false;
+            btLerArquivoTijolo.Visible = false;
 
-                pbLeituraTijolo.Visible = true;
+            pbLeituraTijolo.Visible = true;
 
-                Rajada rajada = new Rajada();
+            Rajada rajada = new Rajada();
 
-                List<Rajada> listaDeObjetosRajada = new List<Rajada>();
+            List<Rajada> listaDeObjetosRajada = new List<Rajada>();
 
-                BancoDeDados bancoDeDados = new BancoDeDados();
+            BancoDeDados bancoDeDados = new BancoDeDados();
 
-                // ------------------------** Lê Rajada Tijolo e Insere no Excel ** -----------------------------//
-                listaDeObjetosRajada = rajada.lerArquivoTxtRajadaTijolo(caminhoArquivoTxtRajadaTijolo, caminhoRajadaProcessadaTijolo, parametroCopiarOuMoverRajadaTijolo);
+            // ------------------------** Lê Rajada Tijolo e Insere no Excel ** -----------------------------//
+            listaDeObjetosRajada = rajada.lerArquivoTxtRajadaTijolo(caminhoArquivoTxtRajadaTijolo, caminhoRajadaProcessadaTijolo, parametroCopiarOuMoverRajadaTijolo);
 
-                pbLeituraTijolo.Maximum = listaDeObjetosRajada.Count();
+            pbLeituraTijolo.Maximum = listaDeObjetosRajada.Count();
 
-                // ** Insere a rajada sumarizada no banco ** //
-                bancoDeDados.insereRajadaSumarizada(this.enderecoBD, this.portaBD, this.usuarioBD, this.senhaBD, this.nomeBD, listaDeObjetosRajada, "1");
+            // ** Insere a rajada sumarizada no banco ** //
+            bancoDeDados.insereRajadaSumarizada(this.enderecoBD, this.portaBD, this.usuarioBD, this.senhaBD, this.nomeBD, listaDeObjetosRajada, "1");
 
-                for (int i = 0; i < listaDeObjetosRajada.Count(); i++)
-                {
-                    bancoDeDados.insereRajadaNoBD(this.enderecoBD, this.portaBD, this.usuarioBD, this.senhaBD, this.nomeBD, listaDeObjetosRajada[i], "1");
-                    pbLeituraTijolo.Value = i;
-                }
-                // ------------------------** Lê Rajada Tijolo e Insere no Excel ** -----------------------------//
+            for (int i = 0; i < listaDeObjetosRajada.Count(); i++)
+            {
+                //bancoDeDados.insereRajadaNoBD(this.enderecoBD, this.portaBD, this.usuarioBD, this.senhaBD, this.nomeBD, listaDeObjetosRajada[i], "1");
+                pbLeituraTijolo.Value = i;
+            }
+            // ------------------------** Lê Rajada Tijolo e Insere no Excel ** -----------------------------//
 
-                pbLeituraTijolo.Visible = false;
-                btLerArquivoTijolo.Visible = true;
+            pbLeituraTijolo.Visible = false;
+            btLerArquivoTijolo.Visible = true;
 
-                // -------------------------** Mensagem ao fim da leitura manual -----------------------------------//
-                MessageBox.Show("Processamento Concluído !!!" + "\n" + "Total de Contas Processadas: " + listaDeObjetosRajada.Count(), "Mensagem do sistema");
+            // -------------------------** Mensagem ao fim da leitura manual -----------------------------------//
+            MessageBox.Show("Processamento Concluído !!!" + "\n" + "Total de Contas Processadas: " + listaDeObjetosRajada.Count(), "Mensagem do sistema");
         }
 
         private void btLerArquivoDigital_Click(object sender, EventArgs e)
@@ -1140,17 +1172,17 @@ namespace rajadas
             bancoDeDados.insereRajadaSumarizada(this.enderecoBD, this.portaBD, this.usuarioBD, this.senhaBD, this.nomeBD, listaDeObjetosRajada, "2");
 
             for (int i = 0; i < listaDeObjetosRajada.Count(); i++)
-                {
-                    bancoDeDados.insereRajadaNoBD(this.enderecoBD, this.portaBD, this.usuarioBD, this.senhaBD, this.nomeBD, listaDeObjetosRajada[i], "2");
-                    pbLeituraDigital.Value = i;
-                }
-                // ------------------------** Lê Rajada Digital Mundo Velho e Insere no Excel ** -----------------------------//
+            {
+                //bancoDeDados.insereRajadaNoBD(this.enderecoBD, this.portaBD, this.usuarioBD, this.senhaBD, this.nomeBD, listaDeObjetosRajada[i], "2");
+                pbLeituraDigital.Value = i;
+            }
+            // ------------------------** Lê Rajada Digital Mundo Velho e Insere no Excel ** -----------------------------//
 
-                pbLeituraDigital.Visible = false;
-                btLerArquivoDigital.Visible = true;
+            pbLeituraDigital.Visible = false;
+            btLerArquivoDigital.Visible = true;
 
-                // -------------------------** Mensagem ao fim da leitura manual -----------------------------------//
-                MessageBox.Show("Processamento Concluído !!!" + "\n" + "Total de Contas Processadas: " + listaDeObjetosRajada.Count(), "Mensagem do sistema");
+            // -------------------------** Mensagem ao fim da leitura manual -----------------------------------//
+            MessageBox.Show("Processamento Concluído !!!" + "\n" + "Total de Contas Processadas: " + listaDeObjetosRajada.Count(), "Mensagem do sistema");
         }
 
         private void btLerArquivoInvertida_Click(object sender, EventArgs e)
@@ -1174,43 +1206,43 @@ namespace rajadas
             bancoDeDados.insereRajadaSumarizada(this.enderecoBD, this.portaBD, this.usuarioBD, this.senhaBD, this.nomeBD, listaDeObjetosRajada, "3");
 
             for (int i = 0; i < listaDeObjetosRajada.Count(); i++)
-                {
-                    bancoDeDados.insereRajadaNoBD(this.enderecoBD, this.portaBD, this.usuarioBD, this.senhaBD, this.nomeBD, listaDeObjetosRajada[i], "3");
-                    pbLeituraInvertida.Value = i;
-                }
-                // ------------------------** Lê Rajada Invertida e Insere no Excel ** -----------------------------//
+            {
+                //bancoDeDados.insereRajadaNoBD(this.enderecoBD, this.portaBD, this.usuarioBD, this.senhaBD, this.nomeBD, listaDeObjetosRajada[i], "3");
+                pbLeituraInvertida.Value = i;
+            }
+            // ------------------------** Lê Rajada Invertida e Insere no Excel ** -----------------------------//
 
-                pbLeituraInvertida.Visible = false;
-                btLerArquivoInvertida.Visible = true;
+            pbLeituraInvertida.Visible = false;
+            btLerArquivoInvertida.Visible = true;
 
-                // -------------------------** Mensagem ao fim da leitura manual -----------------------------------//
-                MessageBox.Show("Processamento Concluído !!!" + "\n" + "Total de Contas Processadas: " + listaDeObjetosRajada.Count(), "Mensagem do sistema");
+            // -------------------------** Mensagem ao fim da leitura manual -----------------------------------//
+            MessageBox.Show("Processamento Concluído !!!" + "\n" + "Total de Contas Processadas: " + listaDeObjetosRajada.Count(), "Mensagem do sistema");
         }
 
         private void bwLerArquivoTijolo_DoWork(object sender, DoWorkEventArgs e)
-        {}
+        { }
 
         private void tmBarraProgressoTijolo_Tick(object sender, EventArgs e)
-        {}
+        { }
 
-       
+
         private void tmMonitoramentoArquivosRajadaTijolo_Tick(object sender, EventArgs e)
-        {}
-      
+        { }
+
         private void tmMonitoramentoArquivosRajadaDigital_Tick(object sender, EventArgs e)
-        {}
+        { }
 
         private void tmMonitoramentoArquivosRajadaInvertida_Tick(object sender, EventArgs e)
-        {}
+        { }
 
         private void btSalvarMonitoramentoTijolo_Click(object sender, EventArgs e)
-        {}
+        { }
 
         private void btSalvarMonitoramentoDigital_Click(object sender, EventArgs e)
-        {}
+        { }
 
         private void btSalvarMonitoramentoInvertida_Click(object sender, EventArgs e)
-        {}
+        { }
 
         private void btAgendamentoTijolo_Click(object sender, EventArgs e)
         {
@@ -1290,86 +1322,270 @@ namespace rajadas
             }
         }
 
-        // ** Faz a leitura manual dos arquivos .CSV ** //
+        // ** Faz a leitura manual dos arquivos .CSV BRADESCO ** //
         private void button2_Click(object sender, EventArgs e)
         {
-            button2.Visible = false;
+            LerCSVDetalhadoRegistro("bradesco", this.diretorioOrigemCSVBradesco, this.diretorioDestinoCSVBradesco, "manual");
+        }
 
-            pbLeituraDR.Visible = true;
-
-            int contadorRegistrosImportados = 0;
-
-            int contadorRegistrosAtualizados = 0;
-
-            DetalhadoRegistro detalhadoRegistro = new DetalhadoRegistro();
-
-            List<string> listaDeArquivosCSV = new List<string>();
-
-            // ** Recupera os arquivos CSV encontrados no diretório especificado **//
-            listaDeArquivosCSV = detalhadoRegistro.LocalizarArquivosCSV(this.diretorioOrigemCSV);
-
-            foreach (var arquivoEncontrado in listaDeArquivosCSV)
+        // ** Realiza a leitura manual do arquivo CSV do Detalhado de Registro passando como parâmetro o CLIENTE ** //
+        private void LerCSVDetalhadoRegistro(string cliente, string diretorioOrigemCSV, string diretorioDestinoCSV, string tipoLeitura)
+        {
             {
-                pbLeituraDR.Value = 0;
-
-                BancoDeDados bancoDeDados = new BancoDeDados();
-
-                List<DetalhadoRegistro> listaDetalhadoRegistroBD = new List<DetalhadoRegistro>();
-
-                listaDetalhadoRegistroBD = bancoDeDados.ListarDetalhadoRegistro(this.enderecoBD, this.portaBD, this.usuarioBD, this.senhaBD, this.nomeBD);
-
-                List<DetalhadoRegistro> listaDetalhadoRegistroInserir = new List<DetalhadoRegistro>();
-
-                listaDetalhadoRegistroInserir = detalhadoRegistro.LerArquivoDetalhadoDeRegistro(arquivoEncontrado);
-
-                if (listaDetalhadoRegistroInserir != null)
+                if (cliente == "bradesco")
                 {
-
-                    List<DetalhadoRegistro> listaDetalhadoRegistroNovos = detalhadoRegistro.CompararListasDetalhadoRegistroObjetosNovos(listaDetalhadoRegistroInserir, listaDetalhadoRegistroBD);
-
-                    List<DetalhadoRegistro> listaDetalhadoRegistroAtualizar = detalhadoRegistro.CompararListasDetalhadoRegistroObjetosCadastrados(listaDetalhadoRegistroInserir, listaDetalhadoRegistroBD);
-
-                    if (listaDetalhadoRegistroNovos != null)
+                    pbLeituraDR.Visible = true;
+                    button2.Visible = false;
+                }
+                else
+                {
+                    if (cliente == "itau")
                     {
-                        contadorRegistrosImportados = contadorRegistrosImportados + listaDetalhadoRegistroNovos.Count();
+                        pbLeituraDRItau.Visible = true;
+                        btnLerCSVItau.Visible = false;
                     }
-
-                    if (listaDetalhadoRegistroAtualizar != null)
+                    else
                     {
-                        contadorRegistrosAtualizados = contadorRegistrosAtualizados + listaDetalhadoRegistroAtualizar.Count();
-                    }
-
-                    pbLeituraDR.Maximum = contadorRegistrosImportados + contadorRegistrosAtualizados;
-
-                    if (listaDetalhadoRegistroAtualizar != null)
-                    {
-                        for (int i = 0; i < listaDetalhadoRegistroAtualizar.Count(); i++)
+                        if (cliente == "docktech")
                         {
-                            bancoDeDados.AtualizarDetalhadoDoRegistro(this.enderecoBD, this.portaBD, this.usuarioBD, this.senhaBD, this.nomeBD, listaDetalhadoRegistroAtualizar[i]);
-                            pbLeituraDR.Value = i;
+                            pbLeituraDRDockTech.Visible = true;
+                            btnLerCSVDockTech.Visible = false;
+                        }
+                        else
+                        {
+                            if (cliente == "bmg")
+                            {
+                                pbLeituraDRBMG.Visible = true;
+                                btnLerCSVBMG.Visible = false;
+                            }
                         }
                     }
-
-                    if (listaDetalhadoRegistroNovos != null)
-                    {
-                        for (int i = 0; i < listaDetalhadoRegistroNovos.Count(); i++)
-                        {
-                            bancoDeDados.InserirDetalhadoDoRegistro(this.enderecoBD, this.portaBD, this.usuarioBD, this.senhaBD, this.nomeBD, listaDetalhadoRegistroNovos[i], listaDetalhadoRegistroNovos[i].sistema);
-                            pbLeituraDR.Value = i;
-                        }
-                    }
-
-                    detalhadoRegistro.MoverArquivoProcessado(arquivoEncontrado, this.diretorioDestinoCSV);
                 }
 
+                int contadorRegistrosImportados = 0;
+
+                int contadorRegistrosAtualizados = 0;
+
+                DetalhadoRegistro detalhadoRegistro = new DetalhadoRegistro();
+
+                List<string> listaDeArquivosCSV = new List<string>();
+
+                // ** Recupera os arquivos CSV encontrados no diretório especificado **//
+                listaDeArquivosCSV = detalhadoRegistro.LocalizarArquivosCSV(diretorioOrigemCSV);
+
+                // ** Verifica se foi encontrado algum arquivo CSV antes de realizar a leitura ** //
+                if (listaDeArquivosCSV != null)
+                {
+                    foreach (var arquivoEncontrado in listaDeArquivosCSV)
+                    {
+                        BancoDeDados bancoDeDados = new BancoDeDados();
+
+                        List<DetalhadoRegistro> listaDetalhadoRegistroBD = new List<DetalhadoRegistro>();
+
+                        if (cliente == "bradesco")
+                        {
+                            pbLeituraDR.Value = 0;
+
+                            listaDetalhadoRegistroBD = bancoDeDados.ListarDetalhadoRegistro(this.enderecoBD, this.portaBD, this.usuarioBD, this.senhaBD, this.nomeBD, "bradesco_detalhado_registros");
+                        }
+                        else
+                        {
+                            if (cliente == "itau")
+                            {
+                                pbLeituraDRItau.Value = 0;
+
+                                listaDetalhadoRegistroBD = bancoDeDados.ListarDetalhadoRegistro(this.enderecoBD, this.portaBD, this.usuarioBD, this.senhaBD, this.nomeBD, "itau_detalhado_registros");
+                            }
+                            else
+                            {
+                                if (cliente == "docktech")
+                                {
+                                    pbLeituraDRDockTech.Value = 0;
+
+                                    listaDetalhadoRegistroBD = bancoDeDados.ListarDetalhadoRegistro(this.enderecoBD, this.portaBD, this.usuarioBD, this.senhaBD, this.nomeBD, "docktech_detalhado_registros");
+                                }
+                                else
+                                {
+                                    if (cliente == "bmg")
+                                    {
+                                        pbLeituraDRBMG.Value = 0;
+
+                                        listaDetalhadoRegistroBD = bancoDeDados.ListarDetalhadoRegistro(this.enderecoBD, this.portaBD, this.usuarioBD, this.senhaBD, this.nomeBD, "bmg_detalhado_registros");
+                                    }
+                                }
+                            }
+                        }
+                                           
+
+                        List<DetalhadoRegistro> listaDetalhadoRegistroInserir = new List<DetalhadoRegistro>();
+
+                        listaDetalhadoRegistroInserir = detalhadoRegistro.LerArquivoDetalhadoDeRegistro(arquivoEncontrado);
+
+                        if (listaDetalhadoRegistroInserir != null)
+                        {
+
+                            List<DetalhadoRegistro> listaDetalhadoRegistroNovos = detalhadoRegistro.CompararListasDetalhadoRegistroObjetosNovos(listaDetalhadoRegistroInserir, listaDetalhadoRegistroBD);
+
+                            List<DetalhadoRegistro> listaDetalhadoRegistroAtualizar = detalhadoRegistro.CompararListasDetalhadoRegistroObjetosCadastrados(listaDetalhadoRegistroInserir, listaDetalhadoRegistroBD);
+
+                            if (listaDetalhadoRegistroNovos != null)
+                            {
+                                contadorRegistrosImportados = contadorRegistrosImportados + listaDetalhadoRegistroNovos.Count();
+                            }
+
+                            if (listaDetalhadoRegistroAtualizar != null)
+                            {
+                                contadorRegistrosAtualizados = contadorRegistrosAtualizados + listaDetalhadoRegistroAtualizar.Count();
+                            }
+
+                            if (cliente == "bradesco")
+                            {
+                                pbLeituraDR.Maximum = contadorRegistrosImportados + contadorRegistrosAtualizados;
+
+                                if (listaDetalhadoRegistroAtualizar != null)
+                                {
+                                    for (int i = 0; i < listaDetalhadoRegistroAtualizar.Count(); i++)
+                                    {
+                                        bancoDeDados.AtualizarDetalhadoDoRegistro(this.enderecoBD, this.portaBD, this.usuarioBD, this.senhaBD, this.nomeBD, listaDetalhadoRegistroAtualizar[i], "bradesco_detalhado_registros");
+                                        pbLeituraDR.Value = i;
+                                    }
+                                }
+
+                                if (listaDetalhadoRegistroNovos != null)
+                                {
+                                    for (int i = 0; i < listaDetalhadoRegistroNovos.Count(); i++)
+                                    {
+                                        bancoDeDados.InserirDetalhadoDoRegistro(this.enderecoBD, this.portaBD, this.usuarioBD, this.senhaBD, this.nomeBD, listaDetalhadoRegistroNovos[i], "bradesco_detalhado_registros");
+                                        pbLeituraDR.Value = pbLeituraDR.Value + 1;
+                                    }
+                                }
+
+                                detalhadoRegistro.MoverArquivoProcessado(arquivoEncontrado, this.diretorioDestinoCSVBradesco);
+                            }
+                            else
+                            {
+                                if (cliente == "itau")
+                                {
+                                    pbLeituraDRItau.Maximum = contadorRegistrosImportados + contadorRegistrosAtualizados;
+
+                                    if (listaDetalhadoRegistroAtualizar != null)
+                                    {
+                                        for (int i = 0; i < listaDetalhadoRegistroAtualizar.Count(); i++)
+                                        {
+                                            bancoDeDados.AtualizarDetalhadoDoRegistro(this.enderecoBD, this.portaBD, this.usuarioBD, this.senhaBD, this.nomeBD, listaDetalhadoRegistroAtualizar[i], "itau_detalhado_registros");
+                                            pbLeituraDRItau.Value = i;
+                                        }
+                                    }
+
+                                    if (listaDetalhadoRegistroNovos != null)
+                                    {
+                                        for (int i = 0; i < listaDetalhadoRegistroNovos.Count(); i++)
+                                        {
+                                            bancoDeDados.InserirDetalhadoDoRegistro(this.enderecoBD, this.portaBD, this.usuarioBD, this.senhaBD, this.nomeBD, listaDetalhadoRegistroNovos[i], "itau_detalhado_registros");
+                                            pbLeituraDRItau.Value = pbLeituraDRItau.Value + 1;
+                                        }
+                                    }
+
+                                    detalhadoRegistro.MoverArquivoProcessado(arquivoEncontrado, this.diretorioDestinoCSVItau);
+                                }
+                                else
+                                {
+                                    if (cliente == "docktech")
+                                    {
+                                        pbLeituraDRDockTech.Maximum = contadorRegistrosImportados + contadorRegistrosAtualizados;
+
+                                        if (listaDetalhadoRegistroAtualizar != null)
+                                        {
+                                            for (int i = 0; i < listaDetalhadoRegistroAtualizar.Count(); i++)
+                                            {
+                                                bancoDeDados.AtualizarDetalhadoDoRegistro(this.enderecoBD, this.portaBD, this.usuarioBD, this.senhaBD, this.nomeBD, listaDetalhadoRegistroAtualizar[i], "docktech_detalhado_registros");
+                                                pbLeituraDRDockTech.Value = i;
+                                            }
+                                        }
+
+                                        if (listaDetalhadoRegistroNovos != null)
+                                        {
+                                            for (int i = 0; i < listaDetalhadoRegistroNovos.Count(); i++)
+                                            {
+                                                bancoDeDados.InserirDetalhadoDoRegistro(this.enderecoBD, this.portaBD, this.usuarioBD, this.senhaBD, this.nomeBD, listaDetalhadoRegistroNovos[i], "docktech_detalhado_registros");
+                                                pbLeituraDRDockTech.Value = pbLeituraDRDockTech.Value + 1;
+                                            }
+                                        }
+
+                                        detalhadoRegistro.MoverArquivoProcessado(arquivoEncontrado, this.diretorioDestinoCSVDockTech);
+                                    }
+                                    else
+                                    {
+                                        if (cliente == "bmg")
+                                        {
+                                            pbLeituraDRBMG.Maximum = contadorRegistrosImportados + contadorRegistrosAtualizados;
+
+                                            if (listaDetalhadoRegistroAtualizar != null)
+                                            {
+                                                for (int i = 0; i < listaDetalhadoRegistroAtualizar.Count(); i++)
+                                                {
+                                                    bancoDeDados.AtualizarDetalhadoDoRegistro(this.enderecoBD, this.portaBD, this.usuarioBD, this.senhaBD, this.nomeBD, listaDetalhadoRegistroAtualizar[i], "bmg_detalhado_registros");
+                                                    pbLeituraDRBMG.Value = i;
+                                                }
+                                            }
+
+                                            if (listaDetalhadoRegistroNovos != null)
+                                            {
+                                                for (int i = 0; i < listaDetalhadoRegistroNovos.Count(); i++)
+                                                {
+                                                    bancoDeDados.InserirDetalhadoDoRegistro(this.enderecoBD, this.portaBD, this.usuarioBD, this.senhaBD, this.nomeBD, listaDetalhadoRegistroNovos[i], "bmg_detalhado_registros");
+                                                    pbLeituraDRBMG.Value = pbLeituraDRBMG.Value + 1;
+                                                }
+                                            }
+
+                                            detalhadoRegistro.MoverArquivoProcessado(arquivoEncontrado, this.diretorioDestinoCSVBMG);
+                                        }
+                                    }
+                                }
+                            }                            
+
+                            
+                        }
+
+                    }
+                }
+
+                if (cliente == "bradesco")
+                {
+                    pbLeituraDR.Visible = false;
+                    button2.Visible = true;
+                }
+                else
+                {
+                    if (cliente == "itau")
+                    {
+                        pbLeituraDRItau.Visible = false;
+                        btnLerCSVItau.Visible = true;
+                    }
+                    else
+                    {
+                        if (cliente == "docktech")
+                        {
+                            pbLeituraDRDockTech.Visible = false;
+                            btnLerCSVDockTech.Visible = true;
+                        }
+                        else
+                        {
+                            if (cliente == "bmg")
+                            {
+                                pbLeituraDRBMG.Visible = false;
+                                btnLerCSVBMG.Visible = true;
+                            }
+                        }
+                    }
+                }
+
+                // -------------------------** Mensagem ao fim da leitura manual -----------------------------------//
+                if (tipoLeitura == "manual")
+                {
+                    MessageBox.Show("Processamento Concluído !!!" + "\n" + "Total de Protocolos Importados: " + contadorRegistrosImportados + "\n" + "Total de Protocolos Atualizados: " + contadorRegistrosAtualizados, "Mensagem do sistema");
+                }
             }
-
-            pbLeituraDR.Visible = false;
-            button2.Visible = true;
-
-            // -------------------------** Mensagem ao fim da leitura manual -----------------------------------//
-            MessageBox.Show("Processamento Concluído !!!" + "\n" + "Total de Protocolos Importados: " + contadorRegistrosImportados + "\n" + "Total de Protocolos Atualizados: " + contadorRegistrosAtualizados, "Mensagem do sistema");
-
         }
 
         private void btnOrigemCSV_Click(object sender, EventArgs e)
@@ -1377,8 +1593,8 @@ namespace rajadas
             FolderBrowserDialog indicarOrigemCSV = new FolderBrowserDialog();
             if (indicarOrigemCSV.ShowDialog() == DialogResult.OK)
             {
-                this.diretorioOrigemCSV = indicarOrigemCSV.SelectedPath;
-                tbOrigemCSV.Text = this.diretorioOrigemCSV;
+                this.diretorioOrigemCSVBradesco = indicarOrigemCSV.SelectedPath;
+                tbOrigemCSVBradesco.Text = this.diretorioOrigemCSVBradesco;
             }
         }
 
@@ -1387,12 +1603,42 @@ namespace rajadas
             FolderBrowserDialog indicarDestinoCSV = new FolderBrowserDialog();
             if (indicarDestinoCSV.ShowDialog() == DialogResult.OK)
             {
-                this.diretorioDestinoCSV = indicarDestinoCSV.SelectedPath;
-                tbDestinoCSV.Text = this.diretorioDestinoCSV;
+                this.diretorioDestinoCSVBradesco = indicarDestinoCSV.SelectedPath;
+                tbDestinoCSVBradesco.Text = this.diretorioDestinoCSVBradesco;
             }
         }
 
+
+        // ** Salvar configurações Detalhado Registro Bradesco ** //
         private void btnSalvarConfiguracoesDR_Click(object sender, EventArgs e)
+        {
+            List<String> listaDeParametrosParaSalvar = new List<String>();
+
+            listaDeParametrosParaSalvar.Add(this.diretorioOrigemCSVBradesco);
+            listaDeParametrosParaSalvar.Add(this.diretorioDestinoCSVBradesco);
+
+            BancoDeDados bancoDeDados = new BancoDeDados();
+            Boolean retorno = bancoDeDados.AtualizaParametrosLeituraDetalhadoRegistro(this.enderecoBD, this.portaBD, this.usuarioBD, this.senhaBD, this.nomeBD, listaDeParametrosParaSalvar, "bradesco");
+
+            if (retorno == true)
+            {
+                MessageBox.Show("As configurações foram salvas !!!", "Mensagem do sistema");
+            }
+
+            CarregarParametrosDetalhadoRegistro();
+        }
+
+        // ** Timer que faz a leitura dos arquivos CSV do Detalhado de Registro de tempos em tempos ** //
+        private void tmLeituraCSVDetalhadoRegistro_Tick(object sender, EventArgs e)
+        {
+            LerCSVDetalhadoRegistro("bradesco", this.diretorioOrigemCSVBradesco, this.diretorioDestinoCSVBradesco, "automatica");
+            LerCSVDetalhadoRegistro("itau", this.diretorioOrigemCSVItau, this.diretorioDestinoCSVItau, "automatica");
+            LerCSVDetalhadoRegistro("docktech", this.diretorioOrigemCSVDockTech, this.diretorioDestinoCSVDockTech, "automatica");
+            LerCSVDetalhadoRegistro("bmg", this.diretorioOrigemCSVBMG, this.diretorioDestinoCSVBMG, "automatica");
+        }
+
+        // ** Salvar configurações da Leitura Automática dos arquivos CSV ** //
+        private void button14_Click(object sender, EventArgs e)
         {
             // ----- ** Validação dos campos Intervalo para não permitir a digitação de zero ou em branco ** -------- //
             if (tbIntervaloLeituraDR.Text.Equals("") || tbIntervaloLeituraDR.Text.Equals("0"))
@@ -1405,16 +1651,14 @@ namespace rajadas
 
                 this.statusLeituraCSV = cbStatusLeituraDR.SelectedItem.ToString();
                 this.parametroIntervaloLeituraCSV = tbIntervaloLeituraDR.Text;
-                this.parametroFrequenciaLeituraCSV = cbFrequenciaLeituraDR.SelectedItem.ToString();                
-                
-                listaDeParametrosParaSalvar.Add(this.diretorioOrigemCSV);
-                listaDeParametrosParaSalvar.Add(this.diretorioDestinoCSV);
+                this.parametroFrequenciaLeituraCSV = cbFrequenciaLeituraDR.SelectedItem.ToString();
+
                 listaDeParametrosParaSalvar.Add(this.statusLeituraCSV);
                 listaDeParametrosParaSalvar.Add(this.parametroIntervaloLeituraCSV);
                 listaDeParametrosParaSalvar.Add(this.parametroFrequenciaLeituraCSV);
 
                 BancoDeDados bancoDeDados = new BancoDeDados();
-                Boolean retorno = bancoDeDados.AtualizaParametrosLeituraDetalhadoRegistro(this.enderecoBD, this.portaBD, this.usuarioBD, this.senhaBD, this.nomeBD, listaDeParametrosParaSalvar);
+                Boolean retorno = bancoDeDados.AtualizaParametrosLeituraAutomaticaDetalhadoRegistro(this.enderecoBD, this.portaBD, this.usuarioBD, this.senhaBD, this.nomeBD, listaDeParametrosParaSalvar);
 
                 if (retorno == true)
                 {
@@ -1425,86 +1669,137 @@ namespace rajadas
             }
         }
 
-        // ** Timer que faz a leitura dos arquivos CSV do Detalhado de Registro de tempos em tempos ** //
-        private void tmLeituraCSVDetalhadoRegistro_Tick(object sender, EventArgs e)
+        // ** Ler CSV do Detalhado de Registro Itaú ** //
+        private void button3_Click(object sender, EventArgs e)
         {
-            button2.Visible = false;
+            LerCSVDetalhadoRegistro("itau", this.diretorioOrigemCSVItau, this.diretorioDestinoCSVItau, "manual");
+        }
 
-            pbLeituraDR.Visible = true;
+        // ** Salvar configurações Detalhado Registro ITAÚ ** //
+        private void btnSalvarConfiguracoesITAU_Click(object sender, EventArgs e)
+        {
+                List<String> listaDeParametrosParaSalvar = new List<String>();
 
-            int contadorRegistrosImportados = 0;
-
-            int contadorRegistrosAtualizados = 0;
-
-            DetalhadoRegistro detalhadoRegistro = new DetalhadoRegistro();
-
-            List<string> listaDeArquivosCSV = new List<string>();
-
-            // ** Recupera os arquivos CSV encontrados no diretório especificado **//
-            listaDeArquivosCSV = detalhadoRegistro.LocalizarArquivosCSV(this.diretorioOrigemCSV);
-
-            foreach (var arquivoEncontrado in listaDeArquivosCSV)
-            {
-                pbLeituraDR.Value = 0;
+                listaDeParametrosParaSalvar.Add(this.diretorioOrigemCSVItau);
+                listaDeParametrosParaSalvar.Add(this.diretorioDestinoCSVItau);
 
                 BancoDeDados bancoDeDados = new BancoDeDados();
+                Boolean retorno = bancoDeDados.AtualizaParametrosLeituraDetalhadoRegistro(this.enderecoBD, this.portaBD, this.usuarioBD, this.senhaBD, this.nomeBD, listaDeParametrosParaSalvar, "itau");
 
-                List<DetalhadoRegistro> listaDetalhadoRegistroBD = new List<DetalhadoRegistro>();
-
-                listaDetalhadoRegistroBD = bancoDeDados.ListarDetalhadoRegistro(this.enderecoBD, this.portaBD, this.usuarioBD, this.senhaBD, this.nomeBD);
-
-                List<DetalhadoRegistro> listaDetalhadoRegistroInserir = new List<DetalhadoRegistro>();
-
-                listaDetalhadoRegistroInserir = detalhadoRegistro.LerArquivoDetalhadoDeRegistro(arquivoEncontrado);
-
-                if (listaDetalhadoRegistroInserir != null)
+                if (retorno == true)
                 {
-
-                    List<DetalhadoRegistro> listaDetalhadoRegistroNovos = detalhadoRegistro.CompararListasDetalhadoRegistroObjetosNovos(listaDetalhadoRegistroInserir, listaDetalhadoRegistroBD);
-
-                    List<DetalhadoRegistro> listaDetalhadoRegistroAtualizar = detalhadoRegistro.CompararListasDetalhadoRegistroObjetosCadastrados(listaDetalhadoRegistroInserir, listaDetalhadoRegistroBD);
-
-                    if (listaDetalhadoRegistroNovos != null)
-                    {
-                        contadorRegistrosImportados = contadorRegistrosImportados + listaDetalhadoRegistroNovos.Count();
-                    }
-
-                    if (listaDetalhadoRegistroAtualizar != null)
-                    {
-                        contadorRegistrosAtualizados = contadorRegistrosAtualizados + listaDetalhadoRegistroAtualizar.Count();
-                    }
-
-                    pbLeituraDR.Maximum = contadorRegistrosImportados + contadorRegistrosAtualizados;
-
-                    if (listaDetalhadoRegistroAtualizar != null)
-                    {
-                        for (int i = 0; i < listaDetalhadoRegistroAtualizar.Count(); i++)
-                        {
-                            bancoDeDados.AtualizarDetalhadoDoRegistro(this.enderecoBD, this.portaBD, this.usuarioBD, this.senhaBD, this.nomeBD, listaDetalhadoRegistroAtualizar[i]);
-                            pbLeituraDR.Value = i;
-                        }
-                    }
-
-                    if (listaDetalhadoRegistroNovos != null)
-                    {
-                        for (int i = 0; i < listaDetalhadoRegistroNovos.Count(); i++)
-                        {
-                            bancoDeDados.InserirDetalhadoDoRegistro(this.enderecoBD, this.portaBD, this.usuarioBD, this.senhaBD, this.nomeBD, listaDetalhadoRegistroNovos[i], listaDetalhadoRegistroNovos[i].sistema);
-                            pbLeituraDR.Value = i;
-                        }
-                    }
-
-                    detalhadoRegistro.MoverArquivoProcessado(arquivoEncontrado, this.diretorioDestinoCSV);
+                    MessageBox.Show("As configurações foram salvas !!!", "Mensagem do sistema");
                 }
 
+                CarregarParametrosDetalhadoRegistro();
+        }
+
+        // ** Salvar configurações Detalhado Registro DOCK TECH ** //
+        private void btnSalvarConfiguracoesDOCKTECH_Click(object sender, EventArgs e)
+        {
+            List<String> listaDeParametrosParaSalvar = new List<String>();
+
+            listaDeParametrosParaSalvar.Add(this.diretorioOrigemCSVDockTech);
+            listaDeParametrosParaSalvar.Add(this.diretorioDestinoCSVDockTech);
+
+            BancoDeDados bancoDeDados = new BancoDeDados();
+            Boolean retorno = bancoDeDados.AtualizaParametrosLeituraDetalhadoRegistro(this.enderecoBD, this.portaBD, this.usuarioBD, this.senhaBD, this.nomeBD, listaDeParametrosParaSalvar, "docktech");
+
+            if (retorno == true)
+            {
+                MessageBox.Show("As configurações foram salvas !!!", "Mensagem do sistema");
             }
 
-            pbLeituraDR.Visible = false;
-            button2.Visible = true;
+            CarregarParametrosDetalhadoRegistro();
+        }
 
-            //// -------------------------** Mensagem ao fim da leitura manual -----------------------------------//
-            //MessageBox.Show("Processamento Concluído !!!" + "\n" + "Total de Protocolos Importados: " + contadorRegistrosImportados + "\n" + "Total de Protocolos Atualizados: " + contadorRegistrosAtualizados, "Mensagem do sistema");
+        // ** Salvar configurações Detalhado Registro BMG ** //
+        private void btnSalvarConfiguracoesBMG_Click(object sender, EventArgs e)
+        {
+            List<String> listaDeParametrosParaSalvar = new List<String>();
 
+            listaDeParametrosParaSalvar.Add(this.diretorioOrigemCSVBMG);
+            listaDeParametrosParaSalvar.Add(this.diretorioDestinoCSVBMG);
+
+            BancoDeDados bancoDeDados = new BancoDeDados();
+            Boolean retorno = bancoDeDados.AtualizaParametrosLeituraDetalhadoRegistro(this.enderecoBD, this.portaBD, this.usuarioBD, this.senhaBD, this.nomeBD, listaDeParametrosParaSalvar, "bmg");
+
+            if (retorno == true)
+            {
+                MessageBox.Show("As configurações foram salvas !!!", "Mensagem do sistema");
+            }
+
+            CarregarParametrosDetalhadoRegistro();
+        }
+
+        private void btnOrigemCSVITAU_Click(object sender, EventArgs e)
+        {
+            FolderBrowserDialog indicarOrigemCSV = new FolderBrowserDialog();
+            if (indicarOrigemCSV.ShowDialog() == DialogResult.OK)
+            {
+                this.diretorioOrigemCSVItau = indicarOrigemCSV.SelectedPath;
+                tbOrigemCSVItau.Text = this.diretorioOrigemCSVItau;
+            }
+        }
+
+        private void btnDestinoCSVITAU_Click(object sender, EventArgs e)
+        {
+            FolderBrowserDialog indicarDestinoCSV = new FolderBrowserDialog();
+            if (indicarDestinoCSV.ShowDialog() == DialogResult.OK)
+            {
+                this.diretorioDestinoCSVItau = indicarDestinoCSV.SelectedPath;
+                tbDestinoCSVItau.Text = this.diretorioDestinoCSVItau;
+            }
+        }
+
+        private void btnOrigemCSVDockTech_Click(object sender, EventArgs e)
+        {
+            FolderBrowserDialog indicarOrigemCSV = new FolderBrowserDialog();
+            if (indicarOrigemCSV.ShowDialog() == DialogResult.OK)
+            {
+                this.diretorioOrigemCSVDockTech = indicarOrigemCSV.SelectedPath;
+                tbOrigemCSVDockTech.Text = this.diretorioOrigemCSVDockTech;
+            }
+        }
+
+        private void btnDestinoCSVDockTech_Click(object sender, EventArgs e)
+        {
+            FolderBrowserDialog indicarDestinoCSV = new FolderBrowserDialog();
+            if (indicarDestinoCSV.ShowDialog() == DialogResult.OK)
+            {
+                this.diretorioDestinoCSVDockTech = indicarDestinoCSV.SelectedPath;
+                tbDestinoCSVDockTech.Text = this.diretorioDestinoCSVDockTech;
+            }
+        }
+
+        private void btnOrigemCSVBMG_Click(object sender, EventArgs e)
+        {
+            FolderBrowserDialog indicarOrigemCSV = new FolderBrowserDialog();
+            if (indicarOrigemCSV.ShowDialog() == DialogResult.OK)
+            {
+                this.diretorioOrigemCSVBMG = indicarOrigemCSV.SelectedPath;
+                tbOrigemCSVBMG.Text = this.diretorioOrigemCSVBMG;
+            }
+        }
+
+        private void btnDestinoCSVBMG_Click(object sender, EventArgs e)
+        {
+            FolderBrowserDialog indicarDestinoCSV = new FolderBrowserDialog();
+            if (indicarDestinoCSV.ShowDialog() == DialogResult.OK)
+            {
+                this.diretorioDestinoCSVBMG = indicarDestinoCSV.SelectedPath;
+                tbDestinoCSVBMG.Text = this.diretorioDestinoCSVBMG;
+            }
+        }
+
+        private void btnLerCSVDockTech_Click(object sender, EventArgs e)
+        {
+            LerCSVDetalhadoRegistro("docktech", this.diretorioOrigemCSVDockTech, this.diretorioDestinoCSVDockTech, "manual");
+        }
+
+        private void btnLerCSVBMG_Click(object sender, EventArgs e)
+        {
+            LerCSVDetalhadoRegistro("bmg", this.diretorioOrigemCSVBMG, this.diretorioDestinoCSVBMG, "manual");
         }
     }
 }

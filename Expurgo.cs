@@ -75,7 +75,7 @@ namespace rajadas
             }
             catch (Exception e)
             {
-                MessageBox.Show("Erro: Não foi possível expurgar os arquivos ! \n \n" + e.Message);
+                return false;
             }
 
             return true;
