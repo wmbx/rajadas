@@ -28,7 +28,7 @@ namespace rajadas
 
             try
             {
-                // ** Valida se o arquivo CSV é do FDI ou do BrFlow, primeiro trata como FDI e se der erro de índice vai para o catch que tratará com BrFlow ** //
+                //// ** Valida se o arquivo CSV é do FDI ou do BrFlow, primeiro trata como FDI e se der erro de índice vai para o catch que tratará com BrFlow ** //
                 try
                 {
                     listaDetalhadoProdutividade = File.ReadAllLines(arquivoCSV, Encoding.Default)
