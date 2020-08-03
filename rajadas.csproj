@@ -116,6 +116,7 @@
   <ItemGroup>
     <Compile Include="Agendamento.cs" />
     <Compile Include="BancoDeDados.cs" />
+    <Compile Include="DetalhadoProdutividade.cs" />
     <Compile Include="DetalhadoRegistro.cs" />
     <Compile Include="DiaMonitoramento.cs" />
     <Compile Include="Email.cs" />

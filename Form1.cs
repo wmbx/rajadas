@@ -93,6 +93,7 @@ namespace rajadas
             carregaObjetosMonitoramento();
             CarregarParametrosDetalhadoRegistro();
             expurgoArquivosAntigos();
+            LerCSVDetalhadoProdutividade("itau", @"C:\Detalhado de Produtividade", this.diretorioDestinoCSVBMG, "automatica");
         }
 
         protected void expurgoArquivosAntigos()
@@ -1587,6 +1588,103 @@ namespace rajadas
                 }
             }
         }
+
+        // ** Realiza a leitura manual do arquivo CSV do Detalhado de Produtividade passando como parâmetro o CLIENTE ** //
+        private void LerCSVDetalhadoProdutividade(string cliente, string diretorioOrigemCSV, string diretorioDestinoCSV, string tipoLeitura)
+        {              
+            pbLeituraDRItau.Visible = true;
+            btnLerCSVItau.Visible = false;                  
+
+            //int contadorRegistrosImportados = 0;
+
+            //int contadorRegistrosAtualizados = 0;
+
+            DetalhadoProdutividade detalhadoProdutividade = new DetalhadoProdutividade();
+
+            List<string> listaDeArquivosCSV = new List<string>();
+
+            // ** Recupera os arquivos CSV encontrados no diretório especificado **//
+            listaDeArquivosCSV = detalhadoProdutividade.LocalizarArquivosCSV(diretorioOrigemCSV);
+
+            // ** Verifica se foi encontrado algum arquivo CSV antes de realizar a leitura ** //
+            if (listaDeArquivosCSV != null)
+            {
+                foreach (var arquivoEncontrado in listaDeArquivosCSV)
+                {
+                    BancoDeDados bancoDeDados = new BancoDeDados();
+
+                    List<DetalhadoProdutividade> listaDetalhadoProdutividadeBD = new List<DetalhadoProdutividade>();
+                        
+                    pbLeituraDRItau.Value = 0;
+                        
+                    listaDetalhadoProdutividadeBD = bancoDeDados.ListarDetalhadoProdutividade(this.enderecoBD, this.portaBD, this.usuarioBD, this.senhaBD, this.nomeBD, "itau_detalhado_produtividade");
+                        
+                    List<DetalhadoProdutividade> listaDetalhadoProdutividadeInserir = new List<DetalhadoProdutividade>();
+
+                    listaDetalhadoProdutividadeInserir = detalhadoProdutividade.LerArquivoDetalhadoDeProdutividade(arquivoEncontrado);
+
+                    if (listaDetalhadoProdutividadeInserir != null)
+                    {
+
+                        //List<DetalhadoProdutividade> listaDetalhadoRegistroNovos = detalhadoRegistro.CompararListasDetalhadoRegistroObjetosNovos(listaDetalhadoRegistroInserir, listaDetalhadoRegistroBD);
+
+                        //List<DetalhadoProdutividade> listaDetalhadoRegistroAtualizar = detalhadoRegistro.CompararListasDetalhadoRegistroObjetosCadastrados(listaDetalhadoRegistroInserir, listaDetalhadoRegistroBD);
+
+                        //if (listaDetalhadoRegistroNovos != null)
+                        //{
+                        //    contadorRegistrosImportados = contadorRegistrosImportados + listaDetalhadoRegistroNovos.Count();
+                        //}
+
+                        //if (listaDetalhadoRegistroAtualizar != null)
+                        //{
+                        //    contadorRegistrosAtualizados = contadorRegistrosAtualizados + listaDetalhadoRegistroAtualizar.Count();
+                        //}
+
+
+
+                        //pbLeituraDRItau.Maximum = contadorRegistrosImportados + contadorRegistrosAtualizados;
+
+                        //if (listaDetalhadoRegistroAtualizar != null)
+                        //{
+                        //    for (int i = 0; i < listaDetalhadoRegistroAtualizar.Count(); i++)
+                        //    {
+                        //        bancoDeDados.AtualizarDetalhadoDoRegistro(this.enderecoBD, this.portaBD, this.usuarioBD, this.senhaBD, this.nomeBD, listaDetalhadoRegistroAtualizar[i], "itau_detalhado_registros");
+                        //        pbLeituraDRItau.Value = i;
+                        //    }
+                        //}
+
+                        //if (listaDetalhadoRegistroNovos != null)
+                        //{
+                        for (int i = 0; i < listaDetalhadoProdutividadeInserir.Count(); i++)
+                        {
+                            bancoDeDados.InserirDetalhadoDeProdutividade(this.enderecoBD, this.portaBD, this.usuarioBD, this.senhaBD, this.nomeBD, listaDetalhadoProdutividadeInserir[i], "itau_detalhado_produtividade");
+                                //pbLeituraDRItau.Value = pbLeituraDRItau.Value + 1;
+                        }
+                    }
+
+                    //detalhadoRegistro.MoverArquivoProcessado(arquivoEncontrado, this.diretorioDestinoCSVItau);
+
+
+
+
+
+                
+
+                }
+            }
+                
+                //pbLeituraDRItau.Visible = false;
+                //btnLerCSVItau.Visible = true;
+                   
+            
+
+                // -------------------------** Mensagem ao fim da leitura manual -----------------------------------//
+                //if (tipoLeitura == "manual")
+                //{
+                //    MessageBox.Show("Processamento Concluído !!!" + "\n" + "Total de Protocolos Importados: " + contadorRegistrosImportados + "\n" + "Total de Protocolos Atualizados: " + contadorRegistrosAtualizados, "Mensagem do sistema");
+                //}
+        }
+   
 
         private void btnOrigemCSV_Click(object sender, EventArgs e)
         {

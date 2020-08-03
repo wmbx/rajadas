@@ -1178,5 +1178,111 @@ namespace rajadas
             return listaDetalhadoRegistro;
         }
 
+        // ** Método para retornar os registros da tabela Detalhado de Produtividade** //
+        public List<DetalhadoProdutividade> ListarDetalhadoProdutividade(String endereco, String porta, String usuario, String senha, String nomeBD, string tabela)
+        {
+            // ** String de conexão com o banco ** //
+            String stringConexao = "server=" + endereco + ";port=" + porta + ";User Id=" + usuario + ";database=" + nomeBD + ";password=" + senha;
+
+            // ** String para buscar os registros no banco // **
+            String stringComando = "SELECT * FROM " + tabela + " ORDER BY protocolo";
+
+            // ** Cria a lista de parâmetros ** //
+            List<DetalhadoProdutividade> listaDetalhadoProdutividade = new List<DetalhadoProdutividade>();
+
+            try
+            {
+                // ** Cria e inicia a conexão com o banco ** //
+                conexao = new MySqlConnection(stringConexao);
+                conexao.Open();
+
+                // ** Cria o objeto de comando ** //
+                comando = new MySqlCommand(stringComando, conexao);
+
+                // ** Executa o comando de pesquisa no banco e retorna para um objeto Data Reader ** //
+                dataReader = comando.ExecuteReader();
+
+                while (dataReader.Read())
+                {
+                    DetalhadoProdutividade detalhadoProdutividade = new DetalhadoProdutividade();
+
+                    detalhadoProdutividade.cliente = dataReader["cliente"].ToString();
+                    detalhadoProdutividade.workflow = dataReader["workflow"].ToString();
+                    detalhadoProdutividade.protocolo = dataReader["protocolo"].ToString();
+                    detalhadoProdutividade.matricula = dataReader["matricula"].ToString();
+                    detalhadoProdutividade.contrato = dataReader["contrato"].ToString();
+                    detalhadoProdutividade.data_cadastro = dataReader["data_cadastro"].ToString();
+                    detalhadoProdutividade.data_analise = dataReader["data_analise"].ToString();
+                    detalhadoProdutividade.tempo_analise = dataReader["tempo_analise"].ToString();
+                    detalhadoProdutividade.etapa = dataReader["etapa"].ToString();
+                    detalhadoProdutividade.status_registro = dataReader["status_registro"].ToString();
+                   
+                    listaDetalhadoProdutividade.Add(detalhadoProdutividade);
+                }
+            }
+            catch (Exception e)
+            {
+                System.Windows.Forms.MessageBox.Show(e.ToString());
+                throw;
+            }
+            finally
+            {
+                conexao.Close();
+                conexao = null;
+                comando = null;
+            }
+            return listaDetalhadoProdutividade;
+        }
+
+        // ** Método para inserir o Detalhado de Produtividade no BD ** //
+        public Boolean InserirDetalhadoDeProdutividade(String endereco, String porta, String usuario, String senha, String nomeBD, DetalhadoProdutividade detalhadoProdutividade, string tabela)
+        {
+            // ** String de conexão com o banco ** //
+            String stringConexao = "server=" + endereco + ";port=" + porta + ";User Id=" + usuario + ";database=" + nomeBD + ";password=" + senha;
+
+            // ** String para inserção de registros no banco // **
+            String stringComando = "INSERT INTO " + tabela + " (cliente, workflow, protocolo, matricula, contrato, data_cadastro, data_analise, " +
+                "tempo_analise, etapa, status_registro) " +
+                "VALUES (@CLIENTE, @WORKFLOW, @PROTOCOLO, @MATRICULA, @CONTRATO, @DATA_CADASTRO, @DATA_ANALISE, @TEMPO_ANALISE, @ETAPA, @STATUS_REGISTRO)";
+
+            try
+            {
+                // ** Cria e inicia a conexão com o banco ** //
+                conexao = new MySqlConnection(stringConexao);
+                conexao.Open();
+
+                // ** Cria o objeto de comando ** //
+                comando = new MySqlCommand(stringComando, conexao);
+
+                // ** Adiciona os parâmetros ao objeto de comando
+                comando.Parameters.AddWithValue("@CLIENTE", detalhadoProdutividade.cliente);
+                comando.Parameters.AddWithValue("@WORKFLOW", detalhadoProdutividade.workflow);
+                comando.Parameters.AddWithValue("@PROTOCOLO", detalhadoProdutividade.protocolo);
+                comando.Parameters.AddWithValue("@MATRICULA", detalhadoProdutividade.matricula);
+                comando.Parameters.AddWithValue("@CONTRATO", detalhadoProdutividade.contrato);
+                comando.Parameters.AddWithValue("@DATA_CADASTRO", detalhadoProdutividade.data_cadastro);
+                comando.Parameters.AddWithValue("@DATA_ANALISE", detalhadoProdutividade.data_analise);
+                comando.Parameters.AddWithValue("@TEMPO_ANALISE", detalhadoProdutividade.tempo_analise);
+                comando.Parameters.AddWithValue("@ETAPA", detalhadoProdutividade.etapa);
+                comando.Parameters.AddWithValue("@STATUS_REGISTRO", detalhadoProdutividade.status_registro);
+
+                // ** Executa o comando de inserção no banco ** //
+                comando.ExecuteNonQuery();
+
+                return true;
+            }
+            catch (Exception e)
+            {
+                return false;
+                throw;
+            }
+            finally
+            {
+                conexao.Close();
+                conexao = null;
+                comando = null;
+            }
+        }
+
     }
 }
