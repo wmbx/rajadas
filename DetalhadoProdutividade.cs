@@ -14,11 +14,11 @@ namespace rajadas
         public string protocolo { get; set; }
         public string matricula { get; set; }
         public string contrato { get; set; }
-        public string data_cadastro { get; set; }
-        public string data_analise { get; set; }
-        public string tempo_analise { get; set; }
+        public string dataCadastro { get; set; }
+        public string dataAnalise { get; set; }
+        public string tempoAnalise { get; set; }
         public string etapa { get; set; }
-        public string status_registro { get; set; }
+        public string statusRegistro { get; set; }
         
 
         // ** Faz a verificação e leitura do arquivo CSV e retorna uma lista do tipo DetalhadoProdutividade ** //
@@ -28,31 +28,23 @@ namespace rajadas
 
             try
             {
-                //// ** Valida se o arquivo CSV é do FDI ou do BrFlow, primeiro trata como FDI e se der erro de índice vai para o catch que tratará com BrFlow ** //
-                try
+                listaDetalhadoProdutividade = File.ReadAllLines(arquivoCSV, Encoding.Default)
+                .Select(a => a.Split(';'))
+                .Select(c => new DetalhadoProdutividade()
                 {
-                    listaDetalhadoProdutividade = File.ReadAllLines(arquivoCSV, Encoding.Default)
-                    .Select(a => a.Split(';'))
-                    .Select(c => new DetalhadoProdutividade()
-                    {
-                        cliente = c[0].Replace("\"", ""),
-                        workflow = c[1].Replace("\"", ""),
-                        protocolo = c[2].Replace("\"", ""),
-                        matricula = c[3].Replace("\"", ""),
-                        contrato = c[4].Replace("\"", ""),
-                        data_cadastro = c[5].Replace("\"", ""),
-                        data_analise = c[6].Replace("\"", ""),
-                        tempo_analise = c[7].Replace("\"", ""),
-                        etapa = c[8].Replace("\"", ""),
-                        status_registro = c[9].Replace("\"", "")
-                    })
-                    .ToList();
-                }
-                catch (Exception erro)
-                {
-                    System.Windows.Forms.MessageBox.Show(erro.ToString());
-                }                
-
+                    cliente = c[0].Replace("\"", ""),
+                    workflow = c[1].Replace("\"", ""),
+                    protocolo = c[2].Replace("\"", ""),
+                    matricula = c[3].Replace("\"", ""),
+                    contrato = c[4].Replace("\"", ""),
+                    dataCadastro = c[5].Replace("\"", ""),
+                    dataAnalise = c[6].Replace("\"", ""),
+                    tempoAnalise = c[7].Replace("\"", ""),
+                    etapa = c[8].Replace("\"", ""),
+                    statusRegistro = c[9].Replace("\"", "")
+                })
+                .ToList();
+                
                 if (listaDetalhadoProdutividade.Count() > 0)
                 {
                     // ** Remove o cabeçalho do arquivo CSV ** //
@@ -93,7 +85,7 @@ namespace rajadas
         }
 
         // ** Compara duas listas e retorna uma lista com os objetos novos, ou seja, que não estão no banco de dados ** //
-        public List<DetalhadoProdutividade> CompararListasDetalhadoRegistroObjetosNovos(List<DetalhadoProdutividade> listaInserir, List<DetalhadoProdutividade> listaBD)
+        public List<DetalhadoProdutividade> CompararListasDetalhadoProdutividadeObjetosNovos(List<DetalhadoProdutividade> listaInserir, List<DetalhadoProdutividade> listaBD)
         {
             List<DetalhadoProdutividade> listaDetalhadoProdutividade = new List<DetalhadoProdutividade>();
 
@@ -101,7 +93,7 @@ namespace rajadas
             {
                 foreach (var detalhadoProdutividadeListaInserir in listaInserir)
                 {
-                    if (listaBD.Any(l => l.protocolo == detalhadoProdutividadeListaInserir.protocolo))
+                    if (listaBD.Any(l => l.protocolo == detalhadoProdutividadeListaInserir.protocolo) && listaBD.Any(l => l.etapa == detalhadoProdutividadeListaInserir.etapa))
                     { }
                     else
                     {
@@ -136,7 +128,7 @@ namespace rajadas
                 foreach (var detalhadoProdutividadeListaAtualizar in listaAtualizar)
                 {
                     // ** Valida se o objeto da lista já está na lista que veio do banco de dados ** //
-                    if (listaBD.Any(l => l.protocolo == detalhadoProdutividadeListaAtualizar.protocolo))
+                    if (listaBD.Any(l => l.protocolo == detalhadoProdutividadeListaAtualizar.protocolo) && listaBD.Any(l => l.etapa == detalhadoProdutividadeListaAtualizar.etapa))
                     {
                         listaDetalhadoProdutividade.Add(detalhadoProdutividadeListaAtualizar);
                     }
@@ -185,5 +177,7 @@ namespace rajadas
 
             return retorno;
         }
+
+        
     }
 }

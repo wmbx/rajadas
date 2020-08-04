@@ -1593,11 +1593,11 @@ namespace rajadas
         private void LerCSVDetalhadoProdutividade(string cliente, string diretorioOrigemCSV, string diretorioDestinoCSV, string tipoLeitura)
         {              
             pbLeituraDRItau.Visible = true;
-            btnLerCSVItau.Visible = false;                  
+            btnLerCSVItau.Visible = false;
 
-            //int contadorRegistrosImportados = 0;
+            int contadorRegistrosImportados = 0;
 
-            //int contadorRegistrosAtualizados = 0;
+            int contadorRegistrosAtualizados = 0;
 
             DetalhadoProdutividade detalhadoProdutividade = new DetalhadoProdutividade();
 
@@ -1626,63 +1626,58 @@ namespace rajadas
                     if (listaDetalhadoProdutividadeInserir != null)
                     {
 
-                        //List<DetalhadoProdutividade> listaDetalhadoRegistroNovos = detalhadoRegistro.CompararListasDetalhadoRegistroObjetosNovos(listaDetalhadoRegistroInserir, listaDetalhadoRegistroBD);
+                        List<DetalhadoProdutividade> listaDetalhadoProdutividadeNovos = detalhadoProdutividade.CompararListasDetalhadoProdutividadeObjetosNovos(listaDetalhadoProdutividadeInserir, listaDetalhadoProdutividadeBD);
 
-                        //List<DetalhadoProdutividade> listaDetalhadoRegistroAtualizar = detalhadoRegistro.CompararListasDetalhadoRegistroObjetosCadastrados(listaDetalhadoRegistroInserir, listaDetalhadoRegistroBD);
+                        List<DetalhadoProdutividade> listaDetalhadoProdutividadeAtualizar = detalhadoProdutividade.CompararListasDetalhadoProdutividadeObjetosCadastrados(listaDetalhadoProdutividadeInserir, listaDetalhadoProdutividadeBD);
 
-                        //if (listaDetalhadoRegistroNovos != null)
-                        //{
-                        //    contadorRegistrosImportados = contadorRegistrosImportados + listaDetalhadoRegistroNovos.Count();
-                        //}
+                        if (listaDetalhadoProdutividadeNovos != null)
+                        {
+                            contadorRegistrosImportados = contadorRegistrosImportados + listaDetalhadoProdutividadeNovos.Count();
+                        }
 
-                        //if (listaDetalhadoRegistroAtualizar != null)
-                        //{
-                        //    contadorRegistrosAtualizados = contadorRegistrosAtualizados + listaDetalhadoRegistroAtualizar.Count();
-                        //}
+                        if (listaDetalhadoProdutividadeAtualizar != null)
+                        {
+                            contadorRegistrosAtualizados = contadorRegistrosAtualizados + listaDetalhadoProdutividadeAtualizar.Count();
+                        }
 
 
 
                         //pbLeituraDRItau.Maximum = contadorRegistrosImportados + contadorRegistrosAtualizados;
 
-                        //if (listaDetalhadoRegistroAtualizar != null)
-                        //{
-                        //    for (int i = 0; i < listaDetalhadoRegistroAtualizar.Count(); i++)
-                        //    {
-                        //        bancoDeDados.AtualizarDetalhadoDoRegistro(this.enderecoBD, this.portaBD, this.usuarioBD, this.senhaBD, this.nomeBD, listaDetalhadoRegistroAtualizar[i], "itau_detalhado_registros");
-                        //        pbLeituraDRItau.Value = i;
-                        //    }
-                        //}
-
-                        //if (listaDetalhadoRegistroNovos != null)
-                        //{
-                        for (int i = 0; i < listaDetalhadoProdutividadeInserir.Count(); i++)
+                        if (listaDetalhadoProdutividadeAtualizar != null)
                         {
-                            bancoDeDados.InserirDetalhadoDeProdutividade(this.enderecoBD, this.portaBD, this.usuarioBD, this.senhaBD, this.nomeBD, listaDetalhadoProdutividadeInserir[i], "itau_detalhado_produtividade");
+                            for (int i = 0; i < listaDetalhadoProdutividadeAtualizar.Count(); i++)
+                            {
+                                bancoDeDados.AtualizarDetalhadoDeProdutividade(this.enderecoBD, this.portaBD, this.usuarioBD, this.senhaBD, this.nomeBD, listaDetalhadoProdutividadeAtualizar[i], "itau_detalhado_produtividade");
+                                //pbLeituraDRItau.Value = i;
+                            }
+                        }
+
+                        if (listaDetalhadoProdutividadeNovos != null)
+                        {
+                            for (int i = 0; i < listaDetalhadoProdutividadeNovos.Count(); i++)
+                            {
+                                bancoDeDados.InserirDetalhadoDeProdutividade(this.enderecoBD, this.portaBD, this.usuarioBD, this.senhaBD, this.nomeBD, listaDetalhadoProdutividadeNovos[i], "itau_detalhado_produtividade");
                                 //pbLeituraDRItau.Value = pbLeituraDRItau.Value + 1;
+                            }
                         }
                     }
 
-                    //detalhadoRegistro.MoverArquivoProcessado(arquivoEncontrado, this.diretorioDestinoCSVItau);
-
-
-
-
-
-                
+                    detalhadoProdutividade.MoverArquivoProcessado(arquivoEncontrado, this.diretorioDestinoCSVItau);            
 
                 }
             }
-                
-                //pbLeituraDRItau.Visible = false;
-                //btnLerCSVItau.Visible = true;
-                   
-            
 
-                // -------------------------** Mensagem ao fim da leitura manual -----------------------------------//
-                //if (tipoLeitura == "manual")
-                //{
-                //    MessageBox.Show("Processamento Concluído !!!" + "\n" + "Total de Protocolos Importados: " + contadorRegistrosImportados + "\n" + "Total de Protocolos Atualizados: " + contadorRegistrosAtualizados, "Mensagem do sistema");
-                //}
+            //pbLeituraDRItau.Visible = false;
+            //btnLerCSVItau.Visible = true;
+
+
+
+            // -------------------------** Mensagem ao fim da leitura manual -----------------------------------//
+            if (tipoLeitura == "manual")
+            {
+                MessageBox.Show("Processamento Concluído !!!" + "\n" + "Total de Protocolos Importados: " + contadorRegistrosImportados + "\n" + "Total de Protocolos Atualizados: " + contadorRegistrosAtualizados, "Mensagem do sistema");
+            }
         }
    
 

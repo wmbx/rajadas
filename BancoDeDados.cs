@@ -1211,11 +1211,11 @@ namespace rajadas
                     detalhadoProdutividade.protocolo = dataReader["protocolo"].ToString();
                     detalhadoProdutividade.matricula = dataReader["matricula"].ToString();
                     detalhadoProdutividade.contrato = dataReader["contrato"].ToString();
-                    detalhadoProdutividade.data_cadastro = dataReader["data_cadastro"].ToString();
-                    detalhadoProdutividade.data_analise = dataReader["data_analise"].ToString();
-                    detalhadoProdutividade.tempo_analise = dataReader["tempo_analise"].ToString();
+                    detalhadoProdutividade.dataCadastro = dataReader["data_cadastro"].ToString();
+                    detalhadoProdutividade.dataAnalise = dataReader["data_analise"].ToString();
+                    detalhadoProdutividade.tempoAnalise = dataReader["tempo_analise"].ToString();
                     detalhadoProdutividade.etapa = dataReader["etapa"].ToString();
-                    detalhadoProdutividade.status_registro = dataReader["status_registro"].ToString();
+                    detalhadoProdutividade.statusRegistro = dataReader["status_registro"].ToString();
                    
                     listaDetalhadoProdutividade.Add(detalhadoProdutividade);
                 }
@@ -1260,12 +1260,53 @@ namespace rajadas
                 comando.Parameters.AddWithValue("@PROTOCOLO", detalhadoProdutividade.protocolo);
                 comando.Parameters.AddWithValue("@MATRICULA", detalhadoProdutividade.matricula);
                 comando.Parameters.AddWithValue("@CONTRATO", detalhadoProdutividade.contrato);
-                comando.Parameters.AddWithValue("@DATA_CADASTRO", detalhadoProdutividade.data_cadastro);
-                comando.Parameters.AddWithValue("@DATA_ANALISE", detalhadoProdutividade.data_analise);
-                comando.Parameters.AddWithValue("@TEMPO_ANALISE", detalhadoProdutividade.tempo_analise);
+                comando.Parameters.AddWithValue("@DATA_CADASTRO", detalhadoProdutividade.dataCadastro);
+                comando.Parameters.AddWithValue("@DATA_ANALISE", detalhadoProdutividade.dataAnalise);
+                comando.Parameters.AddWithValue("@TEMPO_ANALISE", detalhadoProdutividade.tempoAnalise);
                 comando.Parameters.AddWithValue("@ETAPA", detalhadoProdutividade.etapa);
-                comando.Parameters.AddWithValue("@STATUS_REGISTRO", detalhadoProdutividade.status_registro);
+                comando.Parameters.AddWithValue("@STATUS_REGISTRO", detalhadoProdutividade.statusRegistro);
 
+                // ** Executa o comando de inserção no banco ** //
+                comando.ExecuteNonQuery();
+
+                return true;
+            }
+            catch (Exception e)
+            {
+                return false;
+                throw;
+            }
+            finally
+            {
+                conexao.Close();
+                conexao = null;
+                comando = null;
+            }
+        }
+
+        // ** Método para atualizar objeto Detalhado de Produtividade no BD ** //
+        public Boolean AtualizarDetalhadoDeProdutividade(String endereco, String porta, String usuario, String senha, String nomeBD, DetalhadoProdutividade detalhadoProdutividade, string tabela)
+        {
+            // ** String de conexão com o banco ** //
+            String stringConexao = "server=" + endereco + ";port=" + porta + ";User Id=" + usuario + ";database=" + nomeBD + ";password=" + senha;
+
+            String stringComando = "UPDATE " + tabela + " SET data_analise = @DATA_ANALISE, tempo_analise = @TEMPO_ANALISE, status_registro = @STATUS_REGISTRO " +
+                                        "WHERE protocolo = " + detalhadoProdutividade.protocolo + " AND etapa = '" + detalhadoProdutividade.etapa + "'";
+
+            try
+            {
+                // ** Cria e inicia a conexão com o banco ** //
+                conexao = new MySqlConnection(stringConexao);
+                conexao.Open();
+
+                // ** Cria o objeto de comando ** //
+                comando = new MySqlCommand(stringComando, conexao);
+
+                // ** Adiciona os parâmetros ao objeto de comando
+
+                comando.Parameters.AddWithValue("@DATA_ANALISE", detalhadoProdutividade.dataAnalise);
+                comando.Parameters.AddWithValue("@TEMPO_ANALISE", detalhadoProdutividade.tempoAnalise);
+                comando.Parameters.AddWithValue("@STATUS_REGISTRO", detalhadoProdutividade.statusRegistro);
                 // ** Executa o comando de inserção no banco ** //
                 comando.ExecuteNonQuery();
 
