@@ -93,7 +93,7 @@ namespace rajadas
             carregaObjetosMonitoramento();
             CarregarParametrosDetalhadoRegistro();
             expurgoArquivosAntigos();
-            LerCSVDetalhadoProdutividade("itau", @"C:\Detalhado de Produtividade", this.diretorioDestinoCSVBMG, "automatica");
+           
         }
 
         protected void expurgoArquivosAntigos()
@@ -1893,6 +1893,12 @@ namespace rajadas
         private void btnLerCSVBMG_Click(object sender, EventArgs e)
         {
             LerCSVDetalhadoRegistro("bmg", this.diretorioOrigemCSVBMG, this.diretorioDestinoCSVBMG, "manual");
+        }
+
+        // ** Realiza a leitura do arquivo CSV do Detalhado de Produtividade do Itaú ** //
+        private void btnLerCSVDpItau_Click(object sender, EventArgs e)
+        {
+            LerCSVDetalhadoProdutividade("itau", @"C:\Detalhado de Produtividade", this.diretorioDestinoCSVBMG, "manual");
         }
     }
 }
