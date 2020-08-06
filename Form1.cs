@@ -78,6 +78,15 @@ namespace rajadas
         private string diretorioOrigemCSVBMG;
         private string diretorioDestinoCSVBMG;
 
+        // ** Parâmetros de configuração da leitura automática do Detalhado de Produtividade ** //
+        private string statusLeituraCsvDP;
+        private string parametroIntervaloLeituraCsvDP;
+        private string parametroFrequenciaLeituraCsvDP;
+
+        // ** Origem e destino CSV Detalhado de Produtividade ** //
+        private string diretorioOrigemCsvDPItau;
+        private string diretorioDestinoCsvDPItau;
+
 
         public Form1()
         {
@@ -92,6 +101,7 @@ namespace rajadas
             carregaParemetrosRajadaInvertida();
             carregaObjetosMonitoramento();
             CarregarParametrosDetalhadoRegistro();
+            CarregarParametrosDetalhadoDeProdutividade();
             expurgoArquivosAntigos();
            
         }
@@ -676,12 +686,70 @@ namespace rajadas
                     cbFrequenciaLeituraDR.Enabled = false;
                 }
             }
-
-
             // ------------------ ** Ativa ou Desativa os Parâmetros das Leituras Automáticas de acordo com o parâmetro ** -----------------------------//
-
         }
         // ---------------------------------- Carrega parâmetros da leitura do CSV Detalhado de Registro ----------------------------------------------------//
+
+        // ---------------------------------- Carrega parâmetros da leitura do CSV Detalhado de Produtividade --------------------------------------------------//
+        protected void CarregarParametrosDetalhadoDeProdutividade()
+        {
+            Agendamento agendamento = new Agendamento();
+
+            BancoDeDados bancoDeDados = new BancoDeDados();
+
+            List<String> listaDeParametrosDetalhadoDeProdutividade = new List<String>();
+
+            listaDeParametrosDetalhadoDeProdutividade = bancoDeDados.CarregarParametrosLeituraDetalhadoProdutividade(this.enderecoBD, this.portaBD, this.usuarioBD, this.senhaBD, this.nomeBD);
+
+            if (listaDeParametrosDetalhadoDeProdutividade.Count == 6)
+            {
+                this.statusLeituraCsvDP = listaDeParametrosDetalhadoDeProdutividade[3];
+                this.parametroIntervaloLeituraCsvDP = listaDeParametrosDetalhadoDeProdutividade[4];
+                this.parametroFrequenciaLeituraCsvDP = listaDeParametrosDetalhadoDeProdutividade[5];
+
+                this.diretorioOrigemCsvDPItau = listaDeParametrosDetalhadoDeProdutividade[1];
+                this.diretorioDestinoCsvDPItau = listaDeParametrosDetalhadoDeProdutividade[2];
+
+                cbStatusLeituraDP.SelectedItem = this.statusLeituraCsvDP;
+                tbIntervaloLeituraDP.Text = this.parametroIntervaloLeituraCsvDP;
+                cbFrequenciaLeituraDP.SelectedItem = this.parametroFrequenciaLeituraCsvDP;
+
+                tbOrigemCsvDPItau.Text = this.diretorioOrigemCsvDPItau;
+                tbDestinoCsvDPItau.Text = this.diretorioDestinoCsvDPItau;
+
+                // ---------------------------------- ** Seta os agendamentos das leituras no timerda Rajada Invertida ** --------------------------------//
+                tmLeituraCSVDetalhadoProdutividade.Interval = agendamento.retornaAgendamentoExecucao(parametroIntervaloLeituraCsvDP, parametroFrequenciaLeituraCsvDP);
+                // ---------------------------------- ** Seta os agendamentos das leituras no timer da Rajada Invertida ** --------------------------------//
+
+
+                // ------------------ ** Ativa ou Desativa os Timers das leituras automáticas de acordo com o parâmetro ** --------------------//
+                if (this.statusLeituraCsvDP == "Ativada")
+                {
+                    tmLeituraCSVDetalhadoProdutividade.Enabled = true;
+                }
+                else
+                {
+                    tmLeituraCSVDetalhadoProdutividade.Enabled = false;
+                }
+                // ------------------ ** Ativa ou Desativa os Timers das leituras automáticas de acordo com o parâmetro ** --------------------//
+
+
+
+                // ------------------ ** Ativa ou Desativa os Parâmetros das Leituras Automáticas de acordo com o parâmetro ** -----------------------------//
+                if (this.statusLeituraCsvDP == "Ativada")
+                {
+                    tbIntervaloLeituraDP.Enabled = true;
+                    cbFrequenciaLeituraDP.Enabled = true;
+                }
+                else
+                {
+                    tbIntervaloLeituraDP.Enabled = false;
+                    cbFrequenciaLeituraDP.Enabled = false;
+                }
+            }
+            // ------------------ ** Ativa ou Desativa os Parâmetros das Leituras Automáticas de acordo com o parâmetro ** -----------------------------//
+        }
+        // ---------------------------------- Carrega parâmetros da leitura do CSV Detalhado de Produtividade ----------------------------------------------------//
 
         private void button1_Click(object sender, EventArgs e)
         {
@@ -1899,6 +1967,80 @@ namespace rajadas
         private void btnLerCSVDpItau_Click(object sender, EventArgs e)
         {
             LerCSVDetalhadoProdutividade("itau", @"C:\Detalhado de Produtividade", this.diretorioDestinoCSVBMG, "manual");
+        }
+
+        private void button13_Click(object sender, EventArgs e)
+        {
+            FolderBrowserDialog indicarOrigemCSV = new FolderBrowserDialog();
+            if (indicarOrigemCSV.ShowDialog() == DialogResult.OK)
+            {
+                this.diretorioOrigemCsvDPItau = indicarOrigemCSV.SelectedPath;
+                tbOrigemCsvDPItau.Text = this.diretorioOrigemCsvDPItau;
+            }
+        }
+
+        private void button12_Click(object sender, EventArgs e)
+        {
+            FolderBrowserDialog indicarDestinoCSV = new FolderBrowserDialog();
+            if (indicarDestinoCSV.ShowDialog() == DialogResult.OK)
+            {
+                this.diretorioDestinoCsvDPItau = indicarDestinoCSV.SelectedPath;
+                tbDestinoCsvDPItau.Text = this.diretorioDestinoCsvDPItau;
+            }
+        }
+
+        private void btnSalvarConfiguracoesDpItau_Click(object sender, EventArgs e)
+        {
+            List<String> listaDeParametrosParaSalvar = new List<String>();
+
+            listaDeParametrosParaSalvar.Add(this.diretorioOrigemCsvDPItau);
+            listaDeParametrosParaSalvar.Add(this.diretorioDestinoCsvDPItau);
+
+            BancoDeDados bancoDeDados = new BancoDeDados();
+            Boolean retorno = bancoDeDados.AtualizarParametrosLeituraDetalhadoDeProdutividade(this.enderecoBD, this.portaBD, this.usuarioBD, this.senhaBD, this.nomeBD, listaDeParametrosParaSalvar, "itau");
+
+            if (retorno == true)
+            {
+                MessageBox.Show("As configurações foram salvas !!!", "Mensagem do sistema");
+            }
+
+            CarregarParametrosDetalhadoDeProdutividade();
+        }
+
+        private void btnSalvarConfiguracoesLeituraAutomaticaDP_Click(object sender, EventArgs e)
+        {
+            // ----- ** Validação dos campos Intervalo para não permitir a digitação de zero ou em branco ** -------- //
+            if (tbIntervaloLeituraDP.Text.Equals("") || tbIntervaloLeituraDP.Text.Equals("0"))
+            {
+                MessageBox.Show("Não são permitidos campos em branco ou iguais a zero !!!");
+            }
+            else
+            {
+                List<String> listaDeParametrosParaSalvar = new List<String>();
+
+                this.statusLeituraCsvDP = cbStatusLeituraDP.SelectedItem.ToString();
+                this.parametroIntervaloLeituraCsvDP = tbIntervaloLeituraDP.Text;
+                this.parametroFrequenciaLeituraCsvDP = cbFrequenciaLeituraDP.SelectedItem.ToString();
+
+                listaDeParametrosParaSalvar.Add(this.statusLeituraCsvDP);
+                listaDeParametrosParaSalvar.Add(this.parametroIntervaloLeituraCsvDP);
+                listaDeParametrosParaSalvar.Add(this.parametroFrequenciaLeituraCsvDP);
+
+                BancoDeDados bancoDeDados = new BancoDeDados();
+                Boolean retorno = bancoDeDados.AtualizarParametrosLeituraAutomaticaDetalhadoProdutividade(this.enderecoBD, this.portaBD, this.usuarioBD, this.senhaBD, this.nomeBD, listaDeParametrosParaSalvar);
+
+                if (retorno == true)
+                {
+                    MessageBox.Show("As configurações foram salvas !!!", "Mensagem do sistema");
+                }
+
+                CarregarParametrosDetalhadoDeProdutividade();
+            }
+        }
+
+        private void tmLeituraCSVDetalhadoProdutividade_Tick(object sender, EventArgs e)
+        {
+            LerCSVDetalhadoProdutividade("itau", this.diretorioOrigemCsvDPItau, this.diretorioDestinoCsvDPItau, "automática");
         }
     }
 }

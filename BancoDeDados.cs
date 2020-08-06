@@ -1325,5 +1325,132 @@ namespace rajadas
             }
         }
 
+        // ** Método que atualiza os parâmetros de leitura do arquivo CSV do Detalhado de Produtividade ** //
+        public Boolean AtualizarParametrosLeituraDetalhadoDeProdutividade(String endereco, String porta, String usuario, String senha, String nomeBD, List<String> listaDeParametros, string cliente)
+        {
+            // ** String de conexão com o banco ** //
+            String stringConexao = "server=" + endereco + ";port=" + porta + ";User Id=" + usuario + ";database=" + nomeBD + ";password=" + senha;
+
+            String stringComando = "UPDATE parametros_detalhado_produtividade SET origemCSV = @ORIGEM, destinoCSV = @DESTINO WHERE cliente = '" + cliente + "'";
+            try
+            {
+                // ** Cria e inicia a conexão com o banco ** //
+                conexao = new MySqlConnection(stringConexao);
+                conexao.Open();
+
+                // ** Cria o objeto de comando ** //
+                comando = new MySqlCommand(stringComando, conexao);
+
+                // ** Adiciona os parâmetros ao objeto de comando
+                comando.Parameters.AddWithValue("@ORIGEM", listaDeParametros[0]);
+                comando.Parameters.AddWithValue("@DESTINO", listaDeParametros[1]);
+
+                // ** Executa o comando de inserção no banco ** //
+                comando.ExecuteNonQuery();
+
+                return true;
+            }
+            catch (Exception e)
+            {
+                System.Windows.Forms.MessageBox.Show(e.ToString());
+                return false;
+                throw;
+            }
+            finally
+            {
+                conexao.Close();
+                conexao = null;
+                comando = null;
+            }
+        }
+
+        // ** Método que atualiza os parâmetros de LEITURA AUTOMÁTICA do arquivo CSV do Detalhado de Produtividade** //
+        public Boolean AtualizarParametrosLeituraAutomaticaDetalhadoProdutividade(String endereco, String porta, String usuario, String senha, String nomeBD, List<String> listaDeParametros)
+        {
+            // ** String de conexão com o banco ** //
+            String stringConexao = "server=" + endereco + ";port=" + porta + ";User Id=" + usuario + ";database=" + nomeBD + ";password=" + senha;
+
+            String stringComando = "UPDATE parametros_detalhado_produtividade SET statusLeitura = @STATUS, intervaloLeitura = @INTERVALO, frequenciaLeitura = @FREQUENCIA ";
+            try
+            {
+                // ** Cria e inicia a conexão com o banco ** //
+                conexao = new MySqlConnection(stringConexao);
+                conexao.Open();
+
+                // ** Cria o objeto de comando ** //
+                comando = new MySqlCommand(stringComando, conexao);
+
+                // ** Adiciona os parâmetros ao objeto de comando
+                comando.Parameters.AddWithValue("@STATUS", listaDeParametros[0]);
+                comando.Parameters.AddWithValue("@INTERVALO", listaDeParametros[1]);
+                comando.Parameters.AddWithValue("@FREQUENCIA", listaDeParametros[2]);
+
+                // ** Executa o comando de inserção no banco ** //
+                comando.ExecuteNonQuery();
+
+                return true;
+            }
+            catch (Exception e)
+            {
+                System.Windows.Forms.MessageBox.Show(e.ToString());
+                return false;
+                throw;
+            }
+            finally
+            {
+                conexao.Close();
+                conexao = null;
+                comando = null;
+            }
+        }
+
+        // ** Método que carrega os parâmetros de leitura do arquivo CSV do Detalhado de Produtividade salvos no banco de dados** //
+        public List<string> CarregarParametrosLeituraDetalhadoProdutividade(String endereco, String porta, String usuario, String senha, String nomeBD)
+        {
+            // ** String de conexão com o banco ** //
+            String stringConexao = "server=" + endereco + ";port=" + porta + ";User Id=" + usuario + ";database=" + nomeBD + ";password=" + senha;
+
+            // ** String para busar os registros no banco // **
+            String stringComando = "SELECT * FROM parametros_detalhado_produtividade ";
+
+            // ** Cria a lista de parâmetros ** //
+            List<string> listaDeParametros = new List<string>();
+
+            try
+            {
+                // ** Cria e inicia a conexão com o banco ** //
+                conexao = new MySqlConnection(stringConexao);
+                conexao.Open();
+
+                // ** Cria o objeto de comando ** //
+                comando = new MySqlCommand(stringComando, conexao);
+
+                // ** Executa o comando de pesquisa no banco e retorna para um objeto Data Reader ** //
+                dataReader = comando.ExecuteReader();
+
+                while (dataReader.Read())
+                {
+                    listaDeParametros.Add(dataReader["cliente"].ToString());
+                    listaDeParametros.Add(dataReader["origemCSV"].ToString());
+                    listaDeParametros.Add(dataReader["destinoCSV"].ToString());
+                    listaDeParametros.Add(dataReader["statusLeitura"].ToString());
+                    listaDeParametros.Add(dataReader["intervaloLeitura"].ToString());
+                    listaDeParametros.Add(dataReader["frequenciaLeitura"].ToString());
+                }
+            }
+            catch (Exception e)
+            {
+                System.Windows.Forms.MessageBox.Show(e.ToString());
+                throw;
+            }
+            finally
+            {
+                conexao.Close();
+                conexao = null;
+                comando = null;
+            }
+            return listaDeParametros;
+        }
+
     }
 }
