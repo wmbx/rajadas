@@ -113,8 +113,12 @@ namespace rajadas
             rajada.ExcluirArquivosProcessadosAntigos(this.caminhoRajadaProcessadaDigital);
             rajada.ExcluirArquivosProcessadosAntigos(this.caminhoRajadaProcessadaInvertida);
 
-            //Expurgo expurgo = new Expurgo();
-            //expurgo.ExcluirArquivosCSVAntigos(this.diretorioDestinoCSV);
+            Expurgo expurgo = new Expurgo();
+            expurgo.ExcluirArquivosCSVAntigos(this.diretorioDestinoCSVItau);
+            expurgo.ExcluirArquivosCSVAntigos(this.diretorioDestinoCSVBradesco);
+            expurgo.ExcluirArquivosCSVAntigos(this.diretorioOrigemCSVBMG);
+            expurgo.ExcluirArquivosCSVAntigos(this.diretorioOrigemCSVDockTech);
+            expurgo.ExcluirArquivosCSVAntigos(this.diretorioDestinoCsvDPItau);
         }
 
         protected void monitoramentoTijolo()
@@ -1660,8 +1664,8 @@ namespace rajadas
         // ** Realiza a leitura manual do arquivo CSV do Detalhado de Produtividade passando como parâmetro o CLIENTE ** //
         private void LerCSVDetalhadoProdutividade(string cliente, string diretorioOrigemCSV, string diretorioDestinoCSV, string tipoLeitura)
         {              
-            pbLeituraDRItau.Visible = true;
-            btnLerCSVItau.Visible = false;
+            pbLeituraDPItau.Visible = true;
+            btnLerCSVDpItau.Visible = false;
 
             int contadorRegistrosImportados = 0;
 
@@ -1672,7 +1676,7 @@ namespace rajadas
             List<string> listaDeArquivosCSV = new List<string>();
 
             // ** Recupera os arquivos CSV encontrados no diretório especificado **//
-            listaDeArquivosCSV = detalhadoProdutividade.LocalizarArquivosCSV(diretorioOrigemCSV);
+            listaDeArquivosCSV = detalhadoProdutividade.LocalizarArquivosCSV(diretorioOrigemCsvDPItau);
 
             // ** Verifica se foi encontrado algum arquivo CSV antes de realizar a leitura ** //
             if (listaDeArquivosCSV != null)
@@ -1683,7 +1687,7 @@ namespace rajadas
 
                     List<DetalhadoProdutividade> listaDetalhadoProdutividadeBD = new List<DetalhadoProdutividade>();
                         
-                    pbLeituraDRItau.Value = 0;
+                    pbLeituraDPItau.Value = 0;
                         
                     listaDetalhadoProdutividadeBD = bancoDeDados.ListarDetalhadoProdutividade(this.enderecoBD, this.portaBD, this.usuarioBD, this.senhaBD, this.nomeBD, "itau_detalhado_produtividade");
                         
@@ -1710,14 +1714,14 @@ namespace rajadas
 
 
 
-                        //pbLeituraDRItau.Maximum = contadorRegistrosImportados + contadorRegistrosAtualizados;
+                        pbLeituraDPItau.Maximum = contadorRegistrosImportados + contadorRegistrosAtualizados;
 
                         if (listaDetalhadoProdutividadeAtualizar != null)
                         {
                             for (int i = 0; i < listaDetalhadoProdutividadeAtualizar.Count(); i++)
                             {
                                 bancoDeDados.AtualizarDetalhadoDeProdutividade(this.enderecoBD, this.portaBD, this.usuarioBD, this.senhaBD, this.nomeBD, listaDetalhadoProdutividadeAtualizar[i], "itau_detalhado_produtividade");
-                                //pbLeituraDRItau.Value = i;
+                                pbLeituraDPItau.Value = i;
                             }
                         }
 
@@ -1726,18 +1730,18 @@ namespace rajadas
                             for (int i = 0; i < listaDetalhadoProdutividadeNovos.Count(); i++)
                             {
                                 bancoDeDados.InserirDetalhadoDeProdutividade(this.enderecoBD, this.portaBD, this.usuarioBD, this.senhaBD, this.nomeBD, listaDetalhadoProdutividadeNovos[i], "itau_detalhado_produtividade");
-                                //pbLeituraDRItau.Value = pbLeituraDRItau.Value + 1;
+                                pbLeituraDPItau.Value = pbLeituraDPItau.Value + 1;
                             }
                         }
                     }
 
-                    detalhadoProdutividade.MoverArquivoProcessado(arquivoEncontrado, this.diretorioDestinoCSVItau);            
+                    detalhadoProdutividade.MoverArquivoProcessado(arquivoEncontrado, this.diretorioDestinoCsvDPItau);            
 
                 }
             }
 
-            //pbLeituraDRItau.Visible = false;
-            //btnLerCSVItau.Visible = true;
+            pbLeituraDPItau.Visible = false;
+            btnLerCSVDpItau.Visible = true;
 
 
 

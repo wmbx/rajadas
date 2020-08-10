@@ -93,7 +93,7 @@ namespace rajadas
             {
                 foreach (var detalhadoProdutividadeListaInserir in listaInserir)
                 {
-                    if (listaBD.Any(l => l.protocolo == detalhadoProdutividadeListaInserir.protocolo) && listaBD.Any(l => l.etapa == detalhadoProdutividadeListaInserir.etapa))
+                    if (listaBD.Any(l => l.protocolo == detalhadoProdutividadeListaInserir.protocolo && l.etapa == detalhadoProdutividadeListaInserir.etapa))
                     { }
                     else
                     {
@@ -128,7 +128,7 @@ namespace rajadas
                 foreach (var detalhadoProdutividadeListaAtualizar in listaAtualizar)
                 {
                     // ** Valida se o objeto da lista já está na lista que veio do banco de dados ** //
-                    if (listaBD.Any(l => l.protocolo == detalhadoProdutividadeListaAtualizar.protocolo) && listaBD.Any(l => l.etapa == detalhadoProdutividadeListaAtualizar.etapa))
+                    if (listaBD.Any(l => l.protocolo == detalhadoProdutividadeListaAtualizar.protocolo && l.etapa == detalhadoProdutividadeListaAtualizar.etapa))
                     {
                         listaDetalhadoProdutividade.Add(detalhadoProdutividadeListaAtualizar);
                     }

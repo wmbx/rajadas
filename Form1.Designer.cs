@@ -64,7 +64,7 @@
             this.textBox4 = new System.Windows.Forms.TextBox();
             this.label34 = new System.Windows.Forms.Label();
             this.groupBox14 = new System.Windows.Forms.GroupBox();
-            this.progressBar3 = new System.Windows.Forms.ProgressBar();
+            this.pbLeituraDPItau = new System.Windows.Forms.ProgressBar();
             this.btnSalvarConfiguracoesDpItau = new System.Windows.Forms.Button();
             this.btnLerCSVDpItau = new System.Windows.Forms.Button();
             this.button12 = new System.Windows.Forms.Button();
@@ -277,7 +277,7 @@
             // niBandeja
             // 
             this.niBandeja.Icon = ((System.Drawing.Icon)(resources.GetObject("niBandeja.Icon")));
-            this.niBandeja.Text = "BotFlow Rajadas";
+            this.niBandeja.Text = "BotFlow 2.1.0";
             this.niBandeja.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.niBandeja_MouseDoubleClick);
             // 
             // tmMonitoramentoTijolo
@@ -531,7 +531,7 @@
             // 
             // groupBox14
             // 
-            this.groupBox14.Controls.Add(this.progressBar3);
+            this.groupBox14.Controls.Add(this.pbLeituraDPItau);
             this.groupBox14.Controls.Add(this.btnSalvarConfiguracoesDpItau);
             this.groupBox14.Controls.Add(this.btnLerCSVDpItau);
             this.groupBox14.Controls.Add(this.button12);
@@ -547,13 +547,13 @@
             this.groupBox14.TabStop = false;
             this.groupBox14.Text = "ITAÚ";
             // 
-            // progressBar3
+            // pbLeituraDPItau
             // 
-            this.progressBar3.Location = new System.Drawing.Point(494, 37);
-            this.progressBar3.Name = "progressBar3";
-            this.progressBar3.Size = new System.Drawing.Size(159, 21);
-            this.progressBar3.TabIndex = 15;
-            this.progressBar3.Visible = false;
+            this.pbLeituraDPItau.Location = new System.Drawing.Point(494, 37);
+            this.pbLeituraDPItau.Name = "pbLeituraDPItau";
+            this.pbLeituraDPItau.Size = new System.Drawing.Size(159, 21);
+            this.pbLeituraDPItau.TabIndex = 15;
+            this.pbLeituraDPItau.Visible = false;
             // 
             // btnSalvarConfiguracoesDpItau
             // 
@@ -2274,7 +2274,7 @@
         private System.Windows.Forms.TextBox textBox4;
         private System.Windows.Forms.Label label34;
         private System.Windows.Forms.GroupBox groupBox14;
-        private System.Windows.Forms.ProgressBar progressBar3;
+        private System.Windows.Forms.ProgressBar pbLeituraDPItau;
         private System.Windows.Forms.Button btnSalvarConfiguracoesDpItau;
         private System.Windows.Forms.Button btnLerCSVDpItau;
         private System.Windows.Forms.Button button12;
