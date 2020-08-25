@@ -1,4 +1,5 @@
-﻿using System;
+﻿using DocumentFormat.OpenXml.Spreadsheet;
+using System;
 using System.Collections.Generic;
 using System.Data.OleDb;
 using System.IO;
@@ -34,15 +35,21 @@ namespace rajadas
         // ** Faz a verificação e leitura do arquivo CSV e retorna uma lista do tipo DetalhadoRegistro ** //
         public List<DetalhadoRegistro> LerArquivoDetalhadoDeRegistro(string arquivoCSV)
         {
+            // ** Lista que será retornada com os registros do arquivo CSV
             List<DetalhadoRegistro> listaDetalhadoRegistro = new List<DetalhadoRegistro>();
+
+            // ** Lista temporária utilizada para remoção do cabeçalho do arquivo CSV
+            List<string> listaDetalhadoRegistroTemp = new List<string>();
+
 
             try
             {
                 // ** Valida se o arquivo CSV é do FDI ou do BrFlow, primeiro trata como FDI e se der erro de índice vai para o catch que tratará com BrFlow ** //
                 try
-                {
+                {                    
                     listaDetalhadoRegistro = File.ReadAllLines(arquivoCSV, Encoding.Default)
                     .Select(a => a.Split(';'))
+                    .Skip(1)
                     .Select(c => new DetalhadoRegistro()
                     {
                         protocolo = c[0].Replace("\"", ""),
@@ -72,36 +79,34 @@ namespace rajadas
                     if (erro.Message.Equals("O índice estava fora dos limites da matriz."))
                     {
                         listaDetalhadoRegistro = File.ReadAllLines(arquivoCSV, Encoding.Default)
-                    .Select(a => a.Split(';'))
-                    .Select(c => new DetalhadoRegistro()
-                    {
-                        protocolo = c[0].Replace("\"", ""),
-                        sistema = "BrFlow",
-                        workflow = c[1].Replace("\"", ""),
-                        cpfCnpj = c[2].Replace("\"", ""),
-                        dataCadastro = c[3].Replace("\"", ""),
-                        dataConclusao = c[4].Replace("\"", ""),
-                        statusRegistro = c[5].Replace("\"", ""),
-                        resultado = c[6].Replace("\"", ""),
-                        usuario = c[7].Replace("\"", ""),
-                        nh = c[8].Replace("\"", ""),
-                        contratoProposta = c[9].Replace("\"", ""),
-                        prioridade = c[10].Replace("\"", ""),
-                        dataAnalise = c[11].Replace("\"", ""),
-                        tempoAnalise = c[12].Replace("\"", ""),
-                        agencia = c[13].Replace("\"", ""),
-                        conta = c[14].Replace("\"", ""),
-                        matricula = c[15].Replace("\"", "")
-                    })
-                    .ToList();
-                    }
-                    
+                        .Select(a => a.Split(';'))
+                        .Skip(1)
+                        .Select(c => new DetalhadoRegistro()
+                        {
+                            protocolo = c[0].Replace("\"", ""),
+                            sistema = "BrFlow",
+                            workflow = c[1].Replace("\"", ""),
+                            cpfCnpj = c[2].Replace("\"", ""),
+                            dataCadastro = c[3].Replace("\"", ""),
+                            dataConclusao = c[4].Replace("\"", ""),
+                            statusRegistro = c[5].Replace("\"", ""),
+                            resultado = c[6].Replace("\"", ""),
+                            usuario = c[7].Replace("\"", ""),
+                            nh = c[8].Replace("\"", ""),
+                            contratoProposta = c[9].Replace("\"", ""),
+                            prioridade = c[10].Replace("\"", ""),
+                            dataAnalise = c[11].Replace("\"", ""),
+                            tempoAnalise = c[12].Replace("\"", ""),
+                            agencia = c[13].Replace("\"", ""),
+                            conta = c[14].Replace("\"", ""),
+                            matricula = c[15].Replace("\"", "")
+                        })                        
+                        .ToList();
+                    }                    
                 }
 
                 if (listaDetalhadoRegistro.Count() > 0)
                 {
-                    // ** Remove o cabeçalho do arquivo CSV ** //
-                    listaDetalhadoRegistro.RemoveAt(0);
                     return listaDetalhadoRegistro;
                 }
                 else
@@ -109,7 +114,7 @@ namespace rajadas
                     return null;
                 }
             }
-            catch (Exception)
+            catch (Exception e)
             {
                 return null;
             }

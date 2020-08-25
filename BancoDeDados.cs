@@ -1027,22 +1027,22 @@ namespace rajadas
                 // ** Adiciona os parâmetros ao objeto de comando
                 comando.Parameters.AddWithValue("@PROTOCOLO", detalhadoRegistro.protocolo);
                 comando.Parameters.AddWithValue("@WORKFLOW", detalhadoRegistro.workflow);
-                comando.Parameters.AddWithValue("@CPF_CNPJ", detalhadoRegistro.cpfCnpj);
+                comando.Parameters.AddWithValue("@CPF_CNPJ", "-");
                 comando.Parameters.AddWithValue("@DATA_CADASTRO", detalhadoRegistro.dataCadastro);
                 comando.Parameters.AddWithValue("@DATA_CONCLUSAO", detalhadoRegistro.dataConclusao);
                 comando.Parameters.AddWithValue("@STATUS_REGISTRO", detalhadoRegistro.statusRegistro);
                 comando.Parameters.AddWithValue("@RESULTADO", detalhadoRegistro.resultado);
-                comando.Parameters.AddWithValue("@USUARIO", detalhadoRegistro.usuario);
+                comando.Parameters.AddWithValue("@USUARIO", "-");
                 comando.Parameters.AddWithValue("@NH", detalhadoRegistro.nh);
                 comando.Parameters.AddWithValue("@CONTRATO_PROPOSTA", detalhadoRegistro.contratoProposta);
                 comando.Parameters.AddWithValue("@PRIORIDADE", detalhadoRegistro.prioridade);
                 comando.Parameters.AddWithValue("@DATA_ANALISE", detalhadoRegistro.dataAnalise);
                 comando.Parameters.AddWithValue("@TEMPO_ANALISE", detalhadoRegistro.tempoAnalise);
                 comando.Parameters.AddWithValue("@TIPO_CONCLUSAO", detalhadoRegistro.tipoConclusao);
-                comando.Parameters.AddWithValue("@AGENCIA", detalhadoRegistro.agencia);
-                comando.Parameters.AddWithValue("@CONTA", detalhadoRegistro.conta);
-                comando.Parameters.AddWithValue("@DAC", detalhadoRegistro.dac);
-                comando.Parameters.AddWithValue("@MATRICULA", detalhadoRegistro.matricula);
+                comando.Parameters.AddWithValue("@AGENCIA", "-");
+                comando.Parameters.AddWithValue("@CONTA", "-");
+                comando.Parameters.AddWithValue("@DAC", "-");
+                comando.Parameters.AddWithValue("@MATRICULA", "-");
 
                 // ** Executa o comando de inserção no banco ** //
                 comando.ExecuteNonQuery();
@@ -1090,10 +1090,10 @@ namespace rajadas
                 comando.Parameters.AddWithValue("@DATA_ANALISE", detalhadoRegistro.dataAnalise);
                 comando.Parameters.AddWithValue("@TEMPO_ANALISE", detalhadoRegistro.tempoAnalise);
                 comando.Parameters.AddWithValue("@TIPO_CONCLUSAO", detalhadoRegistro.tipoConclusao);
-                comando.Parameters.AddWithValue("@AGENCIA", detalhadoRegistro.agencia);
-                comando.Parameters.AddWithValue("@CONTA", detalhadoRegistro.conta);
-                comando.Parameters.AddWithValue("@DAC", detalhadoRegistro.dac);
-                comando.Parameters.AddWithValue("@MATRICULA", detalhadoRegistro.matricula);
+                comando.Parameters.AddWithValue("@AGENCIA", "-");
+                comando.Parameters.AddWithValue("@CONTA", "-");
+                comando.Parameters.AddWithValue("@DAC", "-");
+                comando.Parameters.AddWithValue("@MATRICULA", "-");
 
                 // ** Executa o comando de inserção no banco ** //
                 comando.ExecuteNonQuery();
@@ -1114,13 +1114,13 @@ namespace rajadas
         }
 
         // ** Método para retornar os registros da tabela ** //
-        public List<DetalhadoRegistro> ListarDetalhadoRegistro(String endereco, String porta, String usuario, String senha, String nomeBD, string tabela)
+        public List<DetalhadoRegistro> ListarDetalhadoRegistro(String endereco, String porta, String usuario, String senha, String nomeBD, string tabela, string rangePesquisaMinimo, string rangePesquisaMaximo)
         {
             // ** String de conexão com o banco ** //
             String stringConexao = "server=" + endereco + ";port=" + porta + ";User Id=" + usuario + ";database=" + nomeBD + ";password=" + senha;
 
             // ** String para buscar os registros no banco // **
-            String stringComando = "SELECT * FROM " + tabela + " ORDER BY protocolo";
+            String stringComando = "SELECT * FROM " + tabela + " WHERE data_cadastro BETWEEN '" + rangePesquisaMinimo + "' AND '" + rangePesquisaMaximo + "' ORDER BY protocolo";
 
             // ** Cria a lista de parâmetros ** //
             List<DetalhadoRegistro> listaDetalhadoRegistro = new List<DetalhadoRegistro>();

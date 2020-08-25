@@ -95,6 +95,9 @@ namespace rajadas
 
         private void Form1_Load(object sender, EventArgs e)
         {
+            //string data = "25/08/2020 12:11:10";
+            //string novaData = Convert.ToDateTime(data).ToString("yyyy-MM-dd HH:mm:ss");
+
             carregarParametrosBD();
             carregaParametrosRajadaTijolo();
             carregaParametrosRajadaDigital();
@@ -114,6 +117,7 @@ namespace rajadas
             rajada.ExcluirArquivosProcessadosAntigos(this.caminhoRajadaProcessadaInvertida);
 
             Expurgo expurgo = new Expurgo();
+
             expurgo.ExcluirArquivosCSVAntigos(this.diretorioDestinoCSVItau);
             expurgo.ExcluirArquivosCSVAntigos(this.diretorioDestinoCSVBradesco);
             expurgo.ExcluirArquivosCSVAntigos(this.diretorioOrigemCSVBMG);
@@ -1455,11 +1459,26 @@ namespace rajadas
 
                         List<DetalhadoRegistro> listaDetalhadoRegistroBD = new List<DetalhadoRegistro>();
 
+                        List<DetalhadoRegistro> listaDetalhadoRegistroInserir = new List<DetalhadoRegistro>();
+
+                        List<DetalhadoRegistro> listaDetalhadoRegistroConversao = new List<DetalhadoRegistro>();
+
+                        listaDetalhadoRegistroConversao = detalhadoRegistro.LerArquivoDetalhadoDeRegistro(arquivoEncontrado);
+                        
+
+                        // ** Seta o range de dois dias para a pesquisa no BD ** //
+                        Agendamento agendamento = new Agendamento();
+                        List<string> rangeDePesquisa = agendamento.RetornarRangeDePesquisa(listaDetalhadoRegistroConversao);
+                        string rangeMinimo = rangeDePesquisa[0];
+                        string rangeMaximo = rangeDePesquisa[1];
+
+                        listaDetalhadoRegistroInserir = agendamento.ConverterDatas(listaDetalhadoRegistroConversao);
+
                         if (cliente == "bradesco")
                         {
                             pbLeituraDR.Value = 0;
 
-                            listaDetalhadoRegistroBD = bancoDeDados.ListarDetalhadoRegistro(this.enderecoBD, this.portaBD, this.usuarioBD, this.senhaBD, this.nomeBD, "bradesco_detalhado_registros");
+                            listaDetalhadoRegistroBD = bancoDeDados.ListarDetalhadoRegistro(this.enderecoBD, this.portaBD, this.usuarioBD, this.senhaBD, this.nomeBD, "bradesco_detalhado_registros", rangeMinimo, rangeMaximo);
                         }
                         else
                         {
@@ -1467,7 +1486,7 @@ namespace rajadas
                             {
                                 pbLeituraDRItau.Value = 0;
 
-                                listaDetalhadoRegistroBD = bancoDeDados.ListarDetalhadoRegistro(this.enderecoBD, this.portaBD, this.usuarioBD, this.senhaBD, this.nomeBD, "itau_detalhado_registros");
+                                listaDetalhadoRegistroBD = bancoDeDados.ListarDetalhadoRegistro(this.enderecoBD, this.portaBD, this.usuarioBD, this.senhaBD, this.nomeBD, "itau_detalhado_registros", rangeMinimo, rangeMaximo);
                             }
                             else
                             {
@@ -1475,7 +1494,7 @@ namespace rajadas
                                 {
                                     pbLeituraDRDockTech.Value = 0;
 
-                                    listaDetalhadoRegistroBD = bancoDeDados.ListarDetalhadoRegistro(this.enderecoBD, this.portaBD, this.usuarioBD, this.senhaBD, this.nomeBD, "docktech_detalhado_registros");
+                                    listaDetalhadoRegistroBD = bancoDeDados.ListarDetalhadoRegistro(this.enderecoBD, this.portaBD, this.usuarioBD, this.senhaBD, this.nomeBD, "docktech_detalhado_registros", rangeMinimo, rangeMaximo);
                                 }
                                 else
                                 {
@@ -1483,16 +1502,11 @@ namespace rajadas
                                     {
                                         pbLeituraDRBMG.Value = 0;
 
-                                        listaDetalhadoRegistroBD = bancoDeDados.ListarDetalhadoRegistro(this.enderecoBD, this.portaBD, this.usuarioBD, this.senhaBD, this.nomeBD, "bmg_detalhado_registros");
+                                        listaDetalhadoRegistroBD = bancoDeDados.ListarDetalhadoRegistro(this.enderecoBD, this.portaBD, this.usuarioBD, this.senhaBD, this.nomeBD, "bmg_detalhado_registros", rangeMinimo, rangeMaximo);
                                     }
                                 }
                             }
-                        }
-                                           
-
-                        List<DetalhadoRegistro> listaDetalhadoRegistroInserir = new List<DetalhadoRegistro>();
-
-                        listaDetalhadoRegistroInserir = detalhadoRegistro.LerArquivoDetalhadoDeRegistro(arquivoEncontrado);
+                        }                                   
 
                         if (listaDetalhadoRegistroInserir != null)
                         {

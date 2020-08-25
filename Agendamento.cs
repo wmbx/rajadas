@@ -186,5 +186,68 @@ namespace rajadas
             }
             return dataFormatada;
         }
+
+        // ** Retorna um range mínimo e máximo de acordo com os registros encontrados no arquivo de importação. Formatado como DD/MM/AAAA HH:MM:SS ** //
+        public List<string> RetornarRangeDePesquisa(List<DetalhadoRegistro> listaDetalhadoDeRegistros)
+        {
+            List<string> rangeDePesquisa = new List<string>();           
+
+            List<string> datasDosRegistros = new List<string>();
+
+            try
+            {
+                foreach (var registro in listaDetalhadoDeRegistros)
+                {
+                    string dataCadastro = registro.dataCadastro;
+                    datasDosRegistros.Add(dataCadastro.Substring(0, 10));
+                }
+
+                string rangeMinimo = datasDosRegistros.First();
+                string rangeMaximo = datasDosRegistros.Last();
+
+                rangeDePesquisa.Add(Convert.ToDateTime(rangeMinimo + " 00:00:00").ToString("yyyy-MM-dd HH:mm:ss"));
+                rangeDePesquisa.Add(Convert.ToDateTime(rangeMaximo + " 23:59:59").ToString("yyyy-MM-dd HH:mm:ss"));
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+            return rangeDePesquisa;
+        }
+
+        // ** Formatada os campos datas da lista de DD/MM/AAAA HH:MM:SS para yyyy-MM-dd HH:mm:ss ** //
+        public List<DetalhadoRegistro> ConverterDatas(List<DetalhadoRegistro> listaDetalhadoDeRegistros)
+        {  
+            try
+            {    
+                for (int i = 0; i < listaDetalhadoDeRegistros.Count; i++)
+                {   
+                    listaDetalhadoDeRegistros[i].dataCadastro = Convert.ToDateTime(listaDetalhadoDeRegistros[i].dataCadastro).ToString("yyyy-MM-dd HH:mm:ss");
+
+                    if (listaDetalhadoDeRegistros[i].dataConclusao != "-")
+                    {
+                        listaDetalhadoDeRegistros[i].dataConclusao = Convert.ToDateTime(listaDetalhadoDeRegistros[i].dataConclusao).ToString("yyyy-MM-dd HH:mm:ss");
+                    }
+                    else
+                    {
+                        listaDetalhadoDeRegistros[i].dataConclusao = null;
+                    }
+                    
+                    if (listaDetalhadoDeRegistros[i].dataAnalise != "-")
+                    {
+                        listaDetalhadoDeRegistros[i].dataAnalise = Convert.ToDateTime(listaDetalhadoDeRegistros[i].dataAnalise).ToString("yyyy-MM-dd HH:mm:ss");
+                    }
+                    else
+                    {
+                        listaDetalhadoDeRegistros[i].dataAnalise = null;
+                    }                     
+                }                 
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+            return listaDetalhadoDeRegistros;
+        }
     }
 }
