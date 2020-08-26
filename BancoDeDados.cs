@@ -1179,13 +1179,13 @@ namespace rajadas
         }
 
         // ** Método para retornar os registros da tabela Detalhado de Produtividade** //
-        public List<DetalhadoProdutividade> ListarDetalhadoProdutividade(String endereco, String porta, String usuario, String senha, String nomeBD, string tabela)
+        public List<DetalhadoProdutividade> ListarDetalhadoProdutividade(String endereco, String porta, String usuario, String senha, String nomeBD, string tabela, string rangePesquisaMinimo, string rangePesquisaMaximo)
         {
             // ** String de conexão com o banco ** //
             String stringConexao = "server=" + endereco + ";port=" + porta + ";User Id=" + usuario + ";database=" + nomeBD + ";password=" + senha;
 
             // ** String para buscar os registros no banco // **
-            String stringComando = "SELECT * FROM " + tabela + " ORDER BY protocolo";
+            String stringComando = "SELECT * FROM " + tabela + " WHERE data_cadastro BETWEEN '" + rangePesquisaMinimo + "' AND '" + rangePesquisaMaximo + "' ORDER BY protocolo";
 
             // ** Cria a lista de parâmetros ** //
             List<DetalhadoProdutividade> listaDetalhadoProdutividade = new List<DetalhadoProdutividade>();

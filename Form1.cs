@@ -1472,7 +1472,7 @@ namespace rajadas
                         string rangeMinimo = rangeDePesquisa[0];
                         string rangeMaximo = rangeDePesquisa[1];
 
-                        listaDetalhadoRegistroInserir = agendamento.ConverterDatas(listaDetalhadoRegistroConversao);
+                        listaDetalhadoRegistroInserir = agendamento.ConverterDatasDR(listaDetalhadoRegistroConversao);
 
                         if (cliente == "bradesco")
                         {
@@ -1703,11 +1703,23 @@ namespace rajadas
                         
                     pbLeituraDPItau.Value = 0;
                         
-                    listaDetalhadoProdutividadeBD = bancoDeDados.ListarDetalhadoProdutividade(this.enderecoBD, this.portaBD, this.usuarioBD, this.senhaBD, this.nomeBD, "itau_detalhado_produtividade");
-                        
                     List<DetalhadoProdutividade> listaDetalhadoProdutividadeInserir = new List<DetalhadoProdutividade>();
 
-                    listaDetalhadoProdutividadeInserir = detalhadoProdutividade.LerArquivoDetalhadoDeProdutividade(arquivoEncontrado);
+                    List<DetalhadoProdutividade> listaDetalhadoProdutividadeConversao = new List<DetalhadoProdutividade>();
+
+                    listaDetalhadoProdutividadeConversao = detalhadoProdutividade.LerArquivoDetalhadoDeProdutividade(arquivoEncontrado);
+
+                    // ** Seta o range de dois dias para a pesquisa no BD ** //
+                    Agendamento agendamento = new Agendamento();
+                    List<string> rangeDePesquisa = agendamento.RetornarRangeDePesquisaDP(listaDetalhadoProdutividadeConversao);
+                    string rangeMinimo = rangeDePesquisa[0];
+                    string rangeMaximo = rangeDePesquisa[1];
+
+                    listaDetalhadoProdutividadeInserir = agendamento.ConverterDatasDP(listaDetalhadoProdutividadeConversao);
+
+                    listaDetalhadoProdutividadeBD = bancoDeDados.ListarDetalhadoProdutividade(this.enderecoBD, this.portaBD, this.usuarioBD, this.senhaBD, this.nomeBD, "itau_detalhado_produtividade", rangeMinimo, rangeMaximo);
+
+                    //listaDetalhadoProdutividadeInserir = detalhadoProdutividade.LerArquivoDetalhadoDeProdutividade(arquivoEncontrado);
 
                     if (listaDetalhadoProdutividadeInserir != null)
                     {

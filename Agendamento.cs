@@ -215,8 +215,8 @@ namespace rajadas
             return rangeDePesquisa;
         }
 
-        // ** Formatada os campos datas da lista de DD/MM/AAAA HH:MM:SS para yyyy-MM-dd HH:mm:ss ** //
-        public List<DetalhadoRegistro> ConverterDatas(List<DetalhadoRegistro> listaDetalhadoDeRegistros)
+        // ** Formatada os campos datas da lista de DD/MM/AAAA HH:MM:SS para yyyy-MM-dd HH:mm:ss ** DETALHADO DE REGISTRO//
+        public List<DetalhadoRegistro> ConverterDatasDR(List<DetalhadoRegistro> listaDetalhadoDeRegistros)
         {  
             try
             {    
@@ -248,6 +248,60 @@ namespace rajadas
                 throw;
             }
             return listaDetalhadoDeRegistros;
+        }
+
+        // ** Formatada os campos datas da lista de DD/MM/AAAA HH:MM:SS para yyyy-MM-dd HH:mm:ss ** DETALHADO DE PRODUTIVIDADE//
+        public List<DetalhadoProdutividade> ConverterDatasDP(List<DetalhadoProdutividade> listaDetalhadoDeProdutividade)
+        {
+            try
+            {
+                for (int i = 0; i < listaDetalhadoDeProdutividade.Count; i++)
+                {
+                    listaDetalhadoDeProdutividade[i].dataCadastro = Convert.ToDateTime(listaDetalhadoDeProdutividade[i].dataCadastro).ToString("yyyy-MM-dd HH:mm:ss");
+                    
+                    if (listaDetalhadoDeProdutividade[i].dataAnalise != "-")
+                    {
+                        listaDetalhadoDeProdutividade[i].dataAnalise = Convert.ToDateTime(listaDetalhadoDeProdutividade[i].dataAnalise).ToString("yyyy-MM-dd HH:mm:ss");
+                    }
+                    else
+                    {
+                        listaDetalhadoDeProdutividade[i].dataAnalise = null;
+                    }
+                }
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+            return listaDetalhadoDeProdutividade;
+        }
+
+        // ** Retorna um range mínimo e máximo de acordo com os registros encontrados no arquivo de importação(DETALHADO DE PRODUTIVIDADE). Formatado como DD/MM/AAAA HH:MM:SS ** //
+        public List<string> RetornarRangeDePesquisaDP(List<DetalhadoProdutividade> listaDetalhadoDeProdutividade)
+        {
+            List<string> rangeDePesquisa = new List<string>();
+
+            List<string> datasDosRegistros = new List<string>();
+
+            try
+            {
+                foreach (var registro in listaDetalhadoDeProdutividade)
+                {
+                    string dataCadastro = registro.dataCadastro;
+                    datasDosRegistros.Add(dataCadastro.Substring(0, 10));
+                }
+
+                string rangeMinimo = datasDosRegistros.First();
+                string rangeMaximo = datasDosRegistros.Last();
+
+                rangeDePesquisa.Add(Convert.ToDateTime(rangeMinimo + " 00:00:00").ToString("yyyy-MM-dd HH:mm:ss"));
+                rangeDePesquisa.Add(Convert.ToDateTime(rangeMaximo + " 23:59:59").ToString("yyyy-MM-dd HH:mm:ss"));
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+            return rangeDePesquisa;
         }
     }
 }
