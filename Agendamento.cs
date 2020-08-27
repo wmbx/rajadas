@@ -224,7 +224,7 @@ namespace rajadas
                 {   
                     listaDetalhadoDeRegistros[i].dataCadastro = Convert.ToDateTime(listaDetalhadoDeRegistros[i].dataCadastro).ToString("yyyy-MM-dd HH:mm:ss");
 
-                    if (listaDetalhadoDeRegistros[i].dataConclusao != "-")
+                    if (listaDetalhadoDeRegistros[i].dataConclusao != "-" && listaDetalhadoDeRegistros[i].dataConclusao != "")
                     {
                         listaDetalhadoDeRegistros[i].dataConclusao = Convert.ToDateTime(listaDetalhadoDeRegistros[i].dataConclusao).ToString("yyyy-MM-dd HH:mm:ss");
                     }
@@ -233,7 +233,7 @@ namespace rajadas
                         listaDetalhadoDeRegistros[i].dataConclusao = null;
                     }
                     
-                    if (listaDetalhadoDeRegistros[i].dataAnalise != "-")
+                    if (listaDetalhadoDeRegistros[i].dataAnalise != "-" && listaDetalhadoDeRegistros[i].dataAnalise != "")
                     {
                         listaDetalhadoDeRegistros[i].dataAnalise = Convert.ToDateTime(listaDetalhadoDeRegistros[i].dataAnalise).ToString("yyyy-MM-dd HH:mm:ss");
                     }
@@ -257,9 +257,15 @@ namespace rajadas
             {
                 for (int i = 0; i < listaDetalhadoDeProdutividade.Count; i++)
                 {
-                    listaDetalhadoDeProdutividade[i].dataCadastro = Convert.ToDateTime(listaDetalhadoDeProdutividade[i].dataCadastro).ToString("yyyy-MM-dd HH:mm:ss");
-                    
-                    if (listaDetalhadoDeProdutividade[i].dataAnalise != "-")
+                    if (listaDetalhadoDeProdutividade[i].dataCadastro != "-" && listaDetalhadoDeProdutividade[i].dataCadastro != "")
+                    {
+                        listaDetalhadoDeProdutividade[i].dataCadastro = Convert.ToDateTime(listaDetalhadoDeProdutividade[i].dataCadastro).ToString("yyyy-MM-dd HH:mm:ss");
+                    }
+                    else
+                    {
+                        listaDetalhadoDeProdutividade[i].dataCadastro = null;
+                    }
+                    if (listaDetalhadoDeProdutividade[i].dataAnalise != "-" && listaDetalhadoDeProdutividade[i].dataAnalise != "")
                     {
                         listaDetalhadoDeProdutividade[i].dataAnalise = Convert.ToDateTime(listaDetalhadoDeProdutividade[i].dataAnalise).ToString("yyyy-MM-dd HH:mm:ss");
                     }

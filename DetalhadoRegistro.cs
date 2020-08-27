@@ -39,7 +39,7 @@ namespace rajadas
             List<DetalhadoRegistro> listaDetalhadoRegistro = new List<DetalhadoRegistro>();
 
             // ** Lista temporária utilizada para remoção do cabeçalho do arquivo CSV
-            List<string> listaDetalhadoRegistroTemp = new List<string>();
+            
 
 
             try
@@ -103,11 +103,12 @@ namespace rajadas
                         })                        
                         .ToList();
                     }                    
-                }
-
+                }                
+        
                 if (listaDetalhadoRegistro.Count() > 0)
                 {
-                    return listaDetalhadoRegistro;
+                    List<DetalhadoRegistro> listaDetalhadoRegistroOrdenada = listaDetalhadoRegistro.OrderBy(o => o.dataCadastro).ToList();
+                    return listaDetalhadoRegistroOrdenada;
                 }
                 else
                 {
