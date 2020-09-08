@@ -1406,7 +1406,7 @@ namespace rajadas
         }
 
         // ** Realiza a leitura manual do arquivo CSV do Detalhado de Registro passando como parâmetro o CLIENTE ** //
-        private void LerCSVDetalhadoRegistro(string cliente, string diretorioOrigemCSV, string diretorioDestinoCSV, string tipoLeitura)
+        private void LerCSVDetalhadoRegistro(string cliente, string diretorioOrigemCSV, string diretorioDestinoCSV)
         {
             int contadorRegistrosImportados = 0;
 
@@ -2354,7 +2354,7 @@ namespace rajadas
 
         private void bgwDrBradesco_DoWork(object sender, DoWorkEventArgs e)
         {
-            LerCSVDetalhadoRegistro("bradesco", this.diretorioOrigemCSVBradesco, this.diretorioDestinoCSVBradesco, "manual");
+            LerCSVDetalhadoRegistro("bradesco", this.diretorioOrigemCSVBradesco, this.diretorioDestinoCSVBradesco);
         }
 
         private void bgwDrBradesco_ProgressChanged(object sender, ProgressChangedEventArgs e)
@@ -2369,17 +2369,17 @@ namespace rajadas
 
         private void bgwDrItau_DoWork(object sender, DoWorkEventArgs e)
         {
-            LerCSVDetalhadoRegistro("itau", this.diretorioOrigemCSVItau, this.diretorioDestinoCSVItau, "manual");
+            LerCSVDetalhadoRegistro("itau", this.diretorioOrigemCSVItau, this.diretorioDestinoCSVItau);
         }
 
         private void bgwDrDockTech_DoWork(object sender, DoWorkEventArgs e)
         {
-            LerCSVDetalhadoRegistro("docktech", this.diretorioOrigemCSVDockTech, this.diretorioDestinoCSVDockTech, "manual");
+            LerCSVDetalhadoRegistro("docktech", this.diretorioOrigemCSVDockTech, this.diretorioDestinoCSVDockTech);
         }
 
         private void bgwDrBMG_DoWork(object sender, DoWorkEventArgs e)
         {
-            LerCSVDetalhadoRegistro("bmg", this.diretorioOrigemCSVBMG, this.diretorioDestinoCSVBMG, "manual");
+            LerCSVDetalhadoRegistro("bmg", this.diretorioOrigemCSVBMG, this.diretorioDestinoCSVBMG);
         }
     }
 }
