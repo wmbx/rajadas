@@ -106,7 +106,7 @@ namespace rajadas
             CarregarParametrosDetalhadoRegistro();
             CarregarParametrosDetalhadoDeProdutividade();
             expurgoArquivosAntigos();
-           
+
         }
 
         protected void expurgoArquivosAntigos()
@@ -1402,139 +1402,327 @@ namespace rajadas
         // ** Faz a leitura manual dos arquivos .CSV BRADESCO ** //
         private void button2_Click(object sender, EventArgs e)
         {
-            LerCSVDetalhadoRegistro("bradesco", this.diretorioOrigemCSVBradesco, this.diretorioDestinoCSVBradesco, "manual");
+            bgwDrBradesco.RunWorkerAsync();
         }
 
         // ** Realiza a leitura manual do arquivo CSV do Detalhado de Registro passando como parâmetro o CLIENTE ** //
         private void LerCSVDetalhadoRegistro(string cliente, string diretorioOrigemCSV, string diretorioDestinoCSV, string tipoLeitura)
         {
+            int contadorRegistrosImportados = 0;
+
+            int contadorRegistrosAtualizados = 0;
+
+            int rangeProgressBar = 0;
+
+            DetalhadoRegistro detalhadoRegistro = new DetalhadoRegistro();
+
+            List<string> listaDeArquivosCSV = new List<string>();
+
+            // ** Recupera os arquivos CSV encontrados no diretório especificado **//
+            listaDeArquivosCSV = detalhadoRegistro.LocalizarArquivosCSV(diretorioOrigemCSV);
+
+            // ** Verifica se foi encontrado algum arquivo CSV antes de realizar a leitura ** //
+            if (listaDeArquivosCSV != null)
             {
-                if (cliente == "bradesco")
+                foreach (var arquivoEncontrado in listaDeArquivosCSV)
                 {
-                    pbLeituraDR.Visible = true;
-                    button2.Visible = false;
-                }
-                else
-                {
-                    if (cliente == "itau")
+                    if (cliente == "bradesco")
                     {
-                        pbLeituraDRItau.Visible = true;
-                        btnLerCSVItau.Visible = false;
+                        if (lblCalculandoRegistrosBradesco.InvokeRequired)
+                            lblCalculandoRegistrosBradesco.BeginInvoke((MethodInvoker)delegate
+                            {
+                                lblCalculandoRegistrosBradesco.Visible = true;
+                            });
+
+                        if (pbLeituraDR.InvokeRequired)
+                            pbLeituraDR.BeginInvoke((MethodInvoker)delegate
+                            {
+                                pbLeituraDR.Visible = true;
+                            });
+
+                        if (button2.InvokeRequired)
+                            button2.BeginInvoke((MethodInvoker)delegate
+                            {
+                                button2.Visible = false;
+                            });
                     }
                     else
                     {
-                        if (cliente == "docktech")
+                        if (cliente == "itau")
                         {
-                            pbLeituraDRDockTech.Visible = true;
-                            btnLerCSVDockTech.Visible = false;
+                            if (lblCalculandoRegistrosItau.InvokeRequired)
+                                lblCalculandoRegistrosItau.BeginInvoke((MethodInvoker)delegate
+                                {
+                                    lblCalculandoRegistrosItau.Visible = true;
+                                });
+
+                            if (pbLeituraDRItau.InvokeRequired)
+                                pbLeituraDRItau.BeginInvoke((MethodInvoker)delegate
+                                {
+                                    pbLeituraDRItau.Visible = true;
+                                });
+
+                            if (btnLerCSVItau.InvokeRequired)
+                                btnLerCSVItau.BeginInvoke((MethodInvoker)delegate
+                                {
+                                    btnLerCSVItau.Visible = false;
+                                });
                         }
                         else
                         {
-                            if (cliente == "bmg")
+                            if (cliente == "docktech")
                             {
-                                pbLeituraDRBMG.Visible = true;
-                                btnLerCSVBMG.Visible = false;
+                                if (lblCalculandoRegistrosDockTech.InvokeRequired)
+                                    lblCalculandoRegistrosDockTech.BeginInvoke((MethodInvoker)delegate
+                                    {
+                                        lblCalculandoRegistrosDockTech.Visible = true;
+                                    });
+
+                                if (pbLeituraDRDockTech.InvokeRequired)
+                                    pbLeituraDRDockTech.BeginInvoke((MethodInvoker)delegate
+                                    {
+                                        pbLeituraDRDockTech.Visible = true;
+                                    });
+
+                                if (btnLerCSVDockTech.InvokeRequired)
+                                    btnLerCSVDockTech.BeginInvoke((MethodInvoker)delegate
+                                    {
+                                        btnLerCSVDockTech.Visible = false;
+                                    });
+                            }
+                            else
+                            {
+                                if (cliente == "bmg")
+                                {
+                                    if (lblCalculandoRegistrosBMG.InvokeRequired)
+                                        lblCalculandoRegistrosBMG.BeginInvoke((MethodInvoker)delegate
+                                        {
+                                            lblCalculandoRegistrosBMG.Visible = true;
+                                        });
+
+                                    if (pbLeituraDRBMG.InvokeRequired)
+                                        pbLeituraDRBMG.BeginInvoke((MethodInvoker)delegate
+                                        {
+                                            pbLeituraDRBMG.Visible = true;
+                                        });
+
+                                    if (btnLerCSVBMG.InvokeRequired)
+                                        btnLerCSVBMG.BeginInvoke((MethodInvoker)delegate
+                                        {
+                                            btnLerCSVBMG.Visible = false;
+                                        });
+                                }
                             }
                         }
                     }
-                }
 
-                int contadorRegistrosImportados = 0;
+                    BancoDeDados bancoDeDados = new BancoDeDados();
 
-                int contadorRegistrosAtualizados = 0;
+                    List<DetalhadoRegistro> listaDetalhadoRegistroBD = new List<DetalhadoRegistro>();
 
-                DetalhadoRegistro detalhadoRegistro = new DetalhadoRegistro();
+                    List<DetalhadoRegistro> listaDetalhadoRegistroInserir = new List<DetalhadoRegistro>();
 
-                List<string> listaDeArquivosCSV = new List<string>();
+                    List<DetalhadoRegistro> listaDetalhadoRegistroConversao = new List<DetalhadoRegistro>();
 
-                // ** Recupera os arquivos CSV encontrados no diretório especificado **//
-                listaDeArquivosCSV = detalhadoRegistro.LocalizarArquivosCSV(diretorioOrigemCSV);
+                    listaDetalhadoRegistroConversao = detalhadoRegistro.LerArquivoDetalhadoDeRegistro(arquivoEncontrado);
 
-                // ** Verifica se foi encontrado algum arquivo CSV antes de realizar a leitura ** //
-                if (listaDeArquivosCSV != null)
-                {
-                    foreach (var arquivoEncontrado in listaDeArquivosCSV)
+
+                    // ** Seta o range de dois dias para a pesquisa no BD ** //
+                    Agendamento agendamento = new Agendamento();
+                    List<string> rangeDePesquisa = agendamento.RetornarRangeDePesquisa(listaDetalhadoRegistroConversao);
+                    string rangeMinimo = rangeDePesquisa[0];
+                    string rangeMaximo = rangeDePesquisa[1];
+
+                    listaDetalhadoRegistroInserir = agendamento.ConverterDatasDR(listaDetalhadoRegistroConversao);
+
+                    if (cliente == "bradesco")
                     {
-                        BancoDeDados bancoDeDados = new BancoDeDados();
+                        if (pbLeituraDR.InvokeRequired)
+                            pbLeituraDR.BeginInvoke((MethodInvoker)delegate
+                            {
+                                pbLeituraDR.Value = 0;
+                            });
 
-                        List<DetalhadoRegistro> listaDetalhadoRegistroBD = new List<DetalhadoRegistro>();
+                        listaDetalhadoRegistroBD = bancoDeDados.ListarDetalhadoRegistro(this.enderecoBD, this.portaBD, this.usuarioBD, this.senhaBD, this.nomeBD, "bradesco_detalhado_registros", rangeMinimo, rangeMaximo);
+                    }
+                    else
+                    {
+                        if (cliente == "itau")
+                        {
+                            if (pbLeituraDRItau.InvokeRequired)
+                                pbLeituraDRItau.BeginInvoke((MethodInvoker)delegate
+                                {
+                                    pbLeituraDRItau.Value = 0;
+                                });
 
-                        List<DetalhadoRegistro> listaDetalhadoRegistroInserir = new List<DetalhadoRegistro>();
+                            listaDetalhadoRegistroBD = bancoDeDados.ListarDetalhadoRegistro(this.enderecoBD, this.portaBD, this.usuarioBD, this.senhaBD, this.nomeBD, "itau_detalhado_registros", rangeMinimo, rangeMaximo);
+                        }
+                        else
+                        {
+                            if (cliente == "docktech")
+                            {
+                                if (pbLeituraDRDockTech.InvokeRequired)
+                                    pbLeituraDRDockTech.BeginInvoke((MethodInvoker)delegate
+                                    {
+                                        pbLeituraDRDockTech.Value = 0;
+                                    });
 
-                        List<DetalhadoRegistro> listaDetalhadoRegistroConversao = new List<DetalhadoRegistro>();
+                                listaDetalhadoRegistroBD = bancoDeDados.ListarDetalhadoRegistro(this.enderecoBD, this.portaBD, this.usuarioBD, this.senhaBD, this.nomeBD, "docktech_detalhado_registros", rangeMinimo, rangeMaximo);
+                            }
+                            else
+                            {
+                                if (cliente == "bmg")
+                                {
+                                    if (pbLeituraDRBMG.InvokeRequired)
+                                        pbLeituraDRBMG.BeginInvoke((MethodInvoker)delegate
+                                        {
+                                            pbLeituraDRBMG.Value = 0;
+                                        });
 
-                        listaDetalhadoRegistroConversao = detalhadoRegistro.LerArquivoDetalhadoDeRegistro(arquivoEncontrado);
-                        
+                                    listaDetalhadoRegistroBD = bancoDeDados.ListarDetalhadoRegistro(this.enderecoBD, this.portaBD, this.usuarioBD, this.senhaBD, this.nomeBD, "bmg_detalhado_registros", rangeMinimo, rangeMaximo);
+                                }
+                            }
+                        }
+                    }
 
-                        // ** Seta o range de dois dias para a pesquisa no BD ** //
-                        Agendamento agendamento = new Agendamento();
-                        List<string> rangeDePesquisa = agendamento.RetornarRangeDePesquisa(listaDetalhadoRegistroConversao);
-                        string rangeMinimo = rangeDePesquisa[0];
-                        string rangeMaximo = rangeDePesquisa[1];
+                    if (listaDetalhadoRegistroInserir != null)
+                    {
+                        List<DetalhadoRegistro> listaDetalhadoRegistroNovos = detalhadoRegistro.CompararListasDetalhadoRegistroObjetosNovos(listaDetalhadoRegistroInserir, listaDetalhadoRegistroBD);
 
-                        listaDetalhadoRegistroInserir = agendamento.ConverterDatasDR(listaDetalhadoRegistroConversao);
+                        List<DetalhadoRegistro> listaDetalhadoRegistroAtualizar = detalhadoRegistro.CompararListasDetalhadoRegistroObjetosCadastrados(listaDetalhadoRegistroInserir, listaDetalhadoRegistroBD);
+
+                        if (listaDetalhadoRegistroNovos != null)
+                        {
+                            contadorRegistrosImportados = contadorRegistrosImportados + listaDetalhadoRegistroNovos.Count();
+                        }
+
+                        if (listaDetalhadoRegistroAtualizar != null)
+                        {
+                            contadorRegistrosAtualizados = contadorRegistrosAtualizados + listaDetalhadoRegistroAtualizar.Count();
+                        }
+
+                        if (listaDetalhadoRegistroNovos != null && listaDetalhadoRegistroAtualizar != null)
+                        {
+                            rangeProgressBar = listaDetalhadoRegistroNovos.Count() + listaDetalhadoRegistroAtualizar.Count();
+                        }
+                        else
+                        {
+                            if (listaDetalhadoRegistroNovos != null)
+                            {
+                                rangeProgressBar = listaDetalhadoRegistroNovos.Count();
+                            }
+                            else
+                            {
+                                if (listaDetalhadoRegistroAtualizar != null)
+                                {
+                                    rangeProgressBar = listaDetalhadoRegistroAtualizar.Count();
+                                }
+                                else
+                                {
+                                    rangeProgressBar = 0;
+                                }
+                            }
+                        }
 
                         if (cliente == "bradesco")
                         {
-                            pbLeituraDR.Value = 0;
+                            if (pbLeituraDR.InvokeRequired)
+                                pbLeituraDR.BeginInvoke((MethodInvoker)delegate
+                                {
+                                    pbLeituraDR.Maximum = rangeProgressBar;
+                                });
+                            else
+                            {
+                                pbLeituraDR.Maximum = rangeProgressBar;
+                            }
 
-                            listaDetalhadoRegistroBD = bancoDeDados.ListarDetalhadoRegistro(this.enderecoBD, this.portaBD, this.usuarioBD, this.senhaBD, this.nomeBD, "bradesco_detalhado_registros", rangeMinimo, rangeMaximo);
+                            if (lblCalculandoRegistrosBradesco.InvokeRequired)
+                                lblCalculandoRegistrosBradesco.BeginInvoke((MethodInvoker)delegate
+                                {
+                                    lblCalculandoRegistrosBradesco.Visible = false;
+                                });
+                            else
+                            {
+                                lblCalculandoRegistrosBradesco.Visible = false;
+                            }
+
+                            if (listaDetalhadoRegistroAtualizar != null)
+                            {
+                                for (int i = 0; i < listaDetalhadoRegistroAtualizar.Count(); i++)
+                                {
+                                    bancoDeDados.AtualizarDetalhadoDoRegistro(this.enderecoBD, this.portaBD, this.usuarioBD, this.senhaBD, this.nomeBD, listaDetalhadoRegistroAtualizar[i], "bradesco_detalhado_registros");
+
+                                    if (pbLeituraDR.InvokeRequired)
+                                        pbLeituraDR.BeginInvoke((MethodInvoker)delegate
+                                        {
+                                            pbLeituraDR.Value = i;
+                                        });
+                                    else
+                                    {
+                                        pbLeituraDR.Value = i;
+                                    }
+                                }
+                            }
+
+                            if (listaDetalhadoRegistroNovos != null)
+                            {
+                                for (int i = 0; i < listaDetalhadoRegistroNovos.Count(); i++)
+                                {
+                                    bancoDeDados.InserirDetalhadoDoRegistro(this.enderecoBD, this.portaBD, this.usuarioBD, this.senhaBD, this.nomeBD, listaDetalhadoRegistroNovos[i], "bradesco_detalhado_registros");
+
+                                    if (pbLeituraDR.InvokeRequired)
+                                        pbLeituraDR.BeginInvoke((MethodInvoker)delegate
+                                        {
+                                            pbLeituraDR.Value = pbLeituraDR.Value + 1;
+                                        });
+                                    else
+                                    {
+                                        pbLeituraDR.Value = pbLeituraDR.Value + 1;
+                                    }
+                                }
+                            }
+
+                            detalhadoRegistro.MoverArquivoProcessado(arquivoEncontrado, this.diretorioDestinoCSVBradesco);
                         }
                         else
                         {
                             if (cliente == "itau")
                             {
-                                pbLeituraDRItau.Value = 0;
-
-                                listaDetalhadoRegistroBD = bancoDeDados.ListarDetalhadoRegistro(this.enderecoBD, this.portaBD, this.usuarioBD, this.senhaBD, this.nomeBD, "itau_detalhado_registros", rangeMinimo, rangeMaximo);
-                            }
-                            else
-                            {
-                                if (cliente == "docktech")
-                                {
-                                    pbLeituraDRDockTech.Value = 0;
-
-                                    listaDetalhadoRegistroBD = bancoDeDados.ListarDetalhadoRegistro(this.enderecoBD, this.portaBD, this.usuarioBD, this.senhaBD, this.nomeBD, "docktech_detalhado_registros", rangeMinimo, rangeMaximo);
-                                }
+                                if (pbLeituraDRItau.InvokeRequired)
+                                    pbLeituraDRItau.BeginInvoke((MethodInvoker)delegate
+                                    {
+                                        pbLeituraDRItau.Maximum = rangeProgressBar;
+                                    });
                                 else
                                 {
-                                    if (cliente == "bmg")
-                                    {
-                                        pbLeituraDRBMG.Value = 0;
-
-                                        listaDetalhadoRegistroBD = bancoDeDados.ListarDetalhadoRegistro(this.enderecoBD, this.portaBD, this.usuarioBD, this.senhaBD, this.nomeBD, "bmg_detalhado_registros", rangeMinimo, rangeMaximo);
-                                    }
+                                    pbLeituraDRItau.Maximum = rangeProgressBar;
                                 }
-                            }
-                        }                                   
 
-                        if (listaDetalhadoRegistroInserir != null)
-                        {
-
-                            List<DetalhadoRegistro> listaDetalhadoRegistroNovos = detalhadoRegistro.CompararListasDetalhadoRegistroObjetosNovos(listaDetalhadoRegistroInserir, listaDetalhadoRegistroBD);
-
-                            List<DetalhadoRegistro> listaDetalhadoRegistroAtualizar = detalhadoRegistro.CompararListasDetalhadoRegistroObjetosCadastrados(listaDetalhadoRegistroInserir, listaDetalhadoRegistroBD);
-
-                            if (listaDetalhadoRegistroNovos != null)
-                            {
-                                contadorRegistrosImportados = contadorRegistrosImportados + listaDetalhadoRegistroNovos.Count();
-                            }
-
-                            if (listaDetalhadoRegistroAtualizar != null)
-                            {
-                                contadorRegistrosAtualizados = contadorRegistrosAtualizados + listaDetalhadoRegistroAtualizar.Count();
-                            }
-
-                            if (cliente == "bradesco")
-                            {
-                                pbLeituraDR.Maximum = contadorRegistrosImportados + contadorRegistrosAtualizados;
+                                if (lblCalculandoRegistrosItau.InvokeRequired)
+                                    lblCalculandoRegistrosItau.BeginInvoke((MethodInvoker)delegate
+                                    {
+                                        lblCalculandoRegistrosItau.Visible = false;
+                                    });
+                                else
+                                {
+                                    lblCalculandoRegistrosItau.Visible = false;
+                                }
 
                                 if (listaDetalhadoRegistroAtualizar != null)
                                 {
                                     for (int i = 0; i < listaDetalhadoRegistroAtualizar.Count(); i++)
                                     {
-                                        bancoDeDados.AtualizarDetalhadoDoRegistro(this.enderecoBD, this.portaBD, this.usuarioBD, this.senhaBD, this.nomeBD, listaDetalhadoRegistroAtualizar[i], "bradesco_detalhado_registros");
-                                        pbLeituraDR.Value = i;
+                                        bancoDeDados.AtualizarDetalhadoDoRegistro(this.enderecoBD, this.portaBD, this.usuarioBD, this.senhaBD, this.nomeBD, listaDetalhadoRegistroAtualizar[i], "itau_detalhado_registros");
+
+                                        if (pbLeituraDRItau.InvokeRequired)
+                                            pbLeituraDRItau.BeginInvoke((MethodInvoker)delegate
+                                            {
+                                                pbLeituraDRItau.Value = i;
+                                            });
+                                        else
+                                        {
+                                            pbLeituraDRItau.Value = i;
+                                        }
                                     }
                                 }
 
@@ -1542,25 +1730,61 @@ namespace rajadas
                                 {
                                     for (int i = 0; i < listaDetalhadoRegistroNovos.Count(); i++)
                                     {
-                                        bancoDeDados.InserirDetalhadoDoRegistro(this.enderecoBD, this.portaBD, this.usuarioBD, this.senhaBD, this.nomeBD, listaDetalhadoRegistroNovos[i], "bradesco_detalhado_registros");
-                                        pbLeituraDR.Value = pbLeituraDR.Value + 1;
+                                        bancoDeDados.InserirDetalhadoDoRegistro(this.enderecoBD, this.portaBD, this.usuarioBD, this.senhaBD, this.nomeBD, listaDetalhadoRegistroNovos[i], "itau_detalhado_registros");
+
+                                        if (pbLeituraDRItau.InvokeRequired)
+                                            pbLeituraDRItau.BeginInvoke((MethodInvoker)delegate
+                                            {
+                                                pbLeituraDRItau.Value = pbLeituraDRItau.Value + 1;
+                                            });
+                                        else
+                                        {
+                                            pbLeituraDRItau.Value = pbLeituraDRItau.Value + 1;
+                                        }
                                     }
                                 }
 
-                                detalhadoRegistro.MoverArquivoProcessado(arquivoEncontrado, this.diretorioDestinoCSVBradesco);
+                                detalhadoRegistro.MoverArquivoProcessado(arquivoEncontrado, this.diretorioDestinoCSVItau);
                             }
                             else
                             {
-                                if (cliente == "itau")
+                                if (cliente == "docktech")
                                 {
-                                    pbLeituraDRItau.Maximum = contadorRegistrosImportados + contadorRegistrosAtualizados;
+                                    if (pbLeituraDRDockTech.InvokeRequired)
+                                        pbLeituraDRDockTech.BeginInvoke((MethodInvoker)delegate
+                                        {
+                                            pbLeituraDRDockTech.Maximum = rangeProgressBar;
+                                        });
+                                    else
+                                    {
+                                        pbLeituraDRDockTech.Maximum = rangeProgressBar;
+                                    }
+
+                                    if (lblCalculandoRegistrosDockTech.InvokeRequired)
+                                        lblCalculandoRegistrosDockTech.BeginInvoke((MethodInvoker)delegate
+                                        {
+                                            lblCalculandoRegistrosDockTech.Visible = false;
+                                        });
+                                    else
+                                    {
+                                        lblCalculandoRegistrosDockTech.Visible = false;
+                                    }
 
                                     if (listaDetalhadoRegistroAtualizar != null)
                                     {
                                         for (int i = 0; i < listaDetalhadoRegistroAtualizar.Count(); i++)
                                         {
-                                            bancoDeDados.AtualizarDetalhadoDoRegistro(this.enderecoBD, this.portaBD, this.usuarioBD, this.senhaBD, this.nomeBD, listaDetalhadoRegistroAtualizar[i], "itau_detalhado_registros");
-                                            pbLeituraDRItau.Value = i;
+                                            bancoDeDados.AtualizarDetalhadoDoRegistro(this.enderecoBD, this.portaBD, this.usuarioBD, this.senhaBD, this.nomeBD, listaDetalhadoRegistroAtualizar[i], "docktech_detalhado_registros");
+
+                                            if (pbLeituraDRDockTech.InvokeRequired)
+                                                pbLeituraDRDockTech.BeginInvoke((MethodInvoker)delegate
+                                                {
+                                                    pbLeituraDRDockTech.Value = i;
+                                                });
+                                            else
+                                            {
+                                                pbLeituraDRDockTech.Value = i;
+                                            }
                                         }
                                     }
 
@@ -1568,25 +1792,61 @@ namespace rajadas
                                     {
                                         for (int i = 0; i < listaDetalhadoRegistroNovos.Count(); i++)
                                         {
-                                            bancoDeDados.InserirDetalhadoDoRegistro(this.enderecoBD, this.portaBD, this.usuarioBD, this.senhaBD, this.nomeBD, listaDetalhadoRegistroNovos[i], "itau_detalhado_registros");
-                                            pbLeituraDRItau.Value = pbLeituraDRItau.Value + 1;
+                                            bancoDeDados.InserirDetalhadoDoRegistro(this.enderecoBD, this.portaBD, this.usuarioBD, this.senhaBD, this.nomeBD, listaDetalhadoRegistroNovos[i], "docktech_detalhado_registros");
+
+                                            if (pbLeituraDRDockTech.InvokeRequired)
+                                                pbLeituraDRDockTech.BeginInvoke((MethodInvoker)delegate
+                                                {
+                                                    pbLeituraDRDockTech.Value = pbLeituraDRDockTech.Value + 1;
+                                                });
+                                            else
+                                            {
+                                                pbLeituraDRDockTech.Value = pbLeituraDRDockTech.Value + 1;
+                                            }
                                         }
                                     }
 
-                                    detalhadoRegistro.MoverArquivoProcessado(arquivoEncontrado, this.diretorioDestinoCSVItau);
+                                    detalhadoRegistro.MoverArquivoProcessado(arquivoEncontrado, this.diretorioDestinoCSVDockTech);
                                 }
                                 else
                                 {
-                                    if (cliente == "docktech")
+                                    if (cliente == "bmg")
                                     {
-                                        pbLeituraDRDockTech.Maximum = contadorRegistrosImportados + contadorRegistrosAtualizados;
+                                        if (pbLeituraDRBMG.InvokeRequired)
+                                            pbLeituraDRBMG.BeginInvoke((MethodInvoker)delegate
+                                            {
+                                                pbLeituraDRBMG.Maximum = rangeProgressBar;
+                                            });
+                                        else
+                                        {
+                                            pbLeituraDRBMG.Maximum = rangeProgressBar;
+                                        }
+
+                                        if (lblCalculandoRegistrosBMG.InvokeRequired)
+                                            lblCalculandoRegistrosBMG.BeginInvoke((MethodInvoker)delegate
+                                            {
+                                                lblCalculandoRegistrosBMG.Visible = false;
+                                            });
+                                        else
+                                        {
+                                            lblCalculandoRegistrosBMG.Visible = false;
+                                        }
 
                                         if (listaDetalhadoRegistroAtualizar != null)
                                         {
                                             for (int i = 0; i < listaDetalhadoRegistroAtualizar.Count(); i++)
                                             {
-                                                bancoDeDados.AtualizarDetalhadoDoRegistro(this.enderecoBD, this.portaBD, this.usuarioBD, this.senhaBD, this.nomeBD, listaDetalhadoRegistroAtualizar[i], "docktech_detalhado_registros");
-                                                pbLeituraDRDockTech.Value = i;
+                                                bancoDeDados.AtualizarDetalhadoDoRegistro(this.enderecoBD, this.portaBD, this.usuarioBD, this.senhaBD, this.nomeBD, listaDetalhadoRegistroAtualizar[i], "bmg_detalhado_registros");
+
+                                                if (pbLeituraDRBMG.InvokeRequired)
+                                                    pbLeituraDRBMG.BeginInvoke((MethodInvoker)delegate
+                                                    {
+                                                        pbLeituraDRBMG.Value = i;
+                                                    });
+                                                else
+                                                {
+                                                    pbLeituraDRBMG.Value = i;
+                                                }
                                             }
                                         }
 
@@ -1594,90 +1854,108 @@ namespace rajadas
                                         {
                                             for (int i = 0; i < listaDetalhadoRegistroNovos.Count(); i++)
                                             {
-                                                bancoDeDados.InserirDetalhadoDoRegistro(this.enderecoBD, this.portaBD, this.usuarioBD, this.senhaBD, this.nomeBD, listaDetalhadoRegistroNovos[i], "docktech_detalhado_registros");
-                                                pbLeituraDRDockTech.Value = pbLeituraDRDockTech.Value + 1;
-                                            }
-                                        }
+                                                bancoDeDados.InserirDetalhadoDoRegistro(this.enderecoBD, this.portaBD, this.usuarioBD, this.senhaBD, this.nomeBD, listaDetalhadoRegistroNovos[i], "bmg_detalhado_registros");
 
-                                        detalhadoRegistro.MoverArquivoProcessado(arquivoEncontrado, this.diretorioDestinoCSVDockTech);
-                                    }
-                                    else
-                                    {
-                                        if (cliente == "bmg")
-                                        {
-                                            pbLeituraDRBMG.Maximum = contadorRegistrosImportados + contadorRegistrosAtualizados;
-
-                                            if (listaDetalhadoRegistroAtualizar != null)
-                                            {
-                                                for (int i = 0; i < listaDetalhadoRegistroAtualizar.Count(); i++)
+                                                if (pbLeituraDRBMG.InvokeRequired)
+                                                    pbLeituraDRBMG.BeginInvoke((MethodInvoker)delegate
+                                                    {
+                                                        pbLeituraDRBMG.Value = pbLeituraDRBMG.Value + 1;
+                                                    });
+                                                else
                                                 {
-                                                    bancoDeDados.AtualizarDetalhadoDoRegistro(this.enderecoBD, this.portaBD, this.usuarioBD, this.senhaBD, this.nomeBD, listaDetalhadoRegistroAtualizar[i], "bmg_detalhado_registros");
-                                                    pbLeituraDRBMG.Value = i;
-                                                }
-                                            }
-
-                                            if (listaDetalhadoRegistroNovos != null)
-                                            {
-                                                for (int i = 0; i < listaDetalhadoRegistroNovos.Count(); i++)
-                                                {
-                                                    bancoDeDados.InserirDetalhadoDoRegistro(this.enderecoBD, this.portaBD, this.usuarioBD, this.senhaBD, this.nomeBD, listaDetalhadoRegistroNovos[i], "bmg_detalhado_registros");
                                                     pbLeituraDRBMG.Value = pbLeituraDRBMG.Value + 1;
                                                 }
                                             }
-
-                                            detalhadoRegistro.MoverArquivoProcessado(arquivoEncontrado, this.diretorioDestinoCSVBMG);
                                         }
+
+                                        detalhadoRegistro.MoverArquivoProcessado(arquivoEncontrado, this.diretorioDestinoCSVBMG);
                                     }
                                 }
-                            }                            
-
-                            
-                        }
-
-                    }
-                }
-
-                if (cliente == "bradesco")
-                {
-                    pbLeituraDR.Visible = false;
-                    button2.Visible = true;
-                }
-                else
-                {
-                    if (cliente == "itau")
-                    {
-                        pbLeituraDRItau.Visible = false;
-                        btnLerCSVItau.Visible = true;
-                    }
-                    else
-                    {
-                        if (cliente == "docktech")
-                        {
-                            pbLeituraDRDockTech.Visible = false;
-                            btnLerCSVDockTech.Visible = true;
-                        }
-                        else
-                        {
-                            if (cliente == "bmg")
-                            {
-                                pbLeituraDRBMG.Visible = false;
-                                btnLerCSVBMG.Visible = true;
                             }
                         }
                     }
-                }
 
-                // -------------------------** Mensagem ao fim da leitura manual -----------------------------------//
-                if (tipoLeitura == "manual")
-                {
-                    MessageBox.Show("Processamento Concluído !!!" + "\n" + "Total de Protocolos Importados: " + contadorRegistrosImportados + "\n" + "Total de Protocolos Atualizados: " + contadorRegistrosAtualizados, "Mensagem do sistema");
+                    rangeProgressBar = 0;
                 }
             }
+
+            if (cliente == "bradesco")
+            {
+                if (pbLeituraDR.InvokeRequired)
+                    pbLeituraDR.BeginInvoke((MethodInvoker)delegate
+                    {
+                        pbLeituraDR.Visible = false;
+                    });
+
+                if (button2.InvokeRequired)
+                    button2.BeginInvoke((MethodInvoker)delegate
+                    {
+                        button2.Visible = true;
+                    });
+            }
+            else
+            {
+                if (cliente == "itau")
+                {
+                    if (pbLeituraDRItau.InvokeRequired)
+                        pbLeituraDRItau.BeginInvoke((MethodInvoker)delegate
+                        {
+                            pbLeituraDRItau.Visible = false;
+                        });
+
+                    if (btnLerCSVItau.InvokeRequired)
+                        btnLerCSVItau.BeginInvoke((MethodInvoker)delegate
+                        {
+                            btnLerCSVItau.Visible = true;
+                        });
+                }
+                else
+                {
+                    if (cliente == "docktech")
+                    {
+                        if (pbLeituraDRDockTech.InvokeRequired)
+                            pbLeituraDRDockTech.BeginInvoke((MethodInvoker)delegate
+                            {
+                                pbLeituraDRDockTech.Visible = false;
+                            });
+
+                        if (btnLerCSVDockTech.InvokeRequired)
+                            btnLerCSVDockTech.BeginInvoke((MethodInvoker)delegate
+                            {
+                                btnLerCSVDockTech.Visible = true;
+                            });
+                    }
+                    else
+                    {
+                        if (cliente == "bmg")
+                        {
+                            if (pbLeituraDRBMG.InvokeRequired)
+                                pbLeituraDRBMG.BeginInvoke((MethodInvoker)delegate
+                                {
+                                    pbLeituraDRBMG.Visible = false;
+                                });
+
+                            if (btnLerCSVBMG.InvokeRequired)
+                                btnLerCSVBMG.BeginInvoke((MethodInvoker)delegate
+                                {
+                                    btnLerCSVBMG.Visible = true;
+                                });
+                        }
+                    }
+                }
+            }
+
+            // -------------------------** Mensagem ao fim da leitura manual -----------------------------------//            
+            if (WindowState == FormWindowState.Normal)
+            {
+                MessageBox.Show("Processamento Concluído !!!" + "\n" + "Total de Protocolos Importados: " + contadorRegistrosImportados + "\n" + "Total de Protocolos Atualizados: " + contadorRegistrosAtualizados, "Mensagem do sistema");
+            }
+
         }
 
         // ** Realiza a leitura manual do arquivo CSV do Detalhado de Produtividade passando como parâmetro o CLIENTE ** //
         private void LerCSVDetalhadoProdutividade(string cliente, string diretorioOrigemCSV, string diretorioDestinoCSV, string tipoLeitura)
-        {              
+        {
             pbLeituraDPItau.Visible = true;
             btnLerCSVDpItau.Visible = false;
 
@@ -1700,9 +1978,9 @@ namespace rajadas
                     BancoDeDados bancoDeDados = new BancoDeDados();
 
                     List<DetalhadoProdutividade> listaDetalhadoProdutividadeBD = new List<DetalhadoProdutividade>();
-                        
+
                     pbLeituraDPItau.Value = 0;
-                        
+
                     List<DetalhadoProdutividade> listaDetalhadoProdutividadeInserir = new List<DetalhadoProdutividade>();
 
                     List<DetalhadoProdutividade> listaDetalhadoProdutividadeConversao = new List<DetalhadoProdutividade>();
@@ -1761,7 +2039,7 @@ namespace rajadas
                         }
                     }
 
-                    detalhadoProdutividade.MoverArquivoProcessado(arquivoEncontrado, this.diretorioDestinoCsvDPItau);            
+                    detalhadoProdutividade.MoverArquivoProcessado(arquivoEncontrado, this.diretorioDestinoCsvDPItau);
 
                 }
             }
@@ -1777,7 +2055,7 @@ namespace rajadas
                 MessageBox.Show("Processamento Concluído !!!" + "\n" + "Total de Protocolos Importados: " + contadorRegistrosImportados + "\n" + "Total de Protocolos Atualizados: " + contadorRegistrosAtualizados, "Mensagem do sistema");
             }
         }
-   
+
 
         private void btnOrigemCSV_Click(object sender, EventArgs e)
         {
@@ -1822,10 +2100,10 @@ namespace rajadas
         // ** Timer que faz a leitura dos arquivos CSV do Detalhado de Registro de tempos em tempos ** //
         private void tmLeituraCSVDetalhadoRegistro_Tick(object sender, EventArgs e)
         {
-            LerCSVDetalhadoRegistro("bradesco", this.diretorioOrigemCSVBradesco, this.diretorioDestinoCSVBradesco, "automatica");
-            LerCSVDetalhadoRegistro("itau", this.diretorioOrigemCSVItau, this.diretorioDestinoCSVItau, "automatica");
-            LerCSVDetalhadoRegistro("docktech", this.diretorioOrigemCSVDockTech, this.diretorioDestinoCSVDockTech, "automatica");
-            LerCSVDetalhadoRegistro("bmg", this.diretorioOrigemCSVBMG, this.diretorioDestinoCSVBMG, "automatica");
+            bgwDrBradesco.RunWorkerAsync();
+            bgwDrItau.RunWorkerAsync();
+            bgwDrDockTech.RunWorkerAsync();
+            bgwDrBMG.RunWorkerAsync();
         }
 
         // ** Salvar configurações da Leitura Automática dos arquivos CSV ** //
@@ -1863,26 +2141,27 @@ namespace rajadas
         // ** Ler CSV do Detalhado de Registro Itaú ** //
         private void button3_Click(object sender, EventArgs e)
         {
-            LerCSVDetalhadoRegistro("itau", this.diretorioOrigemCSVItau, this.diretorioDestinoCSVItau, "manual");
+            bgwDrItau.RunWorkerAsync();
+            //LerCSVDetalhadoRegistro("itau", this.diretorioOrigemCSVItau, this.diretorioDestinoCSVItau, "manual");
         }
 
         // ** Salvar configurações Detalhado Registro ITAÚ ** //
         private void btnSalvarConfiguracoesITAU_Click(object sender, EventArgs e)
         {
-                List<String> listaDeParametrosParaSalvar = new List<String>();
+            List<String> listaDeParametrosParaSalvar = new List<String>();
 
-                listaDeParametrosParaSalvar.Add(this.diretorioOrigemCSVItau);
-                listaDeParametrosParaSalvar.Add(this.diretorioDestinoCSVItau);
+            listaDeParametrosParaSalvar.Add(this.diretorioOrigemCSVItau);
+            listaDeParametrosParaSalvar.Add(this.diretorioDestinoCSVItau);
 
-                BancoDeDados bancoDeDados = new BancoDeDados();
-                Boolean retorno = bancoDeDados.AtualizaParametrosLeituraDetalhadoRegistro(this.enderecoBD, this.portaBD, this.usuarioBD, this.senhaBD, this.nomeBD, listaDeParametrosParaSalvar, "itau");
+            BancoDeDados bancoDeDados = new BancoDeDados();
+            Boolean retorno = bancoDeDados.AtualizaParametrosLeituraDetalhadoRegistro(this.enderecoBD, this.portaBD, this.usuarioBD, this.senhaBD, this.nomeBD, listaDeParametrosParaSalvar, "itau");
 
-                if (retorno == true)
-                {
-                    MessageBox.Show("As configurações foram salvas !!!", "Mensagem do sistema");
-                }
+            if (retorno == true)
+            {
+                MessageBox.Show("As configurações foram salvas !!!", "Mensagem do sistema");
+            }
 
-                CarregarParametrosDetalhadoRegistro();
+            CarregarParametrosDetalhadoRegistro();
         }
 
         // ** Salvar configurações Detalhado Registro DOCK TECH ** //
@@ -1985,12 +2264,12 @@ namespace rajadas
 
         private void btnLerCSVDockTech_Click(object sender, EventArgs e)
         {
-            LerCSVDetalhadoRegistro("docktech", this.diretorioOrigemCSVDockTech, this.diretorioDestinoCSVDockTech, "manual");
+            bgwDrDockTech.RunWorkerAsync();
         }
 
         private void btnLerCSVBMG_Click(object sender, EventArgs e)
         {
-            LerCSVDetalhadoRegistro("bmg", this.diretorioOrigemCSVBMG, this.diretorioDestinoCSVBMG, "manual");
+            bgwDrBMG.RunWorkerAsync();
         }
 
         // ** Realiza a leitura do arquivo CSV do Detalhado de Produtividade do Itaú ** //
@@ -2071,6 +2350,36 @@ namespace rajadas
         private void tmLeituraCSVDetalhadoProdutividade_Tick(object sender, EventArgs e)
         {
             LerCSVDetalhadoProdutividade("itau", this.diretorioOrigemCsvDPItau, this.diretorioDestinoCsvDPItau, "automática");
+        }
+
+        private void bgwDrBradesco_DoWork(object sender, DoWorkEventArgs e)
+        {
+            LerCSVDetalhadoRegistro("bradesco", this.diretorioOrigemCSVBradesco, this.diretorioDestinoCSVBradesco, "manual");
+        }
+
+        private void bgwDrBradesco_ProgressChanged(object sender, ProgressChangedEventArgs e)
+        {
+
+        }
+
+        private void bgwDrBradesco_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
+        {
+
+        }
+
+        private void bgwDrItau_DoWork(object sender, DoWorkEventArgs e)
+        {
+            LerCSVDetalhadoRegistro("itau", this.diretorioOrigemCSVItau, this.diretorioDestinoCSVItau, "manual");
+        }
+
+        private void bgwDrDockTech_DoWork(object sender, DoWorkEventArgs e)
+        {
+            LerCSVDetalhadoRegistro("docktech", this.diretorioOrigemCSVDockTech, this.diretorioDestinoCSVDockTech, "manual");
+        }
+
+        private void bgwDrBMG_DoWork(object sender, DoWorkEventArgs e)
+        {
+            LerCSVDetalhadoRegistro("bmg", this.diretorioOrigemCSVBMG, this.diretorioDestinoCSVBMG, "manual");
         }
     }
 }
