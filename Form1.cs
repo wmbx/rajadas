@@ -1884,6 +1884,16 @@ namespace rajadas
                 if (pbLeituraDR.InvokeRequired)
                     pbLeituraDR.BeginInvoke((MethodInvoker)delegate
                     {
+                        pbLeituraDR.Value = 0;
+                    });
+                else
+                {
+                    pbLeituraDR.Value = 0;
+                }
+
+                if (pbLeituraDR.InvokeRequired)
+                    pbLeituraDR.BeginInvoke((MethodInvoker)delegate
+                    {
                         pbLeituraDR.Visible = false;
                     });
 
@@ -1897,6 +1907,16 @@ namespace rajadas
             {
                 if (cliente == "itau")
                 {
+                    if (pbLeituraDRItau.InvokeRequired)
+                        pbLeituraDRItau.BeginInvoke((MethodInvoker)delegate
+                        {
+                            pbLeituraDRItau.Value = 0;
+                        });
+                    else
+                    {
+                        pbLeituraDRItau.Value = 0;
+                    }
+
                     if (pbLeituraDRItau.InvokeRequired)
                         pbLeituraDRItau.BeginInvoke((MethodInvoker)delegate
                         {
@@ -1916,6 +1936,16 @@ namespace rajadas
                         if (pbLeituraDRDockTech.InvokeRequired)
                             pbLeituraDRDockTech.BeginInvoke((MethodInvoker)delegate
                             {
+                                pbLeituraDRDockTech.Value = 0;
+                            });
+                        else
+                        {
+                            pbLeituraDRDockTech.Value = 0;
+                        }
+
+                        if (pbLeituraDRDockTech.InvokeRequired)
+                            pbLeituraDRDockTech.BeginInvoke((MethodInvoker)delegate
+                            {
                                 pbLeituraDRDockTech.Visible = false;
                             });
 
@@ -1929,6 +1959,16 @@ namespace rajadas
                     {
                         if (cliente == "bmg")
                         {
+                            if (pbLeituraDRBMG.InvokeRequired)
+                                pbLeituraDRBMG.BeginInvoke((MethodInvoker)delegate
+                                {
+                                    pbLeituraDRBMG.Value = 0;
+                                });
+                            else
+                            {
+                                pbLeituraDRBMG.Value = 0;
+                            }
+
                             if (pbLeituraDRBMG.InvokeRequired)
                                 pbLeituraDRBMG.BeginInvoke((MethodInvoker)delegate
                                 {

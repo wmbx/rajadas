@@ -93,6 +93,7 @@
             this.label41 = new System.Windows.Forms.Label();
             this.tabDetalhadoRegistro = new System.Windows.Forms.TabPage();
             this.gbBMG = new System.Windows.Forms.GroupBox();
+            this.lblCalculandoRegistrosBMG = new System.Windows.Forms.Label();
             this.pbLeituraDRBMG = new System.Windows.Forms.ProgressBar();
             this.btnSalvarConfiguracoesBMG = new System.Windows.Forms.Button();
             this.btnLerCSVBMG = new System.Windows.Forms.Button();
@@ -103,6 +104,7 @@
             this.tbOrigemCSVBMG = new System.Windows.Forms.TextBox();
             this.label30 = new System.Windows.Forms.Label();
             this.gbDockTech = new System.Windows.Forms.GroupBox();
+            this.lblCalculandoRegistrosDockTech = new System.Windows.Forms.Label();
             this.pbLeituraDRDockTech = new System.Windows.Forms.ProgressBar();
             this.btnSalvarConfiguracoesDOCKTECH = new System.Windows.Forms.Button();
             this.btnLerCSVDockTech = new System.Windows.Forms.Button();
@@ -113,6 +115,7 @@
             this.tbOrigemCSVDockTech = new System.Windows.Forms.TextBox();
             this.label28 = new System.Windows.Forms.Label();
             this.gbItau = new System.Windows.Forms.GroupBox();
+            this.lblCalculandoRegistrosItau = new System.Windows.Forms.Label();
             this.pbLeituraDRItau = new System.Windows.Forms.ProgressBar();
             this.btnSalvarConfiguracoesITAU = new System.Windows.Forms.Button();
             this.btnLerCSVItau = new System.Windows.Forms.Button();
@@ -225,10 +228,7 @@
             this.tmLeituraCSVDetalhadoProdutividade = new System.Windows.Forms.Timer(this.components);
             this.bgwDrBradesco = new System.ComponentModel.BackgroundWorker();
             this.bgwDrItau = new System.ComponentModel.BackgroundWorker();
-            this.lblCalculandoRegistrosItau = new System.Windows.Forms.Label();
-            this.lblCalculandoRegistrosDockTech = new System.Windows.Forms.Label();
             this.bgwDrDockTech = new System.ComponentModel.BackgroundWorker();
-            this.lblCalculandoRegistrosBMG = new System.Windows.Forms.Label();
             this.bgwDrBMG = new System.ComponentModel.BackgroundWorker();
             this.tabDetalhadoProdutividade.SuspendLayout();
             this.groupBox11.SuspendLayout();
@@ -858,6 +858,17 @@
             this.gbBMG.TabStop = false;
             this.gbBMG.Text = "BMG";
             // 
+            // lblCalculandoRegistrosBMG
+            // 
+            this.lblCalculandoRegistrosBMG.AutoSize = true;
+            this.lblCalculandoRegistrosBMG.BackColor = System.Drawing.SystemColors.ControlLight;
+            this.lblCalculandoRegistrosBMG.Location = new System.Drawing.Point(515, 41);
+            this.lblCalculandoRegistrosBMG.Name = "lblCalculandoRegistrosBMG";
+            this.lblCalculandoRegistrosBMG.Size = new System.Drawing.Size(117, 13);
+            this.lblCalculandoRegistrosBMG.TabIndex = 20;
+            this.lblCalculandoRegistrosBMG.Text = "Calculando, aguarde ...";
+            this.lblCalculandoRegistrosBMG.Visible = false;
+            // 
             // pbLeituraDRBMG
             // 
             this.pbLeituraDRBMG.Location = new System.Drawing.Point(494, 37);
@@ -955,7 +966,18 @@
             this.gbDockTech.Size = new System.Drawing.Size(663, 113);
             this.gbDockTech.TabIndex = 14;
             this.gbDockTech.TabStop = false;
-            this.gbDockTech.Text = "DOCK TECH";
+            this.gbDockTech.Text = "DOCK";
+            // 
+            // lblCalculandoRegistrosDockTech
+            // 
+            this.lblCalculandoRegistrosDockTech.AutoSize = true;
+            this.lblCalculandoRegistrosDockTech.BackColor = System.Drawing.SystemColors.ControlLight;
+            this.lblCalculandoRegistrosDockTech.Location = new System.Drawing.Point(515, 41);
+            this.lblCalculandoRegistrosDockTech.Name = "lblCalculandoRegistrosDockTech";
+            this.lblCalculandoRegistrosDockTech.Size = new System.Drawing.Size(117, 13);
+            this.lblCalculandoRegistrosDockTech.TabIndex = 19;
+            this.lblCalculandoRegistrosDockTech.Text = "Calculando, aguarde ...";
+            this.lblCalculandoRegistrosDockTech.Visible = false;
             // 
             // pbLeituraDRDockTech
             // 
@@ -1055,6 +1077,17 @@
             this.gbItau.TabIndex = 13;
             this.gbItau.TabStop = false;
             this.gbItau.Text = "ITAÚ";
+            // 
+            // lblCalculandoRegistrosItau
+            // 
+            this.lblCalculandoRegistrosItau.AutoSize = true;
+            this.lblCalculandoRegistrosItau.BackColor = System.Drawing.SystemColors.ControlLight;
+            this.lblCalculandoRegistrosItau.Location = new System.Drawing.Point(515, 41);
+            this.lblCalculandoRegistrosItau.Name = "lblCalculandoRegistrosItau";
+            this.lblCalculandoRegistrosItau.Size = new System.Drawing.Size(117, 13);
+            this.lblCalculandoRegistrosItau.TabIndex = 18;
+            this.lblCalculandoRegistrosItau.Text = "Calculando, aguarde ...";
+            this.lblCalculandoRegistrosItau.Visible = false;
             // 
             // pbLeituraDRItau
             // 
@@ -2204,44 +2237,11 @@
             this.bgwDrItau.WorkerSupportsCancellation = true;
             this.bgwDrItau.DoWork += new System.ComponentModel.DoWorkEventHandler(this.bgwDrItau_DoWork);
             // 
-            // lblCalculandoRegistrosItau
-            // 
-            this.lblCalculandoRegistrosItau.AutoSize = true;
-            this.lblCalculandoRegistrosItau.BackColor = System.Drawing.SystemColors.ControlLight;
-            this.lblCalculandoRegistrosItau.Location = new System.Drawing.Point(515, 41);
-            this.lblCalculandoRegistrosItau.Name = "lblCalculandoRegistrosItau";
-            this.lblCalculandoRegistrosItau.Size = new System.Drawing.Size(117, 13);
-            this.lblCalculandoRegistrosItau.TabIndex = 18;
-            this.lblCalculandoRegistrosItau.Text = "Calculando, aguarde ...";
-            this.lblCalculandoRegistrosItau.Visible = false;
-            // 
-            // lblCalculandoRegistrosDockTech
-            // 
-            this.lblCalculandoRegistrosDockTech.AutoSize = true;
-            this.lblCalculandoRegistrosDockTech.BackColor = System.Drawing.SystemColors.ControlLight;
-            this.lblCalculandoRegistrosDockTech.Location = new System.Drawing.Point(515, 41);
-            this.lblCalculandoRegistrosDockTech.Name = "lblCalculandoRegistrosDockTech";
-            this.lblCalculandoRegistrosDockTech.Size = new System.Drawing.Size(117, 13);
-            this.lblCalculandoRegistrosDockTech.TabIndex = 19;
-            this.lblCalculandoRegistrosDockTech.Text = "Calculando, aguarde ...";
-            this.lblCalculandoRegistrosDockTech.Visible = false;
-            // 
             // bgwDrDockTech
             // 
             this.bgwDrDockTech.WorkerReportsProgress = true;
             this.bgwDrDockTech.WorkerSupportsCancellation = true;
             this.bgwDrDockTech.DoWork += new System.ComponentModel.DoWorkEventHandler(this.bgwDrDockTech_DoWork);
-            // 
-            // lblCalculandoRegistrosBMG
-            // 
-            this.lblCalculandoRegistrosBMG.AutoSize = true;
-            this.lblCalculandoRegistrosBMG.BackColor = System.Drawing.SystemColors.ControlLight;
-            this.lblCalculandoRegistrosBMG.Location = new System.Drawing.Point(515, 41);
-            this.lblCalculandoRegistrosBMG.Name = "lblCalculandoRegistrosBMG";
-            this.lblCalculandoRegistrosBMG.Size = new System.Drawing.Size(117, 13);
-            this.lblCalculandoRegistrosBMG.TabIndex = 20;
-            this.lblCalculandoRegistrosBMG.Text = "Calculando, aguarde ...";
-            this.lblCalculandoRegistrosBMG.Visible = false;
             // 
             // bgwDrBMG
             // 
