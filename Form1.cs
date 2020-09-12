@@ -1994,14 +1994,13 @@ namespace rajadas
         }
 
         // ** Realiza a leitura manual do arquivo CSV do Detalhado de Produtividade passando como parâmetro o CLIENTE ** //
-        private void LerCSVDetalhadoProdutividade(string cliente, string diretorioOrigemCSV, string diretorioDestinoCSV, string tipoLeitura)
+        private void LerCSVDetalhadoProdutividade(string cliente, string diretorioOrigemCSV, string diretorioDestinoCSV)
         {
-            pbLeituraDPItau.Visible = true;
-            btnLerCSVDpItau.Visible = false;
-
             int contadorRegistrosImportados = 0;
 
             int contadorRegistrosAtualizados = 0;
+
+            int rangeProgressBar = 0;
 
             DetalhadoProdutividade detalhadoProdutividade = new DetalhadoProdutividade();
 
@@ -2015,11 +2014,33 @@ namespace rajadas
             {
                 foreach (var arquivoEncontrado in listaDeArquivosCSV)
                 {
+                    if (lblDpCalculandoRegistros.InvokeRequired)
+                        lblDpCalculandoRegistros.BeginInvoke((MethodInvoker)delegate
+                        {
+                            lblDpCalculandoRegistros.Visible = true;
+                        });
+
+                    if (pbLeituraDPItau.InvokeRequired)
+                        pbLeituraDPItau.BeginInvoke((MethodInvoker)delegate
+                        {
+                            pbLeituraDPItau.Visible = true;
+                        });
+
+                    if (btnLerCSVDpItau.InvokeRequired)
+                        btnLerCSVDpItau.BeginInvoke((MethodInvoker)delegate
+                        {
+                            btnLerCSVDpItau.Visible = false;
+                        });
+
                     BancoDeDados bancoDeDados = new BancoDeDados();
 
                     List<DetalhadoProdutividade> listaDetalhadoProdutividadeBD = new List<DetalhadoProdutividade>();
 
-                    pbLeituraDPItau.Value = 0;
+                    if (pbLeituraDPItau.InvokeRequired)
+                        pbLeituraDPItau.BeginInvoke((MethodInvoker)delegate
+                        {
+                            pbLeituraDPItau.Value = 0;
+                        });
 
                     List<DetalhadoProdutividade> listaDetalhadoProdutividadeInserir = new List<DetalhadoProdutividade>();
 
@@ -2041,7 +2062,6 @@ namespace rajadas
 
                     if (listaDetalhadoProdutividadeInserir != null)
                     {
-
                         List<DetalhadoProdutividade> listaDetalhadoProdutividadeNovos = detalhadoProdutividade.CompararListasDetalhadoProdutividadeObjetosNovos(listaDetalhadoProdutividadeInserir, listaDetalhadoProdutividadeBD);
 
                         List<DetalhadoProdutividade> listaDetalhadoProdutividadeAtualizar = detalhadoProdutividade.CompararListasDetalhadoProdutividadeObjetosCadastrados(listaDetalhadoProdutividadeInserir, listaDetalhadoProdutividadeBD);
@@ -2056,16 +2076,60 @@ namespace rajadas
                             contadorRegistrosAtualizados = contadorRegistrosAtualizados + listaDetalhadoProdutividadeAtualizar.Count();
                         }
 
+                        if (listaDetalhadoProdutividadeNovos != null && listaDetalhadoProdutividadeAtualizar != null)
+                        {
+                            rangeProgressBar = listaDetalhadoProdutividadeNovos.Count() + listaDetalhadoProdutividadeAtualizar.Count();
+                        }
+                        else
+                        {
+                            if (listaDetalhadoProdutividadeNovos != null)
+                            {
+                                rangeProgressBar = listaDetalhadoProdutividadeNovos.Count();
+                            }
+                            else
+                            {
+                                if (listaDetalhadoProdutividadeAtualizar != null)
+                                {
+                                    rangeProgressBar = listaDetalhadoProdutividadeAtualizar.Count();
+                                }
+                                else
+                                {
+                                    rangeProgressBar = 0;
+                                }
+                            }
+                        }
 
+                        if (pbLeituraDPItau.InvokeRequired)
+                            pbLeituraDPItau.BeginInvoke((MethodInvoker)delegate
+                            {
+                                pbLeituraDPItau.Maximum = rangeProgressBar;
+                            });
+                        else
+                        {
+                            pbLeituraDPItau.Maximum = rangeProgressBar;
+                        }
 
-                        pbLeituraDPItau.Maximum = contadorRegistrosImportados + contadorRegistrosAtualizados;
+                        if (lblDpCalculandoRegistros.InvokeRequired)
+                            lblDpCalculandoRegistros.BeginInvoke((MethodInvoker)delegate
+                            {
+                                lblDpCalculandoRegistros.Visible = false;
+                            });
+                        else
+                        {
+                            lblDpCalculandoRegistros.Visible = false;
+                        }
 
                         if (listaDetalhadoProdutividadeAtualizar != null)
                         {
                             for (int i = 0; i < listaDetalhadoProdutividadeAtualizar.Count(); i++)
                             {
                                 bancoDeDados.AtualizarDetalhadoDeProdutividade(this.enderecoBD, this.portaBD, this.usuarioBD, this.senhaBD, this.nomeBD, listaDetalhadoProdutividadeAtualizar[i], "itau_detalhado_produtividade");
-                                pbLeituraDPItau.Value = i;
+
+                                if (pbLeituraDPItau.InvokeRequired)
+                                    pbLeituraDPItau.BeginInvoke((MethodInvoker)delegate
+                                    {
+                                        pbLeituraDPItau.Value = i;
+                                    });
                             }
                         }
 
@@ -2074,23 +2138,36 @@ namespace rajadas
                             for (int i = 0; i < listaDetalhadoProdutividadeNovos.Count(); i++)
                             {
                                 bancoDeDados.InserirDetalhadoDeProdutividade(this.enderecoBD, this.portaBD, this.usuarioBD, this.senhaBD, this.nomeBD, listaDetalhadoProdutividadeNovos[i], "itau_detalhado_produtividade");
-                                pbLeituraDPItau.Value = pbLeituraDPItau.Value + 1;
+
+                                if (pbLeituraDPItau.InvokeRequired)
+                                    pbLeituraDPItau.BeginInvoke((MethodInvoker)delegate
+                                    {
+                                        pbLeituraDPItau.Value = pbLeituraDPItau.Value + 1;
+                                    });                                
                             }
                         }
                     }
 
-                    detalhadoProdutividade.MoverArquivoProcessado(arquivoEncontrado, this.diretorioDestinoCsvDPItau);
+                    rangeProgressBar = 0;
 
+                    detalhadoProdutividade.MoverArquivoProcessado(arquivoEncontrado, this.diretorioDestinoCsvDPItau);
                 }
             }
 
-            pbLeituraDPItau.Visible = false;
-            btnLerCSVDpItau.Visible = true;
+            if (pbLeituraDPItau.InvokeRequired)
+                pbLeituraDPItau.BeginInvoke((MethodInvoker)delegate
+                {
+                    pbLeituraDPItau.Visible = false;
+                });
 
-
+            if (pbLeituraDPItau.InvokeRequired)
+                pbLeituraDPItau.BeginInvoke((MethodInvoker)delegate
+                {
+                    btnLerCSVDpItau.Visible = true;
+                });
 
             // -------------------------** Mensagem ao fim da leitura manual -----------------------------------//
-            if (tipoLeitura == "manual")
+            if (WindowState == FormWindowState.Normal)
             {
                 MessageBox.Show("Processamento Concluído !!!" + "\n" + "Total de Protocolos Importados: " + contadorRegistrosImportados + "\n" + "Total de Protocolos Atualizados: " + contadorRegistrosAtualizados, "Mensagem do sistema");
             }
@@ -2315,7 +2392,7 @@ namespace rajadas
         // ** Realiza a leitura do arquivo CSV do Detalhado de Produtividade do Itaú ** //
         private void btnLerCSVDpItau_Click(object sender, EventArgs e)
         {
-            LerCSVDetalhadoProdutividade("itau", @"C:\Detalhado de Produtividade", this.diretorioDestinoCSVBMG, "manual");
+            bgwDpItau.RunWorkerAsync();
         }
 
         private void button13_Click(object sender, EventArgs e)
@@ -2389,7 +2466,7 @@ namespace rajadas
 
         private void tmLeituraCSVDetalhadoProdutividade_Tick(object sender, EventArgs e)
         {
-            LerCSVDetalhadoProdutividade("itau", this.diretorioOrigemCsvDPItau, this.diretorioDestinoCsvDPItau, "automática");
+            bgwDpItau.RunWorkerAsync();
         }
 
         private void bgwDrBradesco_DoWork(object sender, DoWorkEventArgs e)
@@ -2420,6 +2497,11 @@ namespace rajadas
         private void bgwDrBMG_DoWork(object sender, DoWorkEventArgs e)
         {
             LerCSVDetalhadoRegistro("bmg", this.diretorioOrigemCSVBMG, this.diretorioDestinoCSVBMG);
+        }
+
+        private void bgwDpItau_DoWork(object sender, DoWorkEventArgs e)
+        {
+            LerCSVDetalhadoProdutividade("itau", this.diretorioOrigemCsvDPItau, this.diretorioDestinoCSVItau);
         }
     }
 }

@@ -230,6 +230,8 @@
             this.bgwDrItau = new System.ComponentModel.BackgroundWorker();
             this.bgwDrDockTech = new System.ComponentModel.BackgroundWorker();
             this.bgwDrBMG = new System.ComponentModel.BackgroundWorker();
+            this.lblDpCalculandoRegistros = new System.Windows.Forms.Label();
+            this.bgwDpItau = new System.ComponentModel.BackgroundWorker();
             this.tabDetalhadoProdutividade.SuspendLayout();
             this.groupBox11.SuspendLayout();
             this.groupBox13.SuspendLayout();
@@ -285,7 +287,7 @@
             // niBandeja
             // 
             this.niBandeja.Icon = ((System.Drawing.Icon)(resources.GetObject("niBandeja.Icon")));
-            this.niBandeja.Text = "BotFlow 2.1.1";
+            this.niBandeja.Text = "BotFlow 2.1.2";
             this.niBandeja.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.niBandeja_MouseDoubleClick);
             // 
             // tmMonitoramentoTijolo
@@ -539,6 +541,7 @@
             // 
             // groupBox14
             // 
+            this.groupBox14.Controls.Add(this.lblDpCalculandoRegistros);
             this.groupBox14.Controls.Add(this.pbLeituraDPItau);
             this.groupBox14.Controls.Add(this.btnSalvarConfiguracoesDpItau);
             this.groupBox14.Controls.Add(this.btnLerCSVDpItau);
@@ -2249,6 +2252,23 @@
             this.bgwDrBMG.WorkerSupportsCancellation = true;
             this.bgwDrBMG.DoWork += new System.ComponentModel.DoWorkEventHandler(this.bgwDrBMG_DoWork);
             // 
+            // lblDpCalculandoRegistros
+            // 
+            this.lblDpCalculandoRegistros.AutoSize = true;
+            this.lblDpCalculandoRegistros.BackColor = System.Drawing.SystemColors.ControlLight;
+            this.lblDpCalculandoRegistros.Location = new System.Drawing.Point(516, 41);
+            this.lblDpCalculandoRegistros.Name = "lblDpCalculandoRegistros";
+            this.lblDpCalculandoRegistros.Size = new System.Drawing.Size(117, 13);
+            this.lblDpCalculandoRegistros.TabIndex = 19;
+            this.lblDpCalculandoRegistros.Text = "Calculando, aguarde ...";
+            this.lblDpCalculandoRegistros.Visible = false;
+            // 
+            // bgwDpItau
+            // 
+            this.bgwDpItau.WorkerReportsProgress = true;
+            this.bgwDpItau.WorkerSupportsCancellation = true;
+            this.bgwDpItau.DoWork += new System.ComponentModel.DoWorkEventHandler(this.bgwDpItau_DoWork);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -2265,7 +2285,7 @@
             this.MinimumSize = new System.Drawing.Size(1002, 519);
             this.Name = "Form1";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-            this.Text = "BotFlow 2.1.1";
+            this.Text = "BotFlow 2.1.2";
             this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.Form1_FormClosed);
             this.Load += new System.EventHandler(this.Form1_Load);
             this.Resize += new System.EventHandler(this.Form1_Resize);
@@ -2523,6 +2543,8 @@
         private System.ComponentModel.BackgroundWorker bgwDrDockTech;
         private System.Windows.Forms.Label lblCalculandoRegistrosBMG;
         private System.ComponentModel.BackgroundWorker bgwDrBMG;
+        private System.Windows.Forms.Label lblDpCalculandoRegistros;
+        private System.ComponentModel.BackgroundWorker bgwDpItau;
     }
 }
 
